@@ -1,0 +1,28 @@
+using System.Text.RegularExpressions;
+using ErrorOr;
+
+using Identity.Domain.Common;
+
+namespace Identity.Infrastructure.Security.PasswordHasher;
+
+public partial class PasswordHasher : IPasswordHasher
+{
+    private static readonly Regex PasswordRegex = StrongPasswordRegex();
+
+    public ErrorOr<string> HashPassword(string password)
+    {
+        return !PasswordRegex.IsMatch(password)
+            ? Error.Validation(description: "Password too weak")
+            : BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+    }
+
+    public bool IsCorrectPassword(string password, string hash)
+    {
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, hash);
+    }
+
+    private static Regex StrongPasswordRegex()
+    {
+        return new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", RegexOptions.Compiled);
+    }
+}

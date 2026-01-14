@@ -1,1 +1,12 @@
-<Solution />
+<Solution>
+  <Folder Name="/InnoClinic.Identity/" />
+  <Folder Name="/InnoClinic.Identity/src/">
+    <Project Path="InnoClinic.Identity/src/Identity.Api/Identity.Api.csproj" />
+    <Project Path="InnoClinic.Identity/src/Identity.Application/Identity.Application.csproj" />
+    <Project Path="InnoClinic.Identity/src/Identity.Contracts/Identity.Contracts.csproj" />
+    <Project Path="InnoClinic.Identity/src/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="InnoClinic.Identity/src/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+  </Folder>
+  <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
+  <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
+</Solution>
