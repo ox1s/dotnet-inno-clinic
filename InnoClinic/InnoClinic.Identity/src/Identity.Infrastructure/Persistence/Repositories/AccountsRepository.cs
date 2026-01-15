@@ -8,8 +8,7 @@ public class AccountsRepository(IdentityDbContext dbContext)
 {
     public async Task AddAccountAsync(Account user, CancellationToken cancellationToken = default)
     {
-        await dbContext.AddAsync(user);
-        await dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(user, cancellationToken);
     }
 
 }

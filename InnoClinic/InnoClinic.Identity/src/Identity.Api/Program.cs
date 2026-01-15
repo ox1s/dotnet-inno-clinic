@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.AddServiceDefaults();
 
     builder.Services.AddControllers();
     builder.Services.AddHttpContextAccessor();
@@ -15,9 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-
-    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
     builder.Services
         .AddApplication()
@@ -31,8 +31,6 @@ var app = builder.Build();
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-
-        await app.ApplyMigrationsAsync();
     }
     app.MapHealthChecks("health", new HealthCheckOptions
     {
@@ -44,6 +42,7 @@ var app = builder.Build();
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+        dbContext.Database.Migrate();
     }
     app.UseExceptionHandler();
 
@@ -59,6 +58,6 @@ var app = builder.Build();
     app.UseAuthentication();
     app.UseAuthorization();
 
-    await app.RunAsync();
+    app.Run();
 }
 

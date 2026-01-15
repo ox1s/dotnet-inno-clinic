@@ -37,7 +37,7 @@ public class RegisterCommandHandler(
 
         var token = jwtTokenGenerator.GenerateToken(account);
 
-        // TODO: Email verefication (generate link & send email)
+        // TODO: Email verification (generate link & send email)
 
         return new AuthenticationResult(
             account,

@@ -5,10 +5,8 @@ namespace Identity.Api.Exceptions;
 
 internal sealed class GlobalExceptionHandler(
     IProblemDetailsService problemDetailsService,
-    ILogger<GlobalExceptionHandler> logger)
-    : IExceptionHandler
+    ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
-
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
@@ -16,11 +14,13 @@ internal sealed class GlobalExceptionHandler(
     {
         logger.LogError(exception, "Unhandled exception occurred: {Message}", exception.Message);
 
-        httpContext.Response.StatusCode = exception switch
+        var statusCode = exception switch
         {
             ApplicationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
+
+        httpContext.Response.StatusCode = statusCode;
 
         return await problemDetailsService.TryWriteAsync(
             new ProblemDetailsContext
@@ -29,7 +29,7 @@ internal sealed class GlobalExceptionHandler(
                 Exception = exception,
                 ProblemDetails = new ProblemDetails
                 {
-                    Status = StatusCodes.Status500InternalServerError,
+                    Status = statusCode,
                     Title = "Server Error",
                     Type = exception.GetType().Name,
                     Detail = "An unexpected error occurred. Please try again later."
