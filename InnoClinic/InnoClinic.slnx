@@ -7,6 +7,11 @@
     <Project Path="InnoClinic.Identity/src/Identity.Domain/Identity.Domain.csproj" />
     <Project Path="InnoClinic.Identity/src/Identity.Infrastructure/Identity.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/InnoClinic.Identity/tests/">
+    <Project Path="InnoClinic.Identity/tests/Identity.Application.UnitTests/Identity.Application.UnitTests.csproj" />
+    <Project Path="InnoClinic.Identity/tests/Identity.Domain.UnitTests/Identity.Domain.UnitTests.csproj" />
+    <Project Path="InnoClinic.Identity/tests/Identity.TestCommon/Identity.TestCommon.csproj" />
+  </Folder>
   <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
   <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
 </Solution>

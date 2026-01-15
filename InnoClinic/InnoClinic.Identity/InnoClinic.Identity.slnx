@@ -6,4 +6,9 @@
     <Project Path="src/Identity.Domain/Identity.Domain.csproj" />
     <Project Path="src/Identity.Infrastructure/Identity.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Identity.Application.UnitTests/Identity.Application.UnitTests.csproj" />
+    <Project Path="tests/Identity.Domain.UnitTests/Identity.Domain.UnitTests.csproj" />
+    <Project Path="tests/Identity.TestCommon/Identity.TestCommon.csproj" />
+  </Folder>
 </Solution>
