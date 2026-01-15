@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.Repositories;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
+using Identity.Infrastructure.Services.Email;
 
 namespace Identity.Infrastructure;
 
@@ -22,6 +24,7 @@ public static class DependencyInjection
             .AddMediatR()
             .AddConfigurations(configuration)
 
+            .AddServices(configuration)
             .AddPersistence(configuration)
             .AddHealthChecks(configuration);
 
@@ -60,6 +63,35 @@ public static class DependencyInjection
         services
             .AddHealthChecks()
             .AddNpgSql(configuration.GetConnectionString("innoclinic-accounts")!);
+
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+
+        var mailPitConnectionString = configuration.GetConnectionString("mailpit");
+
+        if (string.IsNullOrEmpty(mailPitConnectionString))
+        {
+            throw new InvalidOperationException("MailPit connection string is missing");
+        }
+
+        mailPitConnectionString = mailPitConnectionString.Replace("Endpoint=", "");
+
+        var uri = new Uri(mailPitConnectionString, UriKind.Absolute);
+
+        var host = uri.Host;
+        var port = uri.Port;
+
+        var emailSettings = configuration.GetSection(EmailSettings.Section).Get<EmailSettings>() ?? new EmailSettings();
+
+        services
+            .AddFluentEmail(emailSettings.FromEmail, emailSettings.FromName)
+            .AddSmtpSender(new SmtpClient(host, port));
+
+        services.AddTransient<IEmailSender, EmailSender>();
 
         return services;
     }

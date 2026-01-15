@@ -8,6 +8,7 @@
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.1.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="13.1.0" />
     <PackageVersion Include="ErrorOr" Version="2.0.1" />
     <PackageVersion Include="FluentEmail.Core" Version="3.0.2" />
     <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />

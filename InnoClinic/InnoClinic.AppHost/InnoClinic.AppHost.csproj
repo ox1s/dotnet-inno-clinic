@@ -4,6 +4,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

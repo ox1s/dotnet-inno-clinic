@@ -1,18 +1,19 @@
 using ErrorOr;
-using MediatR;
-
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
-using Identity.Domain.Common;
 using Identity.Domain.AccountAggregate;
+using Identity.Domain.Common;
+using MediatR;
 
-namespace Identity.Application.Authentication.Register;
+namespace Identity.Application.Authentication.Commands.Register;
 
 public class RegisterCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
-    IAccountsRepository accountsRepository)
+    IAccountsRepository accountsRepository,
+    IEmailSender emailSender,
+    IEmailVerificationLinkFactory linkFactory)
         : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
 
@@ -22,7 +23,8 @@ public class RegisterCommandHandler(
         if (emailResult.IsError) return emailResult.Errors;
 
         var email = emailResult.Value;
-        // TODO: Check if account email is already registered
+        if (await accountsRepository.ExistsByEmailAsync(email, cancellationToken))
+            return AccountErrors.AlreadyExists;
 
         var hashPasswordResult = passwordHasher.HashPassword(command.Password);
 
@@ -35,9 +37,18 @@ public class RegisterCommandHandler(
         await accountsRepository.AddAccountAsync(account, cancellationToken);
         await unitOfWork.CommitChangesAsync(cancellationToken);
 
-        var token = jwtTokenGenerator.GenerateToken(account);
+        var verificationLink = linkFactory.Create(account.Id, account.EmailVerificationToken!);
 
-        // TODO: Email verification (generate link & send email)
+        await emailSender.SendEmailAsync(
+            account.Email.Value,
+            "noreply@innoclinic.com",
+            "Welcome to InnoClinic! Please verify your email.",
+            $"Hello! Click here to verify: <a href='{verificationLink}'>Verify Email</a>"
+        );
+
+        // Если чет случилось надо проверить то, что юзер не добавился, а то сейчас он добавляется
+
+        var token = jwtTokenGenerator.GenerateToken(account);
 
         return new AuthenticationResult(
             account,

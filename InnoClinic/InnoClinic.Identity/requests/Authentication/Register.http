@@ -1,5 +1,5 @@
 
-@host = localhost:7197
+@host = localhost:7777
 
 POST https://{{host}}/authentication/register
 Content-Type: application/json
@@ -8,3 +8,4 @@ Content-Type: application/json
   "email": "test3@test.com",
   "password": "123Q!231ew123"
 }
+

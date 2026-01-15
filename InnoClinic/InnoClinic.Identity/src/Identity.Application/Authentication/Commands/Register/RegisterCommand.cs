@@ -1,9 +1,8 @@
 using ErrorOr;
+using Identity.Application.Authentication.Common;
 using MediatR;
 
-using Identity.Application.Authentication.Common;
-
-namespace Identity.Application.Authentication.Register;
+namespace Identity.Application.Authentication.Commands.Register;
 
 public record RegisterCommand(
     string Email,

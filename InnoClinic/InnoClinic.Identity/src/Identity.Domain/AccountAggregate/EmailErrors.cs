@@ -19,7 +19,4 @@ public static class EmailErrors
        "Email.InvalidFormat",
        "Email must be under 254 characters.");
 
-    public static readonly Error AlreadyExists = Error.Conflict(
-        "Email.AlreadyExists",
-        "User with this email already exists"); // Frontend: "User with this email already exists"
 }
