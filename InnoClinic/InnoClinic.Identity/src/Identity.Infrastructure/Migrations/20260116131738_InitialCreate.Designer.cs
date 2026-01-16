@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20260116112509_InitialCreate")]
+    [Migration("20260116131738_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,6 +20,7 @@ namespace Identity.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("identity")
                 .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -66,7 +67,7 @@ namespace Identity.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("accounts", (string)null);
+                    b.ToTable("accounts", "identity");
                 });
 
             modelBuilder.Entity("Identity.Domain.AccountAggregate.Account", b =>
@@ -86,7 +87,7 @@ namespace Identity.Infrastructure.Migrations
 
                             b1.HasKey("AccountId");
 
-                            b1.ToTable("accounts");
+                            b1.ToTable("accounts", "identity");
 
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");
@@ -107,7 +108,7 @@ namespace Identity.Infrastructure.Migrations
 
                             b1.HasKey("AccountId");
 
-                            b1.ToTable("accounts");
+                            b1.ToTable("accounts", "identity");
 
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");

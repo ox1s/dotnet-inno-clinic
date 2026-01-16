@@ -9,13 +9,13 @@ var postgres = builder.AddPostgres("postgres")
     .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
 
-var accountsDatabase = postgres.AddDatabase("innoclinic-accounts");
+var sharedDatabase = postgres.AddDatabase("innoclinic-database");
 
 var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
-    .WithEnvironment("ConnectionStrings__innoclinic-accounts", accountsDatabase)
+    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
     .WithReference(mailpit)
-    .WithReference(accountsDatabase)
-    .WaitFor(accountsDatabase)
+    .WithReference(sharedDatabase)
+    .WaitFor(sharedDatabase)
     .WithEnvironment("AppUrl", "https://localhost:7777")
     .WithEnvironment("WebAppUrl", "http://localhost:6666");
 

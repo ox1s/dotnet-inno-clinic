@@ -11,8 +11,12 @@ namespace Identity.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "identity");
+
             migrationBuilder.CreateTable(
                 name: "accounts",
+                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -35,6 +39,7 @@ namespace Identity.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_accounts_email",
+                schema: "identity",
                 table: "accounts",
                 column: "email",
                 unique: true);
@@ -44,7 +49,8 @@ namespace Identity.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "accounts");
+                name: "accounts",
+                schema: "identity");
         }
     }
 }

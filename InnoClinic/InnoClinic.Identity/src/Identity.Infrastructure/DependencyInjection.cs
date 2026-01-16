@@ -12,6 +12,7 @@ using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Services.Email;
 using Identity.Infrastructure.Services;
+using Identity.Infrastructure.Services.Profile;
 
 namespace Identity.Infrastructure;
 
@@ -48,10 +49,13 @@ public static class DependencyInjection
     }
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        string? connectionString = configuration.GetConnectionString("innoclinic-accounts");
+        string? connectionString = configuration.GetConnectionString("innoclinic-database");
 
         services.AddDbContext<IdentityDbContext>(options =>
-            options.UseNpgsql(connectionString)); ;
+            options.UseNpgsql(connectionString, npgsqlOptions =>
+            {
+                npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "identity");
+            }));
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
         services.AddScoped<IAccountsRepository, AccountsRepository>();
@@ -63,7 +67,7 @@ public static class DependencyInjection
     {
         services
             .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("innoclinic-accounts")!);
+            .AddNpgSql(configuration.GetConnectionString("innoclinic-database")!);
 
         return services;
     }
@@ -71,6 +75,7 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+        services.AddScoped<IProfileService, FakeProfileService>();
 
         var mailPitConnectionString = configuration.GetConnectionString("mailpit");
 

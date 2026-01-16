@@ -10,7 +10,8 @@ namespace Identity.Application.Authentication.Queries.Login;
 public class LoginQueryHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher,
-    IAccountsRepository accountsRepository)
+    IAccountsRepository accountsRepository,
+    IProfileService profileService)
     : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
@@ -20,9 +21,16 @@ public class LoginQueryHandler(
         var email = emailResult.Value;
 
         var account = await accountsRepository.GetByEmailAsync(email, cancellationToken);
+        if (account == null
+            || !account.IsCorrectPasswordHash(query.Password, passwordHasher))
+            return AuthenticationErrors.InvalidCredentials;
 
-        return account is null || !account.IsCorrectPasswordHash(query.Password, passwordHasher)
-            ? AuthenticationErrors.InvalidCredentials
-            : new AuthenticationResult(account, jwtTokenGenerator.GenerateToken(account));
+        var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
+        if (profileResult.IsError) return AuthenticationErrors.InvalidCredentials;
+
+        var (role, status) = profileResult.Value;
+        if (role != Roles.Patient && status == "Inactive") return AccountErrors.AccountInactive;
+
+        return new AuthenticationResult(account, jwtTokenGenerator.GenerateToken(account));
     }
 }
