@@ -5,6 +5,7 @@ using Identity.Infrastructure;
 using Identity.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -14,7 +15,34 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddHttpContextAccessor();
 
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+
+
+    // Source - https://stackoverflow.com/q
+    // Posted by Nermin, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-01-16, License - CC BY-SA 4.0
+
+    builder.Services.AddSwaggerGen(options =>
+    {
+
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
+        });
+
+        options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+        {
+        {
+            new OpenApiSecuritySchemeReference("Bearer"),
+            new List<string>()
+        }
+        });
+    });
+
 
     builder.Services.AddProblemDetails();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

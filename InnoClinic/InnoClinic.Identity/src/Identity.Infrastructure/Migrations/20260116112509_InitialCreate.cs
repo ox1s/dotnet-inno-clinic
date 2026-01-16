@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,11 @@ namespace Identity.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     email = table.Column<string>(type: "character varying(400)", maxLength: 400, nullable: false),
-                    IsEmailVerified = table.Column<bool>(type: "boolean", nullable: false),
+                    is_email_verified = table.Column<bool>(type: "boolean", nullable: false),
                     email_verification_token = table.Column<string>(type: "text", nullable: true),
                     email_verification_token_expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    photo_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    phone_number = table.Column<string>(type: "text", nullable: true),
+                    photo_id = table.Column<Guid>(type: "uuid", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<Guid>(type: "uuid", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),

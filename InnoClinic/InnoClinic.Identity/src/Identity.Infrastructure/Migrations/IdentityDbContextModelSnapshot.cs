@@ -42,9 +42,14 @@ namespace Identity.Infrastructure.Migrations
                         .HasColumnName("email_verification_token_expiration");
 
                     b.Property<bool>("IsEmailVerified")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_email_verified");
 
-                    b.Property<Guid>("PhotoId")
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
+                    b.Property<Guid?>("PhotoId")
                         .HasColumnType("uuid")
                         .HasColumnName("photo_id");
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Identity.Application.Authentication.Common;
 using Identity.Contracts.Authentication;
+using Identity.Application.Authentication.Queries.Login;
 
 namespace Identity.Api.Controllers;
 
@@ -37,7 +38,21 @@ public class AuthenticationController(ISender mediator)
             success => Ok("Email successfully verified!"),
             Problem);
     }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
+    {
+        var query = new LoginQuery(request.Email, request.Password);
+        var authResult = await mediator.Send(query);
 
+        if (authResult.IsError && authResult.FirstError == AuthenticationErrors.InvalidCredentials)
+            return Problem(
+                authResult.FirstError.Description,
+                statusCode: StatusCodes.Status401Unauthorized);
+
+        return authResult.Match(
+            authenticationResult => Ok(MapToAuthResponse(authenticationResult)),
+            Problem);
+    }
 
     private static AuthenticationResponse MapToAuthResponse(AuthenticationResult authResult)
     {

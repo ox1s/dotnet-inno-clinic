@@ -14,7 +14,7 @@ public class RegisterCommandHandler(
     IAccountsRepository accountsRepository,
     IEmailSender emailSender,
     IEmailVerificationLinkFactory linkFactory)
-        : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
+    : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)

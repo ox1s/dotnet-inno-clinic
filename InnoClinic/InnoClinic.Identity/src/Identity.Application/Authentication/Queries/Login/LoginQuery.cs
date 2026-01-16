@@ -2,9 +2,9 @@ using ErrorOr;
 using Identity.Application.Authentication.Common;
 using MediatR;
 
-namespace Identity.Application.Authentication.Commands.Register;
+namespace Identity.Application.Authentication.Queries.Login;
 
-public record RegisterCommand(
+public record LoginQuery(
     string Email,
     string Password)
     : IRequest<ErrorOr<AuthenticationResult>>;

@@ -11,6 +11,7 @@ using Identity.Infrastructure.Persistence.Repositories;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Services.Email;
+using Identity.Infrastructure.Services;
 
 namespace Identity.Infrastructure;
 

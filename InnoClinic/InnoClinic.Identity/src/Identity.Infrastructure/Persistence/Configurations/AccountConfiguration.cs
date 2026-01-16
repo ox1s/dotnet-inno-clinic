@@ -26,7 +26,8 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasIndex(a => a.Email)
             .IsUnique();
 
-        builder.Property(a => a.IsEmailVerified);
+        builder.Property(a => a.IsEmailVerified)
+            .HasColumnName("is_email_verified");
 
         builder.Property(a => a.EmailVerificationToken)
             .HasColumnName("email_verification_token");
@@ -36,6 +37,12 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder.Property(a => a.PhotoId)
             .HasColumnName("photo_id");
+
+        builder.Property(a => a.PhoneNumber)
+            .HasColumnName("phone_number")
+            .HasConversion(
+                phoneNumber => phoneNumber.Value,
+                value => new PhoneNumber(value));
 
         builder.OwnsOne(a => a.CreatedInfo, ci =>
         {

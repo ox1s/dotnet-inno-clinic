@@ -27,9 +27,9 @@ public class JwtTokenGenerator
         };
 
         var token = new JwtSecurityToken(
-            _jwtSettings.Issuer,
-            _jwtSettings.Audience,
-            claims,
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
+            claims: claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes),
             signingCredentials: credentials
         );

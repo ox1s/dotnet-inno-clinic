@@ -11,7 +11,9 @@ public class Account : AggregateRoot
     public string? EmailVerificationToken { get; private set; }
     public DateTime? EmailVerificationTokenExpiration { get; private set; }
 
-    public Guid PhotoId { get; private set; }
+    public PhoneNumber? PhoneNumber { get; private set; }
+
+    public Guid? PhotoId { get; private set; }
     public CreateInfo CreatedInfo { get; private set; } = null!;
     public UpdateInfo? UpdatedInfo { get; private set; }
 
@@ -46,6 +48,16 @@ public class Account : AggregateRoot
         return account;
     }
 
+    public ErrorOr<Account> Update(
+        Guid? photoId,
+        PhoneNumber phoneNumber)
+    {
+        this.PhotoId = photoId ?? this.PhotoId;
+        this.PhoneNumber = phoneNumber;
+
+        return this;
+    }
+
     public ErrorOr<Success> VerifyEmail(string token)
     {
         if (IsEmailVerified) return Error.Conflict(description: "Email already verified");
@@ -68,3 +80,4 @@ public class Account : AggregateRoot
 
     private Account() { }
 }
+

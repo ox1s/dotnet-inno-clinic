@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ErrorOr" />
+    <PackageReference Include="libphonenumber-csharp" />
     <PackageReference Include="MediatR" />
   </ItemGroup>
 </Project>
