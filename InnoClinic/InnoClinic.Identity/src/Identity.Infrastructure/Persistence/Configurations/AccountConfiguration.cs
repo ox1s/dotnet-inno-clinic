@@ -41,7 +41,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(a => a.PhoneNumber)
             .HasColumnName("phone_number")
             .HasConversion(
-                phoneNumber => phoneNumber.Value,
+                phoneNumber => phoneNumber!.Value,
                 value => new PhoneNumber(value));
 
         builder.OwnsOne(a => a.CreatedInfo, ci =>
