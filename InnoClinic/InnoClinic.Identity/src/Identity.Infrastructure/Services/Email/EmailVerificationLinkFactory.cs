@@ -1,4 +1,6 @@
 using Identity.Application.Common.Interfaces;
+using Identity.Infrastructure.Exceptions;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -28,12 +30,12 @@ public class EmailVerificationLinkFactory(
             var appUrl = configuration["AppUrl"];
             if (string.IsNullOrEmpty(appUrl))
             {
-                throw new Exception("AppUrl is not configured. Cannot generate email link in background.");
+                throw new EmailSendingException("AppUrl is not configured. Cannot generate email link in background.");
             }
 
             if (!Uri.TryCreate(appUrl, UriKind.Absolute, out var baseUrl))
             {
-                throw new Exception($"Invalid AppUrl configuration: {appUrl}");
+                throw new EmailSendingException($"Invalid AppUrl configuration: {appUrl}");
             }
 
 
