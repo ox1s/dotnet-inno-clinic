@@ -15,7 +15,11 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8e377b87_002D7722_002D461f_002D9c08_002D850f0f69d0fa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;InnoClinic.Identity&amp;gt;\&amp;lt;tests&amp;gt;\&amp;lt;Identity.Application.UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/home/ox1s/Projects/innowise/dotnet-inno-clinic/InnoClinic/InnoClinic.Identity/tests/Identity.Application.UnitTests" Presentation="&amp;lt;InnoClinic.Identity&amp;gt;\&amp;lt;tests&amp;gt;\&amp;lt;Identity.Application.UnitTests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FProperties_002FMessages/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FMessages/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FMessages/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FProperties_002FMessages/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FProperties_002FMessages/@EntryIndexRemoved">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=InnoClinic_002EIdentity_002Fsrc_002FIdentity_002EDomain_002FResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyErrors/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=mailpit/@EntryIndexedValue">True</s:Boolean>

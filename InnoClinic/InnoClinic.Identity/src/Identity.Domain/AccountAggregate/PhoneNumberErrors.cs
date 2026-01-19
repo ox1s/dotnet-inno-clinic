@@ -6,13 +6,13 @@ public static class PhoneNumberErrors
 {
     public static readonly Error Invalid = Error.Validation(
         "PhoneNumber.Invalid",
-        "Invalid phone number for country.");
+        Resources.PhoneNumber_Invalid);
 
     public static readonly Error WrongCountry = Error.Validation(
         "PhoneNumber.WrongCountry",
-        "Phone number does not match the specified country.");
+        Resources.PhoneNumber_WrongCountry);
 
     public static readonly Error ParseError = Error.Validation(
         "PhoneNumber.ParseError",
-        "Could not parse phone number.");
+        Resources.PhoneNumber_ParseError);
 }
