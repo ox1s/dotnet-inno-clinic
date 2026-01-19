@@ -1,8 +1,9 @@
 # dotnet-inno-clinic
-Innowise Clinic ASP.NET Core Web API (Pre-Trainee Innowise assignment) 
 
+Innowise Clinic ASP.NET Core Web API (Pre-Trainee Innowise assignment)
 
 ## Схема сущностей представленных в базах данных, распределенных по соответствующим сервисам
+
 <details>
 <summary><b>📸 Показать схему бд</b></summary>
   <br>

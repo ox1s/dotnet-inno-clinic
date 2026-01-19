@@ -5,7 +5,7 @@ namespace Identity.Application.Authentication.Commands.Register;
 
 public partial class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
-    private static readonly Regex PasswordRegex = StrongPasswordRegex();
+    private static readonly Regex _passwordRegex = StrongPasswordRegex();
 
     public RegisterCommandValidator()
     {
@@ -14,7 +14,7 @@ public partial class RegisterCommandValidator : AbstractValidator<RegisterComman
             .NotEmpty()
             .Length(6, 15)
             .WithMessage("Password must be between 6 and 15 characters.")
-            .Matches(PasswordRegex)
+            .Matches(_passwordRegex)
             .WithMessage(
                 "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
     }

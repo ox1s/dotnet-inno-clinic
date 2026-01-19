@@ -5,7 +5,7 @@ POST https://{{host}}/authentication/register
 Content-Type: application/json
 
 {
-  "email": "test11@test.com",
-  "password": "123Q!231ew123"
+    "email": "test11@test.com",
+    "password": "123Q!231ew123"
 }
 
