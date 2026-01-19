@@ -5,111 +5,124 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Identity.Application.Common.Interfaces;
+using Identity.Application.Common.Settings;
 using Identity.Domain.Common;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.Repositories;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Services.Email;
-using Identity.Infrastructure.Services;
 using Identity.Infrastructure.Services.Profile;
 
 namespace Identity.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    extension(IServiceCollection services)
     {
-        services
-            .AddAuthentication(configuration)
-            .AddHttpContextAccessor()
-            .AddMediatR()
-            .AddConfigurations(configuration)
-
-            .AddServices(configuration)
-            .AddPersistence(configuration)
-            .AddHealthChecks(configuration);
-
-        return services;
-    }
-
-    public static IServiceCollection AddMediatR(this IServiceCollection services)
-    {
-        services.AddMediatR(options => options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
-
-        return services;
-    }
-    public static IServiceCollection AddConfigurations(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddOptions();
-
-        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
-
-        return services;
-    }
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
-    {
-        string? connectionString = configuration.GetConnectionString("innoclinic-database");
-
-        services.AddDbContext<IdentityDbContext>(options =>
-            options.UseNpgsql(connectionString, npgsqlOptions =>
-            {
-                npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "identity");
-            }));
-
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
-        services.AddScoped<IAccountsRepository, AccountsRepository>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
-    {
-        services
-            .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("innoclinic-database")!);
-
-        return services;
-    }
-
-    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
-        services.AddScoped<IProfileService, FakeProfileService>();
-
-        var mailPitConnectionString = configuration.GetConnectionString("mailpit");
-
-        if (string.IsNullOrEmpty(mailPitConnectionString))
+        public IServiceCollection AddInfrastructure(IConfiguration configuration)
         {
-            throw new InvalidOperationException("MailPit connection string is missing");
+            services
+                .AddAuthentication()
+                .AddHttpContextAccessor()
+                .AddMediatR()
+                .AddConfigurations(configuration)
+
+                .AddServices(configuration)
+                .AddPersistence(configuration)
+                .AddHealthChecks(configuration);
+
+            return services;
         }
 
-        mailPitConnectionString = mailPitConnectionString.Replace("Endpoint=", "");
+        private IServiceCollection AddMediatR()
+        {
+            services.AddMediatR(options =>
+                options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
 
-        var uri = new Uri(mailPitConnectionString, UriKind.Absolute);
+            return services;
+        }
 
-        var host = uri.Host;
-        var port = uri.Port;
+        private IServiceCollection AddConfigurations(IConfiguration configuration)
+        {
+            services.AddOptions();
 
-        var emailSettings = configuration.GetSection(EmailSettings.Section).Get<EmailSettings>() ?? new EmailSettings();
+            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
 
-        services
-            .AddFluentEmail(emailSettings.FromEmail, emailSettings.FromName)
-            .AddSmtpSender(new SmtpClient(host, port));
+            return services;
+        }
 
-        services.AddTransient<IEmailSender, EmailSender>();
+        private IServiceCollection AddPersistence(IConfiguration configuration)
+        {
+            string? connectionString = configuration.GetConnectionString("innoclinic-database");
 
-        return services;
-    }
-    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddDbContext<IdentityDbContext>(options =>
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "identity");
+                }));
 
-        services
-            .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer();
+            services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
 
-        return services;
+            return services;
+        }
+
+        private IServiceCollection AddHealthChecks(IConfiguration configuration)
+        {
+            services
+                .AddHealthChecks()
+                .AddNpgSql(configuration.GetConnectionString("innoclinic-database")!);
+
+            return services;
+        }
+
+        private IServiceCollection AddServices(IConfiguration configuration)
+        {
+            services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Section));
+            var emailSettings =  configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
+
+            if (emailSettings is null)
+            {
+                throw new InvalidOperationException("Email settings are missing");
+            }
+
+            services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+            services.AddScoped<IProfileService, FakeProfileService>();
+
+            var mailPitConnectionString = configuration.GetConnectionString("mailpit");
+
+            if (string.IsNullOrEmpty(mailPitConnectionString))
+            {
+                throw new InvalidOperationException("MailPit connection string is missing");
+            }
+
+            mailPitConnectionString = mailPitConnectionString.Replace("Endpoint=", "");
+
+            var uri = new Uri(mailPitConnectionString, UriKind.Absolute);
+
+            var host = uri.Host;
+            var port = uri.Port;
+
+            services
+                .AddFluentEmail(emailSettings.FromEmail, emailSettings.FromName)
+                .AddSmtpSender(new SmtpClient(host, port));
+
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            return services;
+        }
+
+        private IServiceCollection AddAuthentication()
+        {
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+            services
+                .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
+
+            return services;
+        }
     }
 }

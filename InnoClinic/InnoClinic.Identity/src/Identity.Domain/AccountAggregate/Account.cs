@@ -50,10 +50,10 @@ public class Account : AggregateRoot
 
     public ErrorOr<Account> Update(
         Guid? photoId,
-        PhoneNumber phoneNumber)
+        PhoneNumber? phoneNumber)
     {
-        this.PhotoId = photoId ?? this.PhotoId;
-        this.PhoneNumber = phoneNumber;
+        PhotoId = photoId ?? PhotoId;
+        PhoneNumber = phoneNumber ?? PhoneNumber;
 
         return this;
     }

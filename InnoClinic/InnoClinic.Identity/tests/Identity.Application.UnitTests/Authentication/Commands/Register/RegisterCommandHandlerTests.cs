@@ -2,8 +2,10 @@ using ErrorOr;
 using FluentAssertions;
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
+using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -21,6 +23,14 @@ public class RegisterCommandHandlerTests
 
     public RegisterCommandHandlerTests()
     {
+        var emailSettings = new EmailSettings
+        {
+            FromEmail = "test@innoclinic.com",
+            FromName = "InnoClinic Test",
+            WelcomeSubject = "Welcome!",
+            WelcomeBodyTemplate = "Link: {0}"
+        };
+
         _jwtTokenGenerator = Substitute.For<IJwtTokenGenerator>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
@@ -28,13 +38,16 @@ public class RegisterCommandHandlerTests
         _emailSender = Substitute.For<IEmailSender>();
         _linkFactory = Substitute.For<IEmailVerificationLinkFactory>();
 
+        var options = Options.Create(emailSettings);
+
         _handler = new RegisterCommandHandler(
             _jwtTokenGenerator,
             _passwordHasher,
             _unitOfWork,
             _accountsRepository,
             _emailSender,
-            _linkFactory);
+            _linkFactory,
+            options);
     }
 
     [Fact]
@@ -75,7 +88,8 @@ public class RegisterCommandHandlerTests
         // Arrange
         var command = new RegisterCommand("exist@test.com", "Password123!");
 
-        _accountsRepository.ExistsByEmailAsync(Arg.Is<Email>(e => e.Value == command.Email), Arg.Any<CancellationToken>())
+        _accountsRepository
+            .ExistsByEmailAsync(Arg.Is<Email>(e => e.Value == command.Email), Arg.Any<CancellationToken>())
             .Returns(true);
 
         // Act
@@ -85,6 +99,7 @@ public class RegisterCommandHandlerTests
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(AccountErrors.AlreadyExists);
         await _accountsRepository.DidNotReceive().AddAccountAsync(Arg.Any<Account>(), Arg.Any<CancellationToken>());
-        await _emailSender.DidNotReceive().SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+        await _emailSender.DidNotReceive()
+            .SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
     }
 }

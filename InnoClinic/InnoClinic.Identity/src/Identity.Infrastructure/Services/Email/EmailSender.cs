@@ -1,16 +1,18 @@
 using FluentEmail.Core;
 using Identity.Application.Common.Interfaces;
+using Identity.Infrastructure.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace Identity.Infrastructure.Services.Email;
 
-public class EmailSender(
+public partial class EmailSender(
     IFluentEmail email,
-    ILogger<EmailSender> logger) : IEmailSender
+    ILogger<EmailSender> logger)
+    : IEmailSender
 {
     public async Task SendEmailAsync(string to, string from, string subject, string body)
     {
-        logger.LogInformation("Sending email to {To} with subject {Subject}", to, subject);
+        LogSendingEmailToToWithSubjectSubject(logger, to, subject);
 
         var fluentEmail = email
             .To(to)
@@ -24,10 +26,20 @@ public class EmailSender(
         if (!response.Successful)
         {
             var errors = string.Join(", ", response.ErrorMessages);
-            logger.LogError("Failed to send email. Errors: {Errors}", errors);
-            throw new Exception($"Failed to send email: {errors}");
+            LogFailedToSendEmailErrorsErrors(logger, errors);
+
+            throw new EmailSendingException($"Failed to send email: {errors}");
         }
 
-        logger.LogInformation("Email sent successfully!");
+        LogEmailSentSuccessfully(logger);
     }
+
+    [LoggerMessage(LogLevel.Information, "Sending email to {To} with subject {Subject}")]
+    static partial void LogSendingEmailToToWithSubjectSubject(ILogger<EmailSender> logger, string To, string Subject);
+
+    [LoggerMessage(LogLevel.Error, "Failed to send email. Errors: {Errors}")]
+    static partial void LogFailedToSendEmailErrorsErrors(ILogger<EmailSender> logger, string Errors);
+
+    [LoggerMessage(LogLevel.Information, "Email sent successfully!")]
+    static partial void LogEmailSentSuccessfully(ILogger<EmailSender> logger);
 }
