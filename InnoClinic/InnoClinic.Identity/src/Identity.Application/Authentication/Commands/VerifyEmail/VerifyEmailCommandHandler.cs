@@ -1,13 +1,16 @@
 using ErrorOr;
+using MediatR;
+
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
-using MediatR;
+using Identity.Domain.Common.Interfaces;
 
 namespace Identity.Application.Authentication.Commands.VerifyEmail;
 
 public class VerifyEmailCommandHandler(
     IAccountsRepository accountsRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    IDateTimeProvider dateTimeProvider)
     : IRequestHandler<VerifyEmailCommand, ErrorOr<Success>>
 {
     public async Task<ErrorOr<Success>> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
@@ -16,7 +19,9 @@ public class VerifyEmailCommandHandler(
 
         if (account is null) return AccountErrors.AccountNotFound;
 
-        var result = account.VerifyEmail(request.Token);
+        var result = account.VerifyEmail(
+            request.Token,
+            dateTimeProvider);
         if (result.IsError) return result.Errors;
 
         await accountsRepository.UpdateAsync(account, cancellationToken);

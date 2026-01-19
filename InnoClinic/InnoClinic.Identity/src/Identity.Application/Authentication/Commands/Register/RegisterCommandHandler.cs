@@ -1,11 +1,13 @@
 using ErrorOr;
+using MediatR;
+using Microsoft.Extensions.Options;
+
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
-using MediatR;
-using Microsoft.Extensions.Options;
+using Identity.Domain.Common.Interfaces;
 
 namespace Identity.Application.Authentication.Commands.Register;
 
@@ -16,6 +18,7 @@ public class RegisterCommandHandler(
     IAccountsRepository accountsRepository,
     IEmailSender emailSender,
     IEmailVerificationLinkFactory linkFactory,
+    IDateTimeProvider dateTimeProvider,
     IOptions<EmailSettings> emailSettingsOptions)
     : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
@@ -34,7 +37,8 @@ public class RegisterCommandHandler(
 
         var account = Account.Create(
             email: email,
-            passwordHash: hashPasswordResult.Value);
+            passwordHash: hashPasswordResult.Value,
+            dateTimeProvider: dateTimeProvider);
 
         await accountsRepository.AddAccountAsync(account, cancellationToken);
         await unitOfWork.CommitChangesAsync(cancellationToken);

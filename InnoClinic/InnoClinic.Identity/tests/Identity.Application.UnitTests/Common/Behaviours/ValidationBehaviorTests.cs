@@ -1,8 +1,12 @@
 using ErrorOr;
+
 using FluentAssertions;
+
 using FluentValidation;
 using FluentValidation.Results;
+
 using MediatR;
+
 using NSubstitute;
 
 using Identity.Application.Authentication.Commands.Register;
@@ -33,8 +37,8 @@ public class ValidationBehaviorTests
         List<ValidationFailure> validationFailures = [new("фука", "фука случилась")];
 
         _mockValidator
-             .ValidateAsync(registerRequest, Arg.Any<CancellationToken>())
-             .Returns(new ValidationResult(validationFailures));
+            .ValidateAsync(registerRequest, Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult(validationFailures));
 
         // Act
         var result = await _validationBehavior.Handle(registerRequest, _mockNextBehavior, default);
@@ -44,8 +48,28 @@ public class ValidationBehaviorTests
         result.FirstError.Code.Should().Be("фука");
         result.FirstError.Description.Should().Be("фука случилась");
     }
-    // [Fact]
-    // public async Task InvokeBehavior_WhenValidatorResultIsValid_ShouldInvokeNextBehavior()
-    // {
-    // }
+    [Fact]
+    public async Task InvokeBehavior_WhenValidatorResultIsValid_ShouldInvokeNextBehavior()
+    {
+        // Arrange
+        var registerRequest = AccountCommandFactory.CreateCreateAccountCommand();
+
+        _mockValidator
+            .ValidateAsync(registerRequest, Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult());
+
+        var expectedAuthResult = new AuthenticationResult(
+            null!,
+            "some-token");
+
+        _mockNextBehavior.Invoke().Returns(expectedAuthResult);
+
+        // Act
+        var result = await _validationBehavior.Handle(registerRequest, _mockNextBehavior, default);
+
+        // Assert
+        result.IsError.Should().BeFalse();
+        result.Value.Should().Be(expectedAuthResult);
+        await _mockNextBehavior.Received(1).Invoke();
+    }
 }

@@ -7,12 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
 using Identity.Domain.Common;
+using Identity.Domain.Common.Interfaces;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.Repositories;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Services.Email;
 using Identity.Infrastructure.Services.Profile;
+using Identity.Infrastructure.Services.Time;
 
 namespace Identity.Infrastructure;
 
@@ -79,6 +81,7 @@ public static class DependencyInjection
 
         private IServiceCollection AddServices(IConfiguration configuration)
         {
+            services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
             services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Section));
             var emailSettings =  configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
 

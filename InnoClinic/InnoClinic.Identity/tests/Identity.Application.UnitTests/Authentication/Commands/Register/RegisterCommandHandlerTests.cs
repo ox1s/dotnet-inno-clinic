@@ -1,13 +1,14 @@
-using ErrorOr;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
+using NSubstitute;
+
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
-using Microsoft.Extensions.Options;
-using NSubstitute;
-using Xunit;
+using Identity.Domain.Common.Interfaces;
+
 
 namespace Identity.Application.UnitTests.Authentication.Commands.Register;
 
@@ -20,6 +21,7 @@ public class RegisterCommandHandlerTests
     private readonly IEmailSender _emailSender;
     private readonly IEmailVerificationLinkFactory _linkFactory;
     private readonly RegisterCommandHandler _handler;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public RegisterCommandHandlerTests()
     {
@@ -37,6 +39,7 @@ public class RegisterCommandHandlerTests
         _accountsRepository = Substitute.For<IAccountsRepository>();
         _emailSender = Substitute.For<IEmailSender>();
         _linkFactory = Substitute.For<IEmailVerificationLinkFactory>();
+        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
         var options = Options.Create(emailSettings);
 
@@ -47,6 +50,7 @@ public class RegisterCommandHandlerTests
             _accountsRepository,
             _emailSender,
             _linkFactory,
+            _dateTimeProvider,
             options);
     }
 

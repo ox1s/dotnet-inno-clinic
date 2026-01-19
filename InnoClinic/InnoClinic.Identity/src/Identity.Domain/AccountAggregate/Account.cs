@@ -1,5 +1,6 @@
 using ErrorOr;
 
+using Identity.Domain.Common.Interfaces;
 using Identity.Domain.Common;
 
 namespace Identity.Domain.AccountAggregate;
@@ -30,20 +31,21 @@ public class Account : AggregateRoot
         IsEmailVerified = false;
 
         EmailVerificationToken = Guid.NewGuid().ToString();
-        EmailVerificationTokenExpiration = DateTime.UtcNow.AddDays(1);
     }
 
     public static Account Create(
         Email email,
-        string passwordHash)
+        string passwordHash,
+        IDateTimeProvider dateTimeProvider)
     {
         var account = new Account(
             email: email,
             passwordHash: passwordHash);
 
-        account.CreatedInfo = new CreateInfo(DateTime.UtcNow, account.Id);
+        var now = dateTimeProvider.UtcNow;
 
-        // account.DomainEvents.Add(new AccountCreatedDomainEvent(account.Id));
+        account.CreatedInfo = new CreateInfo(dateTimeProvider.UtcNow, account.Id);
+        account.EmailVerificationTokenExpiration = now.AddDays(1);
 
         return account;
     }
@@ -58,13 +60,15 @@ public class Account : AggregateRoot
         return this;
     }
 
-    public ErrorOr<Success> VerifyEmail(string token)
+    public ErrorOr<Success> VerifyEmail(string token, IDateTimeProvider dateTimeProvider)
     {
-        if (IsEmailVerified) return Error.Conflict(description: "Email already verified");
+        if (IsEmailVerified)
+            return Error.Conflict(description: "Email already verified");
 
-        if (EmailVerificationToken != token) return Error.Validation(description: "Invalid token");
+        if (EmailVerificationToken != token)
+            return Error.Validation(description: "Invalid token");
 
-        if (DateTime.UtcNow > EmailVerificationTokenExpiration)
+        if (dateTimeProvider.UtcNow > EmailVerificationTokenExpiration)
             return Error.Validation(description: "Token expired");
 
         IsEmailVerified = true;
