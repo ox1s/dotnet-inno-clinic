@@ -25,24 +25,7 @@ Innowise Clinic ASP.NET Core Web API (Pre-Trainee Innowise assignment)
 
 
 
-### 👤 Identity Service 
-Микросервис, отвечающий за управление регистрацией пользователей.
-<details>
-  <summary><b>📸 Показать схему домена Account</b></summary>
-  <br>
-  <div align="center">
-    <img src="images/UserManagementDomain.png" alt="User Management Domain" width="800">
-  </div>
-</details>
 
-### 📦 Product Management Service
-Микросервис каталога товаров. Управляет продуктами, категориями, ценами и списками желаемого. Хранит денормализованную реплику данных о продавце для оптимизации чтения.
-<details>
-  <summary><b>📸 Показать схему домена Product</b></summary>
-  <br>
-  <div align="center">
-    <img src="images/ProductManagementDomain.png" alt="Product Management Domain" width="800">
-  </div>
 </details>
 
 ---
