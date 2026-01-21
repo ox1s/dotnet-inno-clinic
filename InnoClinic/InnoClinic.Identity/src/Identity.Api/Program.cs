@@ -1,11 +1,13 @@
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+
 using Identity.Api.Exceptions;
 using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
+
 
 var builder = WebApplication.CreateBuilder(args);
 {

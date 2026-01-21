@@ -19,4 +19,11 @@ var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
     .WithEnvironment("AppUrl", "https://localhost:7777")
     .WithEnvironment("WebAppUrl", "http://localhost:6666");
 
+var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
+    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
+    .WithReference(sharedDatabase)
+    .WaitFor(sharedDatabase)
+    .WithEnvironment("AppUrl", "https://localhost:8888")
+    .WithEnvironment("WebAppUrl", "http://localhost:7777");
+
 builder.Build().Run();

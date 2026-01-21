@@ -1,1 +1,3 @@
-<Solution/>
+<Solution>
+  <Project Path="Appointment.Api/Appointment.Api.csproj" />
+</Solution>

@@ -1,5 +1,6 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.1.0">
     <ItemGroup>
+        <ProjectReference Include="..\InnoClinic.Appointment\Appointment.Api\Appointment.Api.csproj" />
         <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj"/>
     </ItemGroup>
     <ItemGroup>
