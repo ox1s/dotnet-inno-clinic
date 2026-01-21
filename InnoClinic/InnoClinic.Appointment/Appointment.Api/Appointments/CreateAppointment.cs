@@ -12,7 +12,7 @@ public class CreateAppointment
         DateOnly Date,
         TimeOnly Time);
 
-    public record Response(Guid Id,
+    private record Response(Guid Id,
         Guid PatientId,
         Guid DoctorId,
         DateOnly Date,
@@ -48,15 +48,11 @@ public class CreateAppointment
         if (!validationResult.IsValid)
             return Results.BadRequest(validationResult.Errors);
 
-        var appointment = new Appointment
-        {
-            Id = Guid.NewGuid(),
-            PatientId = request.PatientId,
-            DoctorId = request.DoctorId,
-            Date = request.Date,
-            Time = request.Time,
-            IsApproved = false,
-        };
+        var appointment = Appointment.Create(
+            patientId: request.PatientId,
+            doctorId: request.DoctorId,
+            date: request.Date,
+            time: request.Time);
 
         dbContext.Appointments.Add(appointment);
 

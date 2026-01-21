@@ -9,19 +9,34 @@ public class Appointment
     public TimeOnly Time { get; set; }
     public bool IsApproved { get; set; }
 
-    public Appointment(Guid patientId,
+    private Appointment(
+        Guid patientId,
         Guid doctorId,
         DateOnly date,
-        TimeOnly time)
+        TimeOnly time,
+        Guid? id = null)
     {
-        Id = Guid.NewGuid();
+        Id = id ?? Guid.NewGuid();
         PatientId = patientId;
         DoctorId = doctorId;
         Date = date;
         Time = time;
         IsApproved = false;
     }
-
+    public static Appointment Create(
+        Guid patientId,
+        Guid doctorId,
+        DateOnly date,
+        TimeOnly time,
+        Guid? id = null)
+    {
+        return new Appointment(
+            patientId,
+            doctorId,
+            date,
+            time,
+            id);
+    }
     public void Approve()
     {
         IsApproved = true;
