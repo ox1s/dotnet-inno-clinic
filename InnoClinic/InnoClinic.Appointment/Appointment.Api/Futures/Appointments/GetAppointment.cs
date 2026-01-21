@@ -2,7 +2,7 @@ using Appointment.Api.Endpoints;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Appointment.Api.Appointments;
+namespace Appointment.Api.Futures.Appointments;
 
 public static class GetAppointment
 {

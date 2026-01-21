@@ -2,15 +2,15 @@ using Appointment.Api.Endpoints;
 
 using FluentValidation;
 
-namespace Appointment.Api.Appointments;
+namespace Appointment.Api.Futures.Appointments;
 
 public class CreateAppointment
 {
     public record Request(
         Guid PatientId,
         Guid DoctorId,
-        DateOnly Date,
-        TimeOnly Time);
+        DateTime StartDateTime,
+        DateTime EndDateTime);
 
     private record Response(Guid Id,
         Guid PatientId,

@@ -1,4 +1,4 @@
-namespace Appointment.Api.Appointments;
+namespace Appointment.Api.Futures.Appointments;
 
 public class Appointment
 {
@@ -6,14 +6,14 @@ public class Appointment
     public Guid PatientId { get; set; }
     public Guid DoctorId { get; set; }
     public DateOnly Date { get; set; }
-    public TimeOnly Time { get; set; }
+    public TimeRange Time { get; set; }
     public bool IsApproved { get; set; }
 
     private Appointment(
         Guid patientId,
         Guid doctorId,
         DateOnly date,
-        TimeOnly time,
+        TimeRange time,
         Guid? id = null)
     {
         Id = id ?? Guid.NewGuid();
@@ -27,7 +27,7 @@ public class Appointment
         Guid patientId,
         Guid doctorId,
         DateOnly date,
-        TimeOnly time,
+        TimeRange time,
         Guid? id = null)
     {
         return new Appointment(

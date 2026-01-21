@@ -4,10 +4,11 @@ using FluentValidation;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Appointment.Api.Appointments;
+namespace Appointment.Api.Futures.Appointments;
 
 public class UpdateAppointment
 {
+
     public record Request(
         Guid PatientId,
         Guid DoctorId,
@@ -29,7 +30,6 @@ public class UpdateAppointment
             RuleFor(x => x.PatientId).NotEmpty();
             RuleFor(x => x.DoctorId).NotEmpty();
             RuleFor(x => x.Date).NotEmpty();
-            RuleFor(x => x.Time).NotEmpty();
         }
     }
 
@@ -42,6 +42,7 @@ public class UpdateAppointment
         }
     }
 
+
     public async static Task<Results<Ok<Response>, NotFound>> Handler(Guid id, Request request, AppointmentDbContext context, IValidator<Request> validator)
     {
         var appointment = await context.Appointments.FindAsync(id);
@@ -49,7 +50,7 @@ public class UpdateAppointment
 
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
-            return (Results<Ok<Response>, NotFound>)Results.BadRequest(validationResult.Errors);
+            return (Results<Ok<Response>, NotFound>) Results.BadRequest(validationResult.Errors);
 
         appointment.PatientId = request.PatientId;
         appointment.DoctorId = request.DoctorId;
@@ -66,4 +67,5 @@ public class UpdateAppointment
                 appointment.Date,
                 appointment.Time));
     }
+
 }
