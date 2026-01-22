@@ -1,7 +1,7 @@
 using Appointment.Api.Common;
 using Throw;
 
-namespace Appointment.Api.Features.Appointments;
+namespace Appointment.Api.Data;
 
 public record TimeRange
 {

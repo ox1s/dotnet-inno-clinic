@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
-namespace Appointment.Api.Features.Appointments;
+namespace Appointment.Api.Data;
 
 public class AppointmentDbContext(
     DbContextOptions<AppointmentDbContext> options)

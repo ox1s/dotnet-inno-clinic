@@ -1,31 +1,17 @@
-using Appointment.Api.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
-namespace Appointment.Api.Features.Appointments;
+using Appointment.Api.Data;
 
-public static class ListAppointments
+namespace Appointment.Api.Features.ListAppointment;
+
+public sealed class ListAppointmentsHandler
 {
-    private record Response(
-        Guid Id,
-        Guid PatientId,
-        Guid DoctorId,
-        DateTime StartDateTime,
-        DateTime EndDateTime);
-
-    public class Endpoint : IEndpoint
-    {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapGet("appointments", Handler).WithTags("Appointments");
-        }
-    }
-
     public async static Task<IResult> Handler(AppointmentDbContext context)
     {
         var appointments = await context.Appointments.ToListAsync();
 
         var responses = appointments.Select(a =>
-            new Response(
+            new ListAppointmentsResponse(
                 a.Id,
                 a.PatientId,
                 a.DoctorId,

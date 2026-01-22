@@ -34,4 +34,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\InnoClinic.ServiceDefaults\InnoClinic.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

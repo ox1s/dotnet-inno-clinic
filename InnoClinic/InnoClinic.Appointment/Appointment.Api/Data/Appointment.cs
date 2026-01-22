@@ -1,4 +1,4 @@
-namespace Appointment.Api.Features.Appointments;
+namespace Appointment.Api.Data;
 
 public class Appointment
 {

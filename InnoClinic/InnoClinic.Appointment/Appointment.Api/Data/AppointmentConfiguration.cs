@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Appointment.Api.Data;
 
-public class AppointmentConfiguration : IEntityTypeConfiguration<Features.Appointments.Appointment>
+public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
-    public void Configure(EntityTypeBuilder<Features.Appointments.Appointment> builder)
+    public void Configure(EntityTypeBuilder<Appointment> builder)
     {
         builder.ToTable("appointments");
         builder.HasKey(a => a.Id);

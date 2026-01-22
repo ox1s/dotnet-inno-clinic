@@ -1,51 +1,16 @@
 using FluentValidation;
 
 using Appointment.Api.Common;
-using Appointment.Api.Endpoints;
+using Appointment.Api.Data;
 
-namespace Appointment.Api.Features.Appointments;
+namespace Appointment.Api.Features.CreateAppointment;
 
-public static class CreateAppointment
+public class CreateAppointmentHandler
 {
-    public record Request(
-        Guid PatientId,
-        Guid DoctorId,
-        DateTime StartDateTime,
-        DateTime EndDateTime);
-
-    private record Response(
-        Guid Id,
-        Guid PatientId,
-        Guid DoctorId,
-        DateTime StartDateTime,
-        DateTime EndDateTime);
-
-    public sealed class Validator
-        : AbstractValidator<Request>
-    {
-        public Validator()
-        {
-            RuleFor(x => x.PatientId).NotEmpty();
-            RuleFor(x => x.DoctorId).NotEmpty();
-
-            RuleFor(x => x.StartDateTime).NotEmpty();
-            RuleFor(x => x.EndDateTime).NotEmpty();
-        }
-    }
-
-    public sealed class Endpoint : IEndpoint
-    {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapPost("/appointments", Handler)
-                .WithTags("Appointments");
-        }
-    }
-
-    public async static Task<IResult> Handler(
-        Request request,
+    public async static Task<IResult> HandleAsync(
+        CreateAppointmentRequest request,
         AppointmentDbContext dbContext,
-        IValidator<Request> validator)
+        IValidator<CreateAppointmentRequest> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -76,11 +41,13 @@ public static class CreateAppointment
         await dbContext.SaveChangesAsync();
 
         return Results.Ok(
-            new Response(
+                    new CreateAppointmentResponse(
                 Id: appointment.Id,
                 PatientId: appointment.PatientId,
                 DoctorId: appointment.DoctorId,
                 StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
                 EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
     }
+
 }
+

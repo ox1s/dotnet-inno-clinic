@@ -21,7 +21,6 @@ public class IdentityDbContext(
         base.OnModelCreating(modelBuilder);
     }
 
-    // TODO: Domain Events
     public async Task CommitChangesAsync(CancellationToken cancellationToken = default)
     {
         await base.SaveChangesAsync(cancellationToken);
