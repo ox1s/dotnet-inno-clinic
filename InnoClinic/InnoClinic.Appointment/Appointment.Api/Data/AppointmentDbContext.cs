@@ -7,7 +7,7 @@ public class AppointmentDbContext(
     DbContextOptions<AppointmentDbContext> options)
     : DbContext(options)
 {
-    public DbSet<Appointment> Appointments { get; set; } = null!;
+    public DbSet<Data.Appointment> Appointments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

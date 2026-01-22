@@ -1,19 +1,21 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 using Appointment.Api.Common;
 using Appointment.Api.Endpoints;
 
 namespace Appointment.Api.Features.Appointments;
 
-public static class CreateAppointment
+public class UpdateAppointment
 {
+
     public record Request(
         Guid PatientId,
         Guid DoctorId,
         DateTime StartDateTime,
         DateTime EndDateTime);
 
-    private record Response(
+    public record Response(
         Guid Id,
         Guid PatientId,
         Guid DoctorId,
@@ -27,7 +29,6 @@ public static class CreateAppointment
         {
             RuleFor(x => x.PatientId).NotEmpty();
             RuleFor(x => x.DoctorId).NotEmpty();
-
             RuleFor(x => x.StartDateTime).NotEmpty();
             RuleFor(x => x.EndDateTime).NotEmpty();
         }
@@ -37,21 +38,28 @@ public static class CreateAppointment
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("/appointments", Handler)
+            app.MapPut("/appointments/{id}", Handler)
                 .WithTags("Appointments");
         }
     }
 
-    public async static Task<IResult> Handler(
+
+    public async static Task<Results<Ok<Response>, NotFound>> Handler(Guid id,
         Request request,
-        AppointmentDbContext dbContext,
+        AppointmentDbContext context,
         IValidator<Request> validator)
     {
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
-            return Results.BadRequest(new Error(
+            return (Results<Ok<Response>, NotFound>)Results.BadRequest(new Error(
                 Code: "Validation",
                 Description: validationResult.ToString()));
+
+        var appointmentToUpdate = await context.Appointments.FindAsync(id);
+        if (appointmentToUpdate is null)
+            return Result.Failure(new Error(
+                Code: "NotFound",
+                Description: "Appointment not found"));
 
         var date = DateOnly.FromDateTime(request.StartDateTime);
         var startTime = TimeOnly.FromDateTime(request.StartDateTime);
@@ -61,26 +69,24 @@ public static class CreateAppointment
 
         if (!timeRangeResult.Succeeded)
         {
-            return Results.BadRequest(timeRangeResult.Error.Description);
+            return (Results<Ok<Response>, NotFound>)Results.BadRequest(timeRangeResult.Error.Description);
         }
 
-        var appointment = Appointment.Create(
+        var appointment = Data.Appointment.Create(
             patientId: request.PatientId,
             doctorId: request.DoctorId,
             date: date,
-            time: timeRangeResult.Value!
-            );
+            time: timeRangeResult.Value!);
 
-        dbContext.Appointments.Add(appointment);
+        await context.SaveChangesAsync();
 
-        await dbContext.SaveChangesAsync();
-
-        return Results.Ok(
+        return TypedResults.Ok(
             new Response(
-                Id: appointment.Id,
-                PatientId: appointment.PatientId,
-                DoctorId: appointment.DoctorId,
+                appointment.Id,
+                appointment.PatientId,
+                appointment.DoctorId,
                 StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
                 EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
     }
+
 }
