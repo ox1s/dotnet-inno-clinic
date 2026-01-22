@@ -3,7 +3,7 @@ using Microsoft.OpenApi;
 using Microsoft.EntityFrameworkCore;
 
 using Appointment.Api.Endpoints;
-using Appointment.Api.Appointments;
+using Appointment.Api.Features.Appointments;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -34,6 +34,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpoints();
 
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+    builder.Services.AddDbContext<AppointmentDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("innoclinic-database"))
+    );
 
 }
 var app = builder.Build();

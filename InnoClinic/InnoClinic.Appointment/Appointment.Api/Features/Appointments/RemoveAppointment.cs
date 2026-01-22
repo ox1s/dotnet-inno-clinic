@@ -1,8 +1,8 @@
 using Appointment.Api.Endpoints;
 
-namespace Appointment.Api.Futures.Appointments;
+namespace Appointment.Api.Features.Appointments;
 
-public class RemoveAppointment
+public static class RemoveAppointment
 {
     public class Endpoint : IEndpoint
     {

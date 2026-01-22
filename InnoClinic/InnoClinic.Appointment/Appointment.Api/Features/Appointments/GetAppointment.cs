@@ -1,17 +1,19 @@
 using Appointment.Api.Endpoints;
-
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Appointment.Api.Futures.Appointments;
+namespace Appointment.Api.Features.Appointments;
 
 public static class GetAppointment
 {
+    public record Request(
+        Guid Id);
+
     public record Response(
         Guid Id,
         Guid PatientId,
         Guid DoctorId,
-        DateOnly Date,
-        TimeOnly Time);
+        DateTime StartDateTime,
+        DateTime EndDateTime);
 
     public class Endpoint : IEndpoint
     {
@@ -22,7 +24,7 @@ public static class GetAppointment
         }
     }
 
-    public async static Task<Results<Ok<Response>, NotFound>> Handler(int id, AppointmentDbContext context)
+    public async static Task<Results<Ok<Response>, NotFound>> Handler(Guid id, AppointmentDbContext context)
     {
         var appointment = await context.Appointments.FindAsync(id);
 
@@ -33,7 +35,7 @@ public static class GetAppointment
                 appointment.Id,
                 appointment.PatientId,
                 appointment.DoctorId,
-                appointment.Date,
-                appointment.Time));
+                StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
+                EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
     }
 }

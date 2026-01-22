@@ -1,12 +1,13 @@
-@HostAddress = https://localhost:8888
-@AppointmentId = 1
+@HostAddress = https://localhost:7779
+@AppointmentId = f472ac34-46c4-4a8a-9989-43a2471ad1f4
 
 @Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWQiOiJhMmNlYTFjOC1lMzM4LTQzNGYtOGIxMi02NTI1ZjFlNDlmMmYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiUmVnaXN0ZXJlZCIsIlZlcmlmaWVkIiwiU2VsbGVyIl0sInBlcm1pc3Npb25zIjpbInVzZXI6cmVhZCIsInByb2ZpbGU6cmVhZCIsInJldmlldzpyZWFkIiwicHJvZHVjdDpyZWFkIiwicHJvZmlsZTpjcmVhdGUiLCJwcm9maWxlOnVwZGF0ZSIsInJldmlldzpjcmVhdGUiLCJyZXZpZXc6ZGVsZXRlIiwicmV2aWV3OnVwZGF0ZSIsInByb2R1Y3Q6Y3JlYXRlIiwicHJvZHVjdDp1cGRhdGUiLCJwcm9kdWN0OmRlbGV0ZSJdLCJleHAiOjE3Njg0Njg5MDcsImlzcyI6Iklubm9TaG9wIiwiYXVkIjoiSW5ub1Nob3AifQ.B7tY5aDvOnmZRpTxlAp3RL8z9SdW3PHbQsUa5pt2FJ0
 
-@DoctorId = 1
-@PatientId = 2
-@Date = 2025-02-25
-@Time = 14:00:00
+@DoctorId = d28888e9-2ba9-473a-a40f-e38cb54f9b35
+@PatientId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+@StartDateTime = 2025-02-25T14:00:00
+@EndDateTime = 2025-02-25T15:00:00
 
 ### 1. Создать Appointment
 
@@ -17,8 +18,8 @@ Content-Type: application/json
 {
     "patientId": "{{PatientId}}",
     "doctorId": "{{DoctorId}}",
-    "date": "{{Date}}",
-    "time": "{{Time}}"
+    "startDateTime": "{{StartDateTime}}",
+    "endDateTime": "{{EndDateTime}}"
 }
 
 ###
@@ -33,9 +34,6 @@ Accept: application/json
 GET {{HostAddress}}/appointments
 Accept: application/json
 
-
-
-
 ### 6. Получить список appointments по doctorId
 GET {{HostAddress}}/appointments?doctorId={{DoctorId}}
 Accept: application/json
@@ -48,8 +46,8 @@ Content-Type: application/json
 {
     "patientId": "{{PatientId}}",
     "doctorId": "{{DoctorId}}",
-    "date": "{{Date}}",
-    "time": "{{Time}}"
+    "startDateTime": "{{StartDateTime}}",
+    "endDateTime": "{{EndDateTime}}"
 }
 
 ###

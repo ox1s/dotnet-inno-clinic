@@ -1,12 +1,12 @@
-namespace Appointment.Api.Futures.Appointments;
+namespace Appointment.Api.Features.Appointments;
 
 public class Appointment
 {
-    public Guid Id { get; set; }
-    public Guid PatientId { get; set; }
-    public Guid DoctorId { get; set; }
-    public DateOnly Date { get; set; }
-    public TimeRange Time { get; set; }
+    public Guid Id { get; init; }
+    public Guid PatientId { get; init; }
+    public Guid DoctorId { get; init; }
+    public DateOnly Date { get; init; }
+    public TimeRange Time { get; init; }
     public bool IsApproved { get; set; }
 
     private Appointment(

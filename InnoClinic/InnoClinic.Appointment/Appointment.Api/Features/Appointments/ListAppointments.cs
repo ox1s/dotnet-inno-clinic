@@ -1,17 +1,16 @@
+using Appointment.Api.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
-using Appointment.Api.Endpoints;
-
-namespace Appointment.Api.Futures.Appointments;
+namespace Appointment.Api.Features.Appointments;
 
 public static class ListAppointments
 {
-    public record Response(
+    private record Response(
         Guid Id,
         Guid PatientId,
         Guid DoctorId,
-        DateOnly Date,
-        TimeOnly Time);
+        DateTime StartDateTime,
+        DateTime EndDateTime);
 
     public class Endpoint : IEndpoint
     {
@@ -30,8 +29,8 @@ public static class ListAppointments
                 a.Id,
                 a.PatientId,
                 a.DoctorId,
-                a.Date,
-                a.Time)).ToList();
+                StartDateTime: a.Date.ToDateTime(a.Time.Start),
+                EndDateTime: a.Date.ToDateTime(a.Time.End))).ToList();
 
         return TypedResults.Ok(responses);
     }
