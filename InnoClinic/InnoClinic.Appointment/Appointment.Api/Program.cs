@@ -1,9 +1,9 @@
+using Appointment.Api.Data;
 using FluentValidation;
 using Microsoft.OpenApi;
 using Microsoft.EntityFrameworkCore;
 
 using Appointment.Api.Endpoints;
-using Appointment.Api.Features.Appointments;
 
 var builder = WebApplication.CreateBuilder(args);
 {

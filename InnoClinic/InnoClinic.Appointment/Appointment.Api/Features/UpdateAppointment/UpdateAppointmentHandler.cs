@@ -22,9 +22,7 @@ public class UpdateAppointmentHandler
 
         var appointmentToUpdate = await context.Appointments.FindAsync(id);
         if (appointmentToUpdate is null)
-            return Result.Failure(new Error(
-                Code: "NotFound",
-                Description: "Appointment not found"));
+            return TypedResults.NotFound();
 
         var date = DateOnly.FromDateTime(request.StartDateTime);
         var startTime = TimeOnly.FromDateTime(request.StartDateTime);
