@@ -1,7 +1,7 @@
 using ErrorOr;
 
 using Identity.Application.Common.Interfaces;
-using Identity.Domain.AccountAggregate;
+using InnoClinic.Shared;
 
 namespace Identity.Infrastructure.Services.Profile;
 

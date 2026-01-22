@@ -3,6 +3,10 @@
         <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj"/>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="FluentValidation"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>

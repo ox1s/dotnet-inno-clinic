@@ -9,6 +9,8 @@ using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
+using InnoClinic.Shared;
+
 namespace Identity.Application.Authentication.Commands.Register;
 
 public class RegisterCommandHandler(
@@ -58,7 +60,7 @@ public class RegisterCommandHandler(
         );
 
 
-        var token = jwtTokenGenerator.GenerateToken(account);
+        var token = jwtTokenGenerator.GenerateToken(account, role: Roles.Patient);
 
         return new AuthenticationResult(
             account,

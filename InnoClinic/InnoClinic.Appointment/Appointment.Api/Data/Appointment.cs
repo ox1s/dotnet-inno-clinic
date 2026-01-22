@@ -68,8 +68,4 @@ public class Appointment
     {
         IsApproved = true;
     }
-
-    private Appointment()
-    {
-    }
 }

@@ -1,9 +1,11 @@
 using ErrorOr;
+using MediatR;
+
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
-using MediatR;
+using InnoClinic.Shared;
 
 namespace Identity.Application.Authentication.Queries.Login;
 
@@ -31,6 +33,6 @@ public class LoginQueryHandler(
         var (role, status) = profileResult.Value;
         if (role != Roles.Patient && status == "Inactive") return AccountErrors.AccountInactive;
 
-        return new AuthenticationResult(account, jwtTokenGenerator.GenerateToken(account));
+        return new AuthenticationResult(account, jwtTokenGenerator.GenerateToken(account, role));
     }
 }

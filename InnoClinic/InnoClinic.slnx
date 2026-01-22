@@ -17,5 +17,7 @@
         <Project Path="InnoClinic.Appointment/Appointment.Api/Appointment.Api.csproj" />
     </Folder>
     <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
-    
+    <Folder Name="/InnoClinic.Shared/">
+        <Project Path="InnoClinic.Shared/InnoClinic.Shared.csproj" />
+    </Folder>
 </Solution>
