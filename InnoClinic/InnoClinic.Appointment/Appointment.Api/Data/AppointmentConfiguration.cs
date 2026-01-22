@@ -19,6 +19,14 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.DoctorId)
             .HasColumnName("doctor_id");
 
+        builder.Property(a => a.ServiceId)
+            .HasColumnName("service_id")
+            .IsRequired();
+
+        builder.Property(a => a.OfficeId)
+            .HasColumnName("office_id")
+            .IsRequired();
+
         builder.Property(a => a.Date)
             .HasColumnName("date");
 

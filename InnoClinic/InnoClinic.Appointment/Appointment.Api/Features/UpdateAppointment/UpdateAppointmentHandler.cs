@@ -20,8 +20,8 @@ public class UpdateAppointmentHandler
                 Code: "Validation",
                 Description: validationResult.ToString()));
 
-        var appointmentToUpdate = await context.Appointments.FindAsync(id);
-        if (appointmentToUpdate is null)
+        var appointment = await context.Appointments.FindAsync(id);
+        if (appointment is null)
             return TypedResults.NotFound();
 
         var date = DateOnly.FromDateTime(request.StartDateTime);
@@ -35,9 +35,10 @@ public class UpdateAppointmentHandler
             return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(timeRangeResult.Error.Description);
         }
 
-        var appointment = Data.Appointment.Create(
-            patientId: request.PatientId,
+        appointment.Update(
             doctorId: request.DoctorId,
+            serviceId: request.ServiceId,
+            officeId: request.OfficeId,
             date: date,
             time: timeRangeResult.Value!);
 
@@ -48,6 +49,8 @@ public class UpdateAppointmentHandler
                 appointment.Id,
                 appointment.PatientId,
                 appointment.DoctorId,
+                appointment.ServiceId,
+                appointment.OfficeId,
                 StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
                 EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
     }
