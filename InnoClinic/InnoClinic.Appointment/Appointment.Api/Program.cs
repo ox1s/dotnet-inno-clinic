@@ -3,12 +3,37 @@ using FluentValidation;
 using Microsoft.OpenApi;
 using Microsoft.EntityFrameworkCore;
 
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using Appointment.Api.Endpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 {
 
     builder.Services.AddEndpointsApiExplorer();
+
+    builder.Services
+        .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["Secret"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = issuer,
+                ValidAudience = audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+            };
+        });
+
+    builder.Services.AddAuthorization();
 
     builder.Services.AddSwaggerGen(options =>
     {
@@ -54,6 +79,8 @@ var app = builder.Build();
             .GetRequiredService<AppointmentDbContext>();
         dbContext.Database.Migrate();
     }
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapEndpoints();
 

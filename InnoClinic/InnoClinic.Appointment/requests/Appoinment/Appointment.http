@@ -1,59 +1,66 @@
 @HostAddress = https://localhost:7779
-@AppointmentId = f472ac34-46c4-4a8a-9989-43a2471ad1f4
+@AppointmentId = 92ad4dab-3e23-478e-835d-e1d44f7c26f8
 
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWQiOiJhMmNlYTFjOC1lMzM4LTQzNGYtOGIxMi02NTI1ZjFlNDlmMmYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiUmVnaXN0ZXJlZCIsIlZlcmlmaWVkIiwiU2VsbGVyIl0sInBlcm1pc3Npb25zIjpbInVzZXI6cmVhZCIsInByb2ZpbGU6cmVhZCIsInJldmlldzpyZWFkIiwicHJvZHVjdDpyZWFkIiwicHJvZmlsZTpjcmVhdGUiLCJwcm9maWxlOnVwZGF0ZSIsInJldmlldzpjcmVhdGUiLCJyZXZpZXc6ZGVsZXRlIiwicmV2aWV3OnVwZGF0ZSIsInByb2R1Y3Q6Y3JlYXRlIiwicHJvZHVjdDp1cGRhdGUiLCJwcm9kdWN0OmRlbGV0ZSJdLCJleHAiOjE3Njg0Njg5MDcsImlzcyI6Iklubm9TaG9wIiwiYXVkIjoiSW5ub1Nob3AifQ.B7tY5aDvOnmZRpTxlAp3RL8z9SdW3PHbQsUa5pt2FJ0
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWQiOiI5MmFkNGRhYi0zZTIzLTQ3OGUtODM1ZC1lMWQ0NGY3YzI2ZjgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJEb2N0b3IiLCJleHAiOjE3Njk2MTAyMTEsImlzcyI6Iklubm9DbGluaWMiLCJhdWQiOiJJbm5vQ2xpbmljIn0.Yus1qOVlwXCePtZe67OYhQ3DJWkrWLIl5HjDBIcoFos
 
 @DoctorId = d28888e9-2ba9-473a-a40f-e38cb54f9b35
-@PatientId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+@PatientId = 0c87574b-4523-44fc-9160-e7f390c3e552
 
 @StartDateTime = 2025-02-25T14:00:00
 @EndDateTime = 2025-02-25T15:00:00
 
-### 1. Создать Appointment
 
+### 1. Создать Appointment
+// !TODO: Добавить ошишбку о отсуствии верификации почты
 POST {{HostAddress}}/appointments
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
-    "patientId": "{{PatientId}}",
-    "doctorId": "{{DoctorId}}",
-    "startDateTime": "{{StartDateTime}}",
-    "endDateTime": "{{EndDateTime}}"
+  "patientId": "{{PatientId}}",
+  "doctorId": "{{DoctorId}}",
+  "startDateTime": "{{StartDateTime}}",
+  "endDateTime": "{{EndDateTime}}"
 }
 
+
 ###
+
 
 ### 2. Получить appointment по ID
 GET {{HostAddress}}/appointments/{{AppointmentId}}
 Accept: application/json
 
+
 ###
+
 
 ### 3. Получить список appointments
 GET {{HostAddress}}/appointments
 Accept: application/json
 
+
 ### 6. Получить список appointments по doctorId
 GET {{HostAddress}}/appointments?doctorId={{DoctorId}}
 Accept: application/json
 
-### 11. Обновить appointment
+
+### 7. Обновить appointment
 PUT {{HostAddress}}/appointments/{{AppointmentId}}
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
-    "patientId": "{{PatientId}}",
-    "doctorId": "{{DoctorId}}",
-    "startDateTime": "{{StartDateTime}}",
-    "endDateTime": "{{EndDateTime}}"
+  "patientId": "{{PatientId}}",
+  "doctorId": "{{DoctorId}}",
+  "startDateTime": "{{StartDateTime}}",
+  "endDateTime": "{{EndDateTime}}"
 }
+
 
 ###
 
-### 12. Удалить appointment
+
+### 8. Удалить appointment
 DELETE {{HostAddress}}/appointments/{{AppointmentId}}
 Authorization: Bearer {{Token}}
-
-
