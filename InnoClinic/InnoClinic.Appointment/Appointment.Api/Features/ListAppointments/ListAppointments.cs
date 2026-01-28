@@ -6,6 +6,7 @@ public class ListAppointmentsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("appointments", ListAppointmentsHandler.Handler).WithTags("Appointments");
+        app.MapGet("appointments", ListAppointmentsHandler.Handler)
+            .WithTags("Appointments");
     }
 }

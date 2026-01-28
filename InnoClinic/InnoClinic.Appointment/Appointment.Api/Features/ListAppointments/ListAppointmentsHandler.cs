@@ -6,9 +6,43 @@ namespace Appointment.Api.Features.ListAppointment;
 
 public sealed class ListAppointmentsHandler
 {
-    public async static Task<IResult> Handler(AppointmentDbContext context)
+    public async static Task<IResult> Handler(
+        [AsParameters] ListAppointmentsRequest request,
+        AppointmentDbContext context)
     {
-        var appointments = await context.Appointments.ToListAsync();
+        var query = context.Appointments.AsNoTracking();
+
+        if (request.DoctorId.HasValue)
+        {
+            query = query
+                .Where(a => a.DoctorId == request.DoctorId.Value);
+        }
+
+        if (request.PatientId.HasValue)
+        {
+            query = query
+                .Where(a => a.PatientId == request.PatientId.Value);
+        }
+
+        if (request.ServiceId.HasValue)
+        {
+            query = query
+                .Where(a => a.ServiceId == request.ServiceId.Value);
+        }
+
+        if (request.Date.HasValue)
+        {
+            query = query
+                .Where(a => a.Date == request.Date.Value);
+        }
+
+        if (request.IsApproved.HasValue)
+        {
+            query = query
+                .Where(a => a.IsApproved == request.IsApproved.Value);
+        }
+
+        var appointments = await query.ToListAsync();
 
         var responses = appointments.Select(a =>
             new ListAppointmentsResponse(
