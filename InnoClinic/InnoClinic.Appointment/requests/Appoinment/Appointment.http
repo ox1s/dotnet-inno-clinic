@@ -1,10 +1,11 @@
 @HostAddress = https://localhost:7779
 @AppointmentId = 92ad4dab-3e23-478e-835d-e1d44f7c26f8
 
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQHRlc3QuY29tIiwiaWQiOiI5MmFkNGRhYi0zZTIzLTQ3OGUtODM1ZC1lMWQ0NGY3YzI2ZjgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJEb2N0b3IiLCJleHAiOjE3Njk2MTAyMTEsImlzcyI6Iklubm9DbGluaWMiLCJhdWQiOiJJbm5vQ2xpbmljIn0.Yus1qOVlwXCePtZe67OYhQ3DJWkrWLIl5HjDBIcoFos
-
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdGllbnRAdGVzdC5jb20iLCJpZCI6IjU0ZTI3ZjUwLTM0ZTYtNDdkMy1hOTJiLTkxYWMyYjMwNDk5YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlBhdGllbnQiLCJleHAiOjE3Njk2MjY5ODgsImlzcyI6Iklubm9DbGluaWMiLCJhdWQiOiJJbm5vQ2xpbmljIn0.vN0_cDYW9_n4u123I7IVmePQB5L-AL0upjoeNZYULas
 @DoctorId = d28888e9-2ba9-473a-a40f-e38cb54f9b35
-@PatientId = 0c87574b-4523-44fc-9160-e7f390c3e552
+@PatientId = 2ef0dd19-ccfc-4a95-8212-e7e902bc4c48
+@OfficeId = 0c87574b-4555-44fc-9160-e7f390c3e552
+@ServiceId = 0c87777b-4523-44fc-9160-e7f390c3e552
 
 @StartDateTime = 2025-02-25T14:00:00
 @EndDateTime = 2025-02-25T15:00:00
@@ -17,8 +18,9 @@ Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
-  "patientId": "{{PatientId}}",
   "doctorId": "{{DoctorId}}",
+  "serviceId": "{{ServiceId}}",
+  "officeId": "{{OfficeId}}",
   "startDateTime": "{{StartDateTime}}",
   "endDateTime": "{{EndDateTime}}"
 }
