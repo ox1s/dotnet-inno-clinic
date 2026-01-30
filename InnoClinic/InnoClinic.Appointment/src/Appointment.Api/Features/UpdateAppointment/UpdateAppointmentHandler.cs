@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Http.HttpResults;
+
 using FluentValidation;
 
 using Appointment.Api.Data;
@@ -31,9 +32,15 @@ public class UpdateAppointmentHandler
         var timeRangeResult = TimeRange.Create(startTime, endTime);
 
         if (!timeRangeResult.Succeeded)
-        {
             return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(timeRangeResult.Error.Description);
-        }
+
+        var existingAppointment = context.Appointments
+            .Where(a => a.DoctorId == request.DoctorId && a.Date == date && a.Id != id)
+            .AsEnumerable()
+            .FirstOrDefault(a => a.Time.Overlaps(timeRangeResult.Value!));
+
+        if (existingAppointment is not null)
+            return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(Errors.OverlappingAppointment);
 
         appointment.Update(
             doctorId: request.DoctorId,

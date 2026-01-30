@@ -8,4 +8,8 @@ public record ListAppointmentsRequest(
     Guid? ServiceId,
     Guid? OfficeId,
     DateOnly? Date,
-    bool? IsApproved);
+    DateOnly? DateStart,
+    DateOnly? DateEnd,
+    bool? IsApproved,
+    string? SortBy,
+    string? SortDirection);

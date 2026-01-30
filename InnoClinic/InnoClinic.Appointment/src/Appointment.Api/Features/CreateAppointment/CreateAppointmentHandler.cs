@@ -4,6 +4,7 @@ using Appointment.Api.Common;
 using Appointment.Api.Data;
 
 using System.Security.Claims;
+using Appointment.Api.External;
 
 namespace Appointment.Api.Features.CreateAppointment;
 
@@ -11,9 +12,12 @@ public class CreateAppointmentHandler
 {
     public async static Task<IResult> HandleAsync(
         CreateAppointmentRequest request,
-        AppointmentDbContext dbContext,
+        AppointmentDbContext context,
         IValidator<CreateAppointmentRequest> validator,
-        ClaimsPrincipal user)
+        ClaimsPrincipal user,
+        IServiceGateway ServiceGateway,
+        IOfficeGateway OfficeGateway,
+        IProfileGateway ProfileGateway)
     {
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -34,6 +38,21 @@ public class CreateAppointmentHandler
         if (!timeRangeResult.Succeeded)
             return Results.BadRequest(timeRangeResult.Error.Description);
 
+        var existingAppointment = context.Appointments
+            .Where(a => a.DoctorId == request.DoctorId && a.Date == date)
+            .AsEnumerable()
+            .FirstOrDefault(a => a.Time.Overlaps(timeRangeResult.Value!));
+
+        if (existingAppointment is not null)
+            return Results.BadRequest(Errors.OverlappingAppointment);
+
+        var serviceActiveResult = ServiceGateway.IsServiceActiveAsync(request.ServiceId);
+        if (!serviceActiveResult.Result) return Results.BadRequest(Errors.ServiceIsNotActive);
+        var officeActiveResult = OfficeGateway.IsOfficeActiveAsync(request.OfficeId);
+        if (!officeActiveResult.Result) return Results.BadRequest(Errors.OfficeIsNotActive);
+        var doctorActiveResult = ProfileGateway.IsDoctorActiveAsync(request.DoctorId);
+        if (!doctorActiveResult.Result) return Results.BadRequest(Errors.DoctorIsNotActive);
+
         var appointment = Data.Appointment.Create(
             patientId: patientId,
             doctorId: request.DoctorId,
@@ -42,9 +61,9 @@ public class CreateAppointmentHandler
             date: date,
             time: timeRangeResult.Value!);
 
-        dbContext.Appointments.Add(appointment);
+        context.Appointments.Add(appointment);
 
-        await dbContext.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return Results.Ok(
                     new CreateAppointmentResponse(

@@ -7,10 +7,10 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Appointment.Api.Endpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Appointment.Api.External;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-
     builder.Services.AddEndpointsApiExplorer();
 
     builder.Services
@@ -66,6 +66,7 @@ var builder = WebApplication.CreateBuilder(args);
             options.UseNpgsql(builder.Configuration.GetConnectionString("innoclinic-database"))
         );
     }
+    builder.Services.AddScoped<IProfileGateway, FakeProfileGateway>();
 
 }
 var app = builder.Build();

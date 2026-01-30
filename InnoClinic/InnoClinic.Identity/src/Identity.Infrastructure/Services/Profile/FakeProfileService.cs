@@ -8,6 +8,7 @@ namespace Identity.Infrastructure.Services.Profile;
 
 public class FakeProfileService : IProfileService
 {
+
     public Task<ErrorOr<(string Role, string Status)>> GetProfileDataAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
 
