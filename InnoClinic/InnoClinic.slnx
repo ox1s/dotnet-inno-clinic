@@ -13,9 +13,15 @@
         <Project Path="InnoClinic.Identity/tests/Identity.TestCommon/Identity.TestCommon.csproj" />
     </Folder>
     <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
+
     <Folder Name="/InnoClinic.Appointment/">
+    <Folder Name="/InnoClinic.Appointment/src/">
         <Project Path="InnoClinic.Appointment/Appointment.Api/Appointment.Api.csproj" />
     </Folder>
+    <Folder Name="/InnoClinic.Appointment/tests/">
+        <Project Path="InnoClinic.Appointment/tests/Appointment.Api.IntegrationTests/Appointment.Api.IntegrationTests.csproj" />
+    </Folder>
+
     <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
     <Folder Name="/InnoClinic.Shared/">
         <Project Path="InnoClinic.Shared/InnoClinic.Shared.csproj" />

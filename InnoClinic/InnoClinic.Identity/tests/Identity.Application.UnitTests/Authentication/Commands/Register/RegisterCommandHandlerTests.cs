@@ -8,6 +8,7 @@ using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
+using InnoClinic.Shared;
 
 
 namespace Identity.Application.UnitTests.Authentication.Commands.Register;
@@ -64,7 +65,7 @@ public class RegisterCommandHandlerTests
             .Returns(false);
         _passwordHasher.HashPassword(command.Password)
             .Returns("hashed_password");
-        _jwtTokenGenerator.GenerateToken(Arg.Any<Account>())
+        _jwtTokenGenerator.GenerateToken(Arg.Any<Account>(), Roles.Patient)
             .Returns("jwt_token");
         _linkFactory.Create(Arg.Any<Guid>(), Arg.Any<string>())
             .Returns("http://verify-link");
