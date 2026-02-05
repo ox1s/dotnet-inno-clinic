@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Appointment.Api.Data.Migrations
 {
     [DbContext(typeof(AppointmentDbContext))]
-    [Migration("20260122174149_AddServiceAndOfficeToAppointment")]
-    partial class AddServiceAndOfficeToAppointment
+    [Migration("20260205124906_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,18 +29,16 @@ namespace Appointment.Api.Data.Migrations
             modelBuilder.Entity("Appointment.Api.Data.Appointment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date")
-                        .HasColumnName("date");
+                        .HasColumnType("uuid")
+                        .HasColumnName("appointment_id");
 
                     b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid")
                         .HasColumnName("doctor_id");
 
                     b.Property<bool>("IsApproved")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_approved");
 
                     b.Property<Guid>("OfficeId")
                         .HasColumnType("uuid")
@@ -54,36 +52,45 @@ namespace Appointment.Api.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("service_id");
 
+                    b.Property<Guid>("TimeRangeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("time_range_id");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TimeRangeId");
 
                     b.ToTable("appointments", "appointment");
                 });
 
+            modelBuilder.Entity("Appointment.Api.Data.TimeRange", b =>
+                {
+                    b.Property<Guid>("TimeRangeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("time_range_id");
+
+                    b.Property<DateTimeOffset>("End")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end");
+
+                    b.Property<DateTimeOffset>("Start")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start");
+
+                    b.HasKey("TimeRangeId");
+
+                    b.ToTable("time_ranges", "appointment");
+                });
+
             modelBuilder.Entity("Appointment.Api.Data.Appointment", b =>
                 {
-                    b.OwnsOne("Appointment.Api.Data.TimeRange", "Time", b1 =>
-                        {
-                            b1.Property<Guid>("AppointmentId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<TimeOnly>("End")
-                                .HasColumnType("time without time zone")
-                                .HasColumnName("end_time");
-
-                            b1.Property<TimeOnly>("Start")
-                                .HasColumnType("time without time zone")
-                                .HasColumnName("start_time");
-
-                            b1.HasKey("AppointmentId");
-
-                            b1.ToTable("appointments", "appointment");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AppointmentId");
-                        });
-
-                    b.Navigation("Time")
+                    b.HasOne("Appointment.Api.Data.TimeRange", "Time")
+                        .WithMany()
+                        .HasForeignKey("TimeRangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Time");
                 });
 #pragma warning restore 612, 618
         }

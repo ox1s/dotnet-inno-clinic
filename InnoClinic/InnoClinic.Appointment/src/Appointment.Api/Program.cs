@@ -11,9 +11,11 @@ using Appointment.Api.External;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddEndpointsApiExplorer();
 
-    builder.Services
+    var services = builder.Services;
+    services.AddEndpointsApiExplorer();
+
+    services
         .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -33,9 +35,9 @@ var builder = WebApplication.CreateBuilder(args);
             };
         });
 
-    builder.Services.AddAuthorization();
+    services.AddAuthorization();
 
-    builder.Services.AddSwaggerGen(options =>
+    services.AddSwaggerGen(options =>
     {
 
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -56,18 +58,19 @@ var builder = WebApplication.CreateBuilder(args);
             }
         });
     });
-    builder.Services.AddEndpoints();
+    services.AddEndpoints();
 
-    builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+    services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
     if (!builder.Environment.IsEnvironment("Testing"))
     {
-        builder.Services.AddDbContext<AppointmentDbContext>(options =>
+        services.AddDbContext<AppointmentDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("innoclinic-database"))
         );
     }
-    builder.Services.AddScoped<IProfileGateway, FakeProfileGateway>();
-
+    services.AddScoped<IProfileGateway, FakeProfileGateway>();
+    services.AddScoped<IServiceGateway, FakeServiceGateway>();
+    services.AddScoped<IOfficeGateway, FakeOfficeGateway>();
 }
 var app = builder.Build();
 {
@@ -87,6 +90,7 @@ var app = builder.Build();
             dbContext.Database.Migrate();
         }
     }
+
     app.UseAuthentication();
     app.UseAuthorization();
 

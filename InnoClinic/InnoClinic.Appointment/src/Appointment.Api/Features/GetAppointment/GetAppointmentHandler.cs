@@ -18,7 +18,7 @@ public static class GetAppointmentHandler
                 appointment.Id,
                 appointment.PatientId,
                 appointment.DoctorId,
-                StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
-                EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
+                StartDateTime: appointment.Time.Start,
+                EndDateTime: appointment.Time.End));
     }
 }

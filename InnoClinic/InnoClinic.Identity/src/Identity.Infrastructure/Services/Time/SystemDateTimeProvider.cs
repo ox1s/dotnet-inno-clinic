@@ -4,5 +4,5 @@ namespace Identity.Infrastructure.Services.Time;
 
 public class SystemDateTimeProvider : IDateTimeProvider
 {
-    public DateTime UtcNow => DateTime.UtcNow;
+    public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
 }

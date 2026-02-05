@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using Appointment.Api.Data;
 using Appointment.Api.External;
 
@@ -28,15 +29,15 @@ public sealed class ListAppointmentsHandler
 
         if (request.Date.HasValue)
             query = query.Where(a =>
-                a.Date == request.Date.Value);
+                a.LocalDate == request.Date.Value);
 
         if (request.DateStart.HasValue)
             query = query.Where(a =>
-                a.Date >= request.DateStart.Value);
+                a.LocalDate >= request.DateStart.Value);
 
         if (request.DateEnd.HasValue)
             query = query.Where(a =>
-                a.Date <= request.DateEnd.Value);
+                a.LocalDate <= request.DateEnd.Value);
 
         if (request.IsApproved.HasValue)
             query = query.Where(a =>
@@ -65,20 +66,20 @@ public sealed class ListAppointmentsHandler
             var service = services.GetValueOrDefault(a.ServiceId);
 
             return new ListAppointmentsResponse(
-                Id:                 a.Id,
-                PatientId:          a.PatientId,
-                PatientFirstName:   patient?.FirstName ?? "Unknown",
-                PatientLastName:    patient?.LastName ?? "Unknown",
-                PatientMiddleName:  patient?.MiddleName ?? "Unknown",
+                Id: a.Id,
+                PatientId: a.PatientId,
+                PatientFirstName: patient?.FirstName ?? "Unknown",
+                PatientLastName: patient?.LastName ?? "Unknown",
+                PatientMiddleName: patient?.MiddleName ?? "Unknown",
                 PatientPhoneNumber: patient?.PhoneNumber ?? "Unknown",
-                DoctorId:           a.DoctorId,
-                DoctorFirstName:    doctor?.FirstName ?? "Unknown",
-                DoctorLastName:     doctor?.LastName ?? "Unknown",
-                DoctorMiddleName:   doctor?.MiddleName ?? "Unknown",
-                ServiceId:          a.ServiceId,
-                ServiceName:        service?.Name ?? "Unknown",
-                StartDateTime:      a.Date.ToDateTime(a.Time.Start),
-                EndDateTime:        a.Date.ToDateTime(a.Time.End));
+                DoctorId: a.DoctorId,
+                DoctorFirstName: doctor?.FirstName ?? "Unknown",
+                DoctorLastName: doctor?.LastName ?? "Unknown",
+                DoctorMiddleName: doctor?.MiddleName ?? "Unknown",
+                ServiceId: a.ServiceId,
+                ServiceName: service?.Name ?? "Unknown",
+                StartDateTime: a.Time.Start,
+                EndDateTime: a.Time.End);
         });
 
         if (request.SortBy is "Date")

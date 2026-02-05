@@ -1,29 +1,38 @@
 using Appointment.Api.Common;
+
 using Throw;
 
 namespace Appointment.Api.Data;
 
 public record TimeRange
 {
-    public TimeOnly Start { get; init; }
-    public TimeOnly End { get; init; }
+    public Guid TimeRangeId { get; init; }
+    public DateTimeOffset Start { get; init; }
+    public DateTimeOffset End { get; init; }
 
-    private TimeRange(TimeOnly start, TimeOnly end)
+    private TimeRange(DateTimeOffset start, DateTimeOffset end)
     {
+        TimeRangeId = Guid.NewGuid();
+
         Start = start.Throw().IfGreaterThanOrEqualTo(end);
         End = end;
     }
 
-    public static Result<TimeRange> Create(TimeOnly start, TimeOnly end)
+    public static Result<TimeRange> Create(DateTimeOffset start, DateTimeOffset end)
     {
         if (start >= end)
             return Errors.InvalidTimeRange;
 
+        if (start.Date != end.Date)
+            return Errors.TimeRangeMustBeOnSameDay;
+
+        if (start.Offset != end.Offset)
+            return Errors.TimeRangeOffsetMismatch;
+
+
         return Result<TimeRange>.Success(new TimeRange(start, end));
     }
+    public TimeSpan Duration => End - Start;
+    private TimeRange() { }
 
-    public bool Overlaps(TimeRange other)
-    {
-        return Start <= other.End && End >= other.Start;
-    }
 }

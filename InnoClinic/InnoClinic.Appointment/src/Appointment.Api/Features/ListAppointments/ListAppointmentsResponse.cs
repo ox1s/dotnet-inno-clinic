@@ -13,5 +13,5 @@ public record ListAppointmentsResponse(
     string DoctorMiddleName,
     Guid ServiceId,
     string ServiceName,
-    DateTime StartDateTime,
-    DateTime EndDateTime);
+    DateTimeOffset StartDateTime,
+    DateTimeOffset EndDateTime);

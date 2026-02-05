@@ -67,6 +67,9 @@ public static class DependencyInjection
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
             services.AddScoped<IAccountsRepository, AccountsRepository>();
 
+            // Scrutter для регистрации
+            // DateTimeOffset
+
             return services;
         }
 

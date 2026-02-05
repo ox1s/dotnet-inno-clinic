@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20260116131738_InitialCreate")]
+    [Migration("20260202115545_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -77,7 +77,7 @@ namespace Identity.Infrastructure.Migrations
                             b1.Property<Guid>("AccountId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTime>("CreatedAt")
+                            b1.Property<DateTimeOffset>("CreatedAt")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("created_at");
 
@@ -98,7 +98,7 @@ namespace Identity.Infrastructure.Migrations
                             b1.Property<Guid>("AccountId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTime>("UpdatedAt")
+                            b1.Property<DateTimeOffset>("UpdatedAt")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("updated_at");
 

@@ -1,10 +1,10 @@
 using FluentValidation;
-
 using Appointment.Api.Common;
 using Appointment.Api.Data;
-
 using System.Security.Claims;
 using Appointment.Api.External;
+using Microsoft.EntityFrameworkCore;
+using Throw;
 
 namespace Appointment.Api.Features.CreateAppointment;
 
@@ -15,10 +15,11 @@ public class CreateAppointmentHandler
         AppointmentDbContext context,
         IValidator<CreateAppointmentRequest> validator,
         ClaimsPrincipal user,
-        IServiceGateway ServiceGateway,
-        IOfficeGateway OfficeGateway,
-        IProfileGateway ProfileGateway)
+        IServiceGateway serviceGateway,
+        IOfficeGateway officeGateway,
+        IProfileGateway profileGateway)
     {
+
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
             return Results.BadRequest(new Error(
@@ -29,36 +30,35 @@ public class CreateAppointmentHandler
         if (patientIdClaim == null || !Guid.TryParse(patientIdClaim.Value, out var patientId))
             return Results.Unauthorized();
 
-        var date = DateOnly.FromDateTime(request.StartDateTime);
-        var startTime = TimeOnly.FromDateTime(request.StartDateTime);
-        var endTime = TimeOnly.FromDateTime(request.EndDateTime);
-
-        var timeRangeResult = TimeRange.Create(startTime, endTime);
-
+        var timeRangeResult = TimeRange.Create(request.StartDateTime.ToUniversalTime(), request.EndDateTime.ToUniversalTime());
+        timeRangeResult.ThrowIfNull();
         if (!timeRangeResult.Succeeded)
             return Results.BadRequest(timeRangeResult.Error.Description);
 
-        var existingAppointment = context.Appointments
-            .Where(a => a.DoctorId == request.DoctorId && a.Date == date)
-            .AsEnumerable()
-            .FirstOrDefault(a => a.Time.Overlaps(timeRangeResult.Value!));
-
-        if (existingAppointment is not null)
+        var isOverlapping = context.TimeRanges
+            .Any(a =>
+                a.Start == timeRangeResult.Value!.Start
+                && a.End == timeRangeResult.Value!.End);
+        if (isOverlapping)
             return Results.BadRequest(Errors.OverlappingAppointment);
 
-        var serviceActiveResult = ServiceGateway.IsServiceActiveAsync(request.ServiceId);
-        if (!serviceActiveResult.Result) return Results.BadRequest(Errors.ServiceIsNotActive);
-        var officeActiveResult = OfficeGateway.IsOfficeActiveAsync(request.OfficeId);
-        if (!officeActiveResult.Result) return Results.BadRequest(Errors.OfficeIsNotActive);
-        var doctorActiveResult = ProfileGateway.IsDoctorActiveAsync(request.DoctorId);
-        if (!doctorActiveResult.Result) return Results.BadRequest(Errors.DoctorIsNotActive);
+        var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
+
+        if (!doctorActiveResult.Result)
+            return Results.BadRequest(Errors.DoctorIsNotActive);
+        if (!serviceActive.Result)
+            return Results.BadRequest(Errors.ServiceIsNotActive);
+        if (!officeActive.Result)
+            return Results.BadRequest(Errors.OfficeIsNotActive);
+
 
         var appointment = Data.Appointment.Create(
             patientId: patientId,
             doctorId: request.DoctorId,
             serviceId: request.ServiceId,
             officeId: request.OfficeId,
-            date: date,
             time: timeRangeResult.Value!);
 
         context.Appointments.Add(appointment);
@@ -66,15 +66,14 @@ public class CreateAppointmentHandler
         await context.SaveChangesAsync();
 
         return Results.Ok(
-                    new CreateAppointmentResponse(
+            new CreateAppointmentResponse(
                 Id: appointment.Id,
                 PatientId: appointment.PatientId,
                 DoctorId: appointment.DoctorId,
                 ServiceId: appointment.ServiceId,
                 OfficeId: appointment.OfficeId,
-                StartDateTime: appointment.Date.ToDateTime(appointment.Time.Start),
-                EndDateTime: appointment.Date.ToDateTime(appointment.Time.End)));
+                StartDateTime: appointment.Time.Start,
+                EndDateTime: appointment.Time.End));
     }
 
 }
-

@@ -10,7 +10,7 @@ public class Account : AggregateRoot
     public Email Email { get; private set; } = null!;
     public bool IsEmailVerified { get; private set; }
     public string? EmailVerificationToken { get; private set; }
-    public DateTime? EmailVerificationTokenExpiration { get; private set; }
+    public DateTimeOffset? EmailVerificationTokenExpiration { get; private set; }
 
     public PhoneNumber? PhoneNumber { get; private set; }
 

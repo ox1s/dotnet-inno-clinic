@@ -4,12 +4,12 @@ namespace Identity.TestCommon.TestUtils.Services;
 
 public class TestDateTimeProvider : IDateTimeProvider
 {
-    private readonly DateTime? _fixedDateTime;
+    private readonly DateTimeOffset? _fixedDateTime;
 
-    public TestDateTimeProvider(DateTime? fixedDateTime = null)
+    public TestDateTimeProvider(DateTimeOffset? fixedDateTime = null)
     {
         _fixedDateTime = fixedDateTime;
     }
 
-    public DateTime UtcNow => _fixedDateTime ?? DateTime.UtcNow;
+    public DateTimeOffset UtcNow => _fixedDateTime ?? DateTimeOffset.UtcNow;
 }

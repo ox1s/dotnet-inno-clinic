@@ -6,5 +6,5 @@ public record CreateAppointmentResponse(
     Guid DoctorId,
     Guid ServiceId,
     Guid OfficeId,
-    DateTime StartDateTime,
-    DateTime EndDateTime);
+    DateTimeOffset StartDateTime,
+    DateTimeOffset EndDateTime);

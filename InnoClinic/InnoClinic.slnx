@@ -14,12 +14,13 @@
     </Folder>
     <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
 
-    <Folder Name="/InnoClinic.Appointment/">
+    <Folder Name="/InnoClinic.Appointment/" />
     <Folder Name="/InnoClinic.Appointment/src/">
-        <Project Path="InnoClinic.Appointment/Appointment.Api/Appointment.Api.csproj" />
+        <Project Path="InnoClinic.Appointment/src/Appointment.Api/Appointment.Api.csproj" />
     </Folder>
+    <Project Path="InnoClinic.IntegrationTests/InnoClinic.IntegrationTests.csproj" />
     <Folder Name="/InnoClinic.Appointment/tests/">
-        <Project Path="InnoClinic.Appointment/tests/Appointment.Api.IntegrationTests/Appointment.Api.IntegrationTests.csproj" />
+        <Project Path="InnoClinic.Appointment/tests/Appointment.Api.UnitTests/Appointment.Api.UnitTests.csproj" />
     </Folder>
 
     <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
