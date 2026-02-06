@@ -1,13 +1,15 @@
-using Appointment.Api.Data;
-using FluentValidation;
-using Microsoft.OpenApi;
-using Microsoft.EntityFrameworkCore;
-
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
+
+using Appointment.Api.Data;
 using Appointment.Api.Endpoints;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Appointment.Api.External;
+
+using FluentValidation;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -98,6 +100,5 @@ var app = builder.Build();
 
     app.Run();
 }
-
 
 public partial class Program { }

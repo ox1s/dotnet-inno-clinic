@@ -1,7 +1,8 @@
-using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 
 using Identity.Application.Common.Behaviours;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Application;
 

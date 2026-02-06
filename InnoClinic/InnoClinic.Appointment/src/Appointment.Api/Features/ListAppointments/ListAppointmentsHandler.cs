@@ -1,13 +1,13 @@
-using Microsoft.EntityFrameworkCore;
-
 using Appointment.Api.Data;
 using Appointment.Api.External;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Features.ListAppointment;
 
 public sealed class ListAppointmentsHandler
 {
-    public async static Task<IResult> Handler(
+    public static async Task<IResult> Handler(
         [AsParameters] ListAppointmentsRequest request,
         AppointmentDbContext context,
         IProfileGateway profileGateway,
@@ -84,31 +84,31 @@ public sealed class ListAppointmentsHandler
 
         if (request.SortBy is "Date")
             responses = request.SortDirection is "Desc"
-               ? responses.OrderByDescending(r => r.StartDateTime)
-               : responses.OrderBy(r => r.StartDateTime);
+                ? responses.OrderByDescending(r => r.StartDateTime)
+                : responses.OrderBy(r => r.StartDateTime);
 
         else if (request.SortBy is "DoctorName")
             responses = request.SortDirection is "Desc"
-               ? responses
+                ? responses
                     .OrderByDescending(r => r.DoctorLastName)
                     .ThenByDescending(r => r.DoctorFirstName)
-               : responses
+                : responses
                     .OrderBy(r => r.DoctorLastName)
                     .ThenBy(r => r.DoctorFirstName);
 
         else if (request.SortBy is "ServiceName")
             responses = request.SortDirection is "Desc"
-               ? responses
+                ? responses
                     .OrderByDescending(r => r.ServiceName)
-               : responses
+                : responses
                     .OrderBy(r => r.ServiceName);
 
         else
             responses = responses
-               .OrderBy(r => r.StartDateTime)
-               .ThenBy(r => r.DoctorLastName)
-               .ThenBy(r => r.DoctorFirstName)
-               .ThenBy(r => r.ServiceName);
+                .OrderBy(r => r.StartDateTime)
+                .ThenBy(r => r.DoctorLastName)
+                .ThenBy(r => r.DoctorFirstName)
+                .ThenBy(r => r.ServiceName);
 
         return TypedResults.Ok(responses.ToList());
     }

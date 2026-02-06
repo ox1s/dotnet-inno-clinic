@@ -1,18 +1,19 @@
 
-using Microsoft.AspNetCore.Http.HttpResults;
+using Appointment.Api.Common;
+using Appointment.Api.Data;
 
 using FluentValidation;
 
-using Appointment.Api.Data;
-using Appointment.Api.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+
 using Throw;
 
 namespace Appointment.Api.Features.UpdateAppointment;
 
 public class UpdateAppointmentHandler
 {
-    public async static Task<Results<Ok<UpdateAppointmentResponse>, NotFound>> HandleAsync(Guid id,
+    public static async Task<Results<Ok<UpdateAppointmentResponse>, NotFound>> HandleAsync(Guid id,
         UpdateAppointmentRequest request,
         AppointmentDbContext context,
         IValidator<UpdateAppointmentRequest> validator)

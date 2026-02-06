@@ -1,16 +1,20 @@
-using FluentValidation;
+using System.Security.Claims;
+
 using Appointment.Api.Common;
 using Appointment.Api.Data;
-using System.Security.Claims;
 using Appointment.Api.External;
+
+using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
+
 using Throw;
 
 namespace Appointment.Api.Features.CreateAppointment;
 
 public class CreateAppointmentHandler
 {
-    public async static Task<IResult> HandleAsync(
+    public static async Task<IResult> HandleAsync(
         CreateAppointmentRequest request,
         AppointmentDbContext context,
         IValidator<CreateAppointmentRequest> validator,
@@ -52,7 +56,6 @@ public class CreateAppointmentHandler
             return Results.BadRequest(Errors.ServiceIsNotActive);
         if (!officeActive.Result)
             return Results.BadRequest(Errors.OfficeIsNotActive);
-
 
         var appointment = Data.Appointment.Create(
             patientId: patientId,

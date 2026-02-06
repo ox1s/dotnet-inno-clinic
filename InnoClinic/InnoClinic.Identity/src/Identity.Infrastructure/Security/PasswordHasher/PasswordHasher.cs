@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
+
 using ErrorOr;
+
 using Identity.Domain.Common;
 
 namespace Identity.Infrastructure.Security.PasswordHasher;

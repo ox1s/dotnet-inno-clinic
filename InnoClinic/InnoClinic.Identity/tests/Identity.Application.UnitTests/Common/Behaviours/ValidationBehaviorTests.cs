@@ -5,14 +5,14 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 
-using MediatR;
-
-using NSubstitute;
-
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Behaviours;
 using Identity.TestCommon.Authentication;
+
+using MediatR;
+
+using NSubstitute;
 
 namespace Identity.Application.UnitTests.Common.Behaviours;
 

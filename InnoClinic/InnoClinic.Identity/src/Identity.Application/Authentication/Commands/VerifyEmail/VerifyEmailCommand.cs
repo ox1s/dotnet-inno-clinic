@@ -1,4 +1,5 @@
 using ErrorOr;
+
 using MediatR;
 
 namespace Identity.Application.Authentication.Commands.VerifyEmail;

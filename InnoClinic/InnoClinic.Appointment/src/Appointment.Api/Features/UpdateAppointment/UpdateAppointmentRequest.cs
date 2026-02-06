@@ -7,8 +7,3 @@ public record UpdateAppointmentRequest(
         Guid OfficeId,
         DateTimeOffset StartDateTime,
         DateTimeOffset EndDateTime);
-
-
-
-
-

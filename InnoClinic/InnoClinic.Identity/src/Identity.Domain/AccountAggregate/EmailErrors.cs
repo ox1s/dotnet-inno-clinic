@@ -17,7 +17,7 @@ public static class EmailErrors
         Resources.Email_InvalidFormat); // Frontend: "You've entered an invalid email"
 
     public static readonly Error TooLong = Error.Validation(
-       "Email.Invalids",
-       Resources.Email_TooLong);
+        "Email.Invalids",
+        Resources.Email_TooLong);
 
 }

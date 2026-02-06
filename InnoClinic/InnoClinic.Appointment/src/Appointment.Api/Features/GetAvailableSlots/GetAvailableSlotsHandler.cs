@@ -1,12 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using Appointment.Api.Data;
 using Appointment.Api.External;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Features.GetAvailableSlots;
 
 public static class GetAvailableSlotsHandler
 {
-    public async static Task<IResult> Handle(
+    public static async Task<IResult> Handle(
         [AsParameters] GetAvailableSlotsRequest request,
         AppointmentDbContext context,
         IServiceGateway serviceGateway)

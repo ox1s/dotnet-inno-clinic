@@ -5,7 +5,7 @@ namespace Appointment.Api.Features.RemoveAppointment;
 
 public sealed class RemoveAppointmentHandler
 {
-    public async static Task<IResult> HandleAsync(Guid id, AppointmentDbContext context)
+    public static async Task<IResult> HandleAsync(Guid id, AppointmentDbContext context)
     {
         var appointment = await context.Appointments.FindAsync(id);
         if (appointment is null) return Results.NotFound();

@@ -1,9 +1,10 @@
 using ErrorOr;
-using MediatR;
 
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
+
+using MediatR;
 
 namespace Identity.Application.Authentication.Commands.VerifyEmail;
 

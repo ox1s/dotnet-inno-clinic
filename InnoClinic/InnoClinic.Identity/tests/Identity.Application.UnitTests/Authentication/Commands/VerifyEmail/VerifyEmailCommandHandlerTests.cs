@@ -1,12 +1,14 @@
 using ErrorOr;
+
 using FluentAssertions;
-using NSubstitute;
 
 using Identity.Application.Authentication.Commands.VerifyEmail;
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 using Identity.TestCommon.TestUtils.Services;
+
+using NSubstitute;
 
 namespace Identity.Application.UnitTests.Authentication.Commands.VerifyEmail;
 

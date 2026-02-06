@@ -1,0 +1,15 @@
+@host = localhost:7777
+@id = c5059381-e110-41a4-a18c-6946493072c0
+@token = XZ1btUYgRy0l1ITLQpvh05zMlg/aLwy60jZFpc9aRic=
+
+POST https://{{host}}/authentication/login-with-refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "{{token}}"
+}
+
+
+###
+DELETE https://{{host}}/authentication/accounts/{{id}}/refresh-tokens
+Content-Type: application/json

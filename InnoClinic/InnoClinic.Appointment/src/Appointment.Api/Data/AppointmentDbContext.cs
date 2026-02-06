@@ -1,4 +1,5 @@
 using System.Reflection;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Data;

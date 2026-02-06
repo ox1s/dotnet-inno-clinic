@@ -1,5 +1,6 @@
-using ErrorOr;
 using System.Net.Mail;
+
+using ErrorOr;
 
 namespace Identity.Domain.AccountAggregate;
 

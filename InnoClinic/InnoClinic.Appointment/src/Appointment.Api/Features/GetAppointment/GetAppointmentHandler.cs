@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-
 using Appointment.Api.Data;
+
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Appointment.Api.Features.GetAppointment;
 
 public static class GetAppointmentHandler
 {
 
-    public async static Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(Guid id, AppointmentDbContext context)
+    public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(Guid id, AppointmentDbContext context)
     {
         var appointment = await context.Appointments.FindAsync(id);
 

@@ -1,6 +1,7 @@
+using Identity.Domain.AccountAggregate;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Identity.Domain.AccountAggregate;
 
 namespace Identity.Infrastructure.Persistence.Configurations;
 

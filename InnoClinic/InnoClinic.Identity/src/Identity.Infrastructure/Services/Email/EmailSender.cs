@@ -1,6 +1,8 @@
 using FluentEmail.Core;
+
 using Identity.Application.Common.Interfaces;
 using Identity.Infrastructure.Exceptions;
+
 using Microsoft.Extensions.Logging;
 
 namespace Identity.Infrastructure.Services.Email;

@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+
 using FluentValidation;
 
 namespace Identity.Application.Authentication.Commands.Register;

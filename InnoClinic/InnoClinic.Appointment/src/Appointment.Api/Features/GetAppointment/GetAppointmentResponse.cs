@@ -6,4 +6,3 @@ public record GetAppointmentResponse(
     Guid DoctorId,
     DateTimeOffset StartDateTime,
     DateTimeOffset EndDateTime);
-

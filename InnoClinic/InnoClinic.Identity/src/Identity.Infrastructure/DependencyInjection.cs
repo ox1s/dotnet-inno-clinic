@@ -1,8 +1,4 @@
 using System.Net.Mail;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -15,6 +11,11 @@ using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Services.Email;
 using Identity.Infrastructure.Services.Profile;
 using Identity.Infrastructure.Services.Time;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure;
 
@@ -86,7 +87,7 @@ public static class DependencyInjection
         {
             services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
             services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Section));
-            var emailSettings =  configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
+            var emailSettings = configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
 
             if (emailSettings is null)
             {

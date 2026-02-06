@@ -2,7 +2,6 @@ using Appointment.Api.Endpoints;
 
 namespace Appointment.Api.Features.GetAppointment;
 
-
 public sealed class GetAppointmentEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -11,4 +10,3 @@ public sealed class GetAppointmentEndpoint : IEndpoint
             .WithTags("Appointments");
     }
 }
-

@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-
 using Appointment.Api.Common;
 using Appointment.Api.Endpoints;
+
 using InnoClinic.Shared;
+
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Appointment.Api.Features.UpdateAppointment;
 
@@ -15,8 +16,3 @@ public sealed class UpdateAppointmentEndpoint : IEndpoint
             .RequireAuthorization(policy => policy.RequireRole(Roles.Patient, Roles.Receptionist));
     }
 }
-
-
-
-
-

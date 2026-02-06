@@ -1,5 +1,7 @@
 using ErrorOr;
+
 using FluentValidation;
+
 using MediatR;
 
 namespace Identity.Application.Common.Behaviours;
@@ -10,7 +12,6 @@ public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? valid
         where TResponse : IErrorOr
 {
     private readonly IValidator<TRequest>? _validator = validator;
-
 
     public async Task<TResponse> Handle(
         TRequest request,

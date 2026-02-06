@@ -1,6 +1,4 @@
 using ErrorOr;
-using MediatR;
-using Microsoft.Extensions.Options;
 
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
@@ -10,6 +8,10 @@ using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+
+using MediatR;
+
+using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Authentication.Commands.Register;
 
@@ -58,7 +60,6 @@ public class RegisterCommandHandler(
             _emailSettings.WelcomeSubject,
             string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink)
         );
-
 
         var token = jwtTokenGenerator.GenerateToken(account, role: Roles.Patient);
 

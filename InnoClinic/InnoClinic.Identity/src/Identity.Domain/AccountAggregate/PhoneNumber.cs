@@ -1,8 +1,6 @@
 using ErrorOr;
 using PhoneNumbers;
-
 namespace Identity.Domain.AccountAggregate;
-
 public sealed record PhoneNumber(string Value)
 {
     public static ErrorOr<PhoneNumber> Create(string rawNumber)

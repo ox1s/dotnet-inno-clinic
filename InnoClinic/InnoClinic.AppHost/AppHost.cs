@@ -1,6 +1,5 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-
 var mailpit = builder.AddMailPit("mailpit");
 
 var postgres = builder.AddPostgres("postgres")
@@ -22,8 +21,8 @@ var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
 var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
     .WithReference(sharedDatabase)
-    .WaitFor(sharedDatabase)
-    .WithEnvironment("AppUrl", "https://localhost:7779")
+    .WaitFor(sharedDatabase)/* 
+ */    .WithEnvironment("AppUrl", "https://localhost:7779")
     .WithEnvironment("WebAppUrl", "http://localhost:7780");
 
 builder.Build().Run();

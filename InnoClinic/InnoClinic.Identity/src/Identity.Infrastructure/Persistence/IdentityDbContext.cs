@@ -1,9 +1,10 @@
 
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
 
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 

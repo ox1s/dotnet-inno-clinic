@@ -38,10 +38,9 @@ public class EmailVerificationLinkFactory(
                 throw new EmailSendingException($"Invalid AppUrl configuration: {appUrl}");
             }
 
-
             uri = linkGenerator.GetUriByName(
                 "VerifyEmailRoute",
-                new { accountId, token},
+                new { accountId, token },
                 scheme: baseUrl.Scheme,
                 host: HostString.FromUriComponent(baseUrl));
         }

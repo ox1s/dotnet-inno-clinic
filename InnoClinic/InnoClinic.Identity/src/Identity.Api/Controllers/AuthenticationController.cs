@@ -1,13 +1,15 @@
 using ErrorOr;
+
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Authentication.Commands.VerifyEmail;
+using Identity.Application.Authentication.Common;
+using Identity.Application.Authentication.Queries.Login;
+using Identity.Contracts.Authentication;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using Identity.Application.Authentication.Common;
-using Identity.Contracts.Authentication;
-using Identity.Application.Authentication.Queries.Login;
 
 namespace Identity.Api.Controllers;
 

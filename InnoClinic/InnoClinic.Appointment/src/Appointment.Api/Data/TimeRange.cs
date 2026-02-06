@@ -29,7 +29,6 @@ public record TimeRange
         if (start.Offset != end.Offset)
             return Errors.TimeRangeOffsetMismatch;
 
-
         return Result<TimeRange>.Success(new TimeRange(start, end));
     }
     public TimeSpan Duration => End - Start;
