@@ -3,7 +3,7 @@ using Appointment.Api.External;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Appointment.Api.Features.ListAppointment;
+namespace Appointment.Api.Features.ListAppointments;
 
 public sealed class ListAppointmentsHandler
 {
@@ -13,7 +13,7 @@ public sealed class ListAppointmentsHandler
         IProfileGateway profileGateway,
         IServiceGateway serviceGateway)
     {
-        var query = context.Appointments.AsNoTracking();
+        var query = context.Appointments.Include(a => a.Time).AsNoTracking();
 
         if (request.DoctorId.HasValue)
             query = query.Where(a =>

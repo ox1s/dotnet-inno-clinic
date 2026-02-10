@@ -1,5 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.AddDockerComposeEnvironment("inno-clinic-docker");
+
 var mailpit = builder.AddMailPit("mailpit");
 
 var postgres = builder.AddPostgres("postgres")

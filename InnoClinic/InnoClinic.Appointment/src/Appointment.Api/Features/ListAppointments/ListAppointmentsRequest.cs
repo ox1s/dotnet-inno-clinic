@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-
-namespace Appointment.Api.Features.ListAppointment;
+namespace Appointment.Api.Features.ListAppointments;
 
 public record ListAppointmentsRequest(
     Guid? DoctorId,

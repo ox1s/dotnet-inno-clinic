@@ -1,9 +1,11 @@
 using ErrorOr;
 
 using Identity.Application.Authentication.Commands.Register;
+using Identity.Application.Authentication.Commands.RevokeRefreshToken;
 using Identity.Application.Authentication.Commands.VerifyEmail;
 using Identity.Application.Authentication.Common;
 using Identity.Application.Authentication.Queries.Login;
+using Identity.Application.Authentication.Queries.LoginWithRefreshToken;
 using Identity.Contracts.Authentication;
 
 using MediatR;
@@ -44,15 +46,47 @@ public class AuthenticationController(ISender mediator)
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var query = new LoginQuery(request.Email, request.Password);
-        var authResult = await mediator.Send(query);
+        var loginResult = await mediator.Send(query);
 
-        if (authResult.IsError && authResult.FirstError == AuthenticationErrors.InvalidCredentials)
+        if (loginResult.IsError && loginResult.FirstError == AuthenticationErrors.InvalidCredentials)
             return Problem(
-                authResult.FirstError.Description,
+                loginResult.FirstError.Description,
                 statusCode: StatusCodes.Status401Unauthorized);
 
-        return authResult.Match(
-            authenticationResult => Ok(MapToAuthResponse(authenticationResult)),
+        return loginResult.Match(
+            loginResult => Ok(new LoginResponse(
+                loginResult.Token,
+                loginResult.RefreshToken)),
+            Problem);
+    }
+    [HttpPost("login-with-refresh-token")]
+    public async Task<IActionResult> LoginWithRefreshToken(
+        [FromBody] LoginWithRefreshTokenRequest request)
+    {
+        var query = new LoginWithRefreshTokenQuery(request.RefreshToken);
+        var loginResult = await mediator.Send(query);
+
+        if (loginResult.IsError
+            && loginResult.FirstError == AuthenticationErrors.InvalidRefreshToken)
+            return Problem(
+                loginResult.FirstError.Description,
+                statusCode: StatusCodes.Status401Unauthorized);
+
+        return loginResult.Match(
+            loginResult => Ok(new LoginWithRefreshTokenResponse(
+                loginResult.Token,
+                loginResult.RefreshToken)),
+            Problem);
+    }
+    [HttpDelete("accounts/{id:guid}/refresh-tokens")]
+    public async Task<IActionResult> RevokeRefreshTokens(
+        Guid id)
+    {
+        var command = new RevokeRefreshTokensCommand(id);
+        var result = await mediator.Send(command);
+
+        return result.Match(
+            deleted => Ok("Refresh tokens revoked successfully!"),
             Problem);
     }
 

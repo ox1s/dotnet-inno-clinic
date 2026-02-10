@@ -9,9 +9,7 @@ public class Appointment
     public Guid ServiceId { get; private set; }
     public Guid OfficeId { get; private set; }
     public DateOnly LocalDate => DateOnly.FromDateTime(Time.Start.Date);
-    public TimeRange Time { get; private set; }
-
-    // Тут я могу использовать Time в хендлерах при запросах к бд или действовать с обращением по TimeRangeId
+    public TimeRange Time { get; private set; } = null!;
 
     public Guid TimeRangeId { get; private set; }
     public bool IsApproved { get; set; }

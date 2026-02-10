@@ -1,7 +1,9 @@
 using ErrorOr;
+
 using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 namespace Identity.Domain.AccountAggregate;
+
 public class Account : AggregateRoot
 {
     public Email Email { get; private set; } = null!;
@@ -62,4 +64,5 @@ public class Account : AggregateRoot
     {
         return passwordHasher.IsCorrectPassword(password, _passwordHash);
     }
+    private Account() {}
 }

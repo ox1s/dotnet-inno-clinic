@@ -4,7 +4,7 @@ using InnoClinic.Shared;
 
 namespace Appointment.Api.Features.ApproveAppointment;
 
-public sealed class ApproveAppointmentEnpoint : IEndpoint
+public sealed class ApproveAppointmentEndpoint : IEndpoint
 {
 
     public void MapEndpoint(IEndpointRouteBuilder app)

@@ -4,6 +4,7 @@
     <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Docker" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
   </ItemGroup>

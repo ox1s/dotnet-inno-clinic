@@ -1,9 +1,8 @@
 using ErrorOr;
-
-namespace Identity.Domain.Common;
+namespace Identity.Domain.Common.Interfaces;
 
 public interface IPasswordHasher
 {
-    public ErrorOr<string> HashPassword(string password);
+    public string HashPassword(string password);
     public bool IsCorrectPassword(string password, string passwordHash);
 }

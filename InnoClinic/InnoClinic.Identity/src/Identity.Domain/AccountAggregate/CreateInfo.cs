@@ -1,5 +1,7 @@
 using ErrorOr;
+
 namespace Identity.Domain.AccountAggregate;
+
 public record CreateInfo(DateTimeOffset CreatedAt, Guid CreatedBy)
 {
     // TODO: Implement validation

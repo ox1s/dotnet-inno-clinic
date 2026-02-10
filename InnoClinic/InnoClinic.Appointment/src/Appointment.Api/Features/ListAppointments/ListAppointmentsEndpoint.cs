@@ -1,6 +1,6 @@
 using Appointment.Api.Endpoints;
 
-namespace Appointment.Api.Features.ListAppointment;
+namespace Appointment.Api.Features.ListAppointments;
 
 public class ListAppointmentsEndpoint : IEndpoint
 {

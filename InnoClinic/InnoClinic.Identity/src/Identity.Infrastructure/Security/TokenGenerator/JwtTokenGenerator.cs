@@ -1,12 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
-
-using Identity.Application.Common.Interfaces;
-using Identity.Domain.AccountAggregate;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
+using Identity.Application.Common.Interfaces;
+using Identity.Domain.AccountAggregate;
 
 namespace Identity.Infrastructure.Security.TokenGenerator;
 
@@ -15,6 +16,11 @@ public class JwtTokenGenerator
     : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
+
+    public string GenerateRefreshToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+    }
 
     public string GenerateToken(Account account, string role)
     {

@@ -1,5 +1,6 @@
 using ErrorOr;
 namespace Identity.Domain.AccountAggregate;
+
 public class AccountErrors
 {
     public static readonly Error AlreadyExists = Error.Conflict(

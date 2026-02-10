@@ -1,4 +1,4 @@
-namespace Appointment.Api.Features.ListAppointment;
+namespace Appointment.Api.Features.ListAppointments;
 
 public record ListAppointmentsResponse(
     Guid Id,

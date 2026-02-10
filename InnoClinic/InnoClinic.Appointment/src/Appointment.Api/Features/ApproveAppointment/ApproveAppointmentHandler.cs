@@ -1,5 +1,7 @@
 using Appointment.Api.Data;
+
 namespace Appointment.Api.Features.ApproveAppointment;
+
 public class ApproveAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(
@@ -10,7 +12,9 @@ public class ApproveAppointmentHandler
         if (appointment is null)
             return Results.NotFound();
         appointment.Approve();
+
         await context.SaveChangesAsync();
+
         return Results.Ok();
     }
 }

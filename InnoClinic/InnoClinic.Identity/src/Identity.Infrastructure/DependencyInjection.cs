@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using System.Text;
 
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -6,8 +7,10 @@ using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.Repositories;
+using Identity.Infrastructure.Security.CurrentUserProvider;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
+using Identity.Infrastructure.Security.TokenValidation;
 using Identity.Infrastructure.Services.Email;
 using Identity.Infrastructure.Services.Profile;
 using Identity.Infrastructure.Services.Time;
@@ -16,6 +19,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure;
 
@@ -26,14 +31,14 @@ public static class DependencyInjection
         public IServiceCollection AddInfrastructure(IConfiguration configuration)
         {
             services
-                .AddAuthentication()
                 .AddHttpContextAccessor()
                 .AddMediatR()
                 .AddConfigurations(configuration)
-
                 .AddServices(configuration)
                 .AddPersistence(configuration)
-                .AddHealthChecks(configuration);
+                .AddHealthChecks(configuration)
+                .AddAuthentication()
+                .AddAuthorization();
 
             return services;
         }
@@ -67,6 +72,7 @@ public static class DependencyInjection
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
             services.AddScoped<IAccountsRepository, AccountsRepository>();
+            services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
 
             // Scrutter для регистрации
             // DateTimeOffset
@@ -123,7 +129,10 @@ public static class DependencyInjection
         private IServiceCollection AddAuthentication()
         {
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.ConfigureOptions<JwtBearerTokenValidationConfiguration>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+            services.AddScoped<IUserContext, UserContext>();
 
             services
                 .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

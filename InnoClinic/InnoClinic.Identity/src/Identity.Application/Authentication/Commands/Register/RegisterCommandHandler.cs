@@ -1,5 +1,9 @@
 using ErrorOr;
 
+using MediatR;
+
+using Microsoft.Extensions.Options;
+
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -8,10 +12,6 @@ using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
-
-using MediatR;
-
-using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Authentication.Commands.Register;
 
@@ -27,7 +27,8 @@ public class RegisterCommandHandler(
     : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
     private readonly EmailSettings _emailSettings = emailSettingsOptions.Value;
-    public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command,
+    public async Task<ErrorOr<AuthenticationResult>> Handle(
+        RegisterCommand command,
         CancellationToken cancellationToken)
     {
         var emailResult = Email.Create(command.Email);
@@ -37,12 +38,12 @@ public class RegisterCommandHandler(
         if (await accountsRepository.ExistsByEmailAsync(email, cancellationToken))
             return AccountErrors.AlreadyExists;
 
-        var hashPasswordResult = passwordHasher.HashPassword(command.Password);
+        var hashPassword = passwordHasher.HashPassword(command.Password);
 
         var account = Account.Create(
-            email: email,
-            passwordHash: hashPasswordResult.Value,
-            dateTimeProvider: dateTimeProvider);
+            email,
+            hashPassword,
+            dateTimeProvider);
 
         await accountsRepository.AddAccountAsync(account, cancellationToken);
         await unitOfWork.CommitChangesAsync(cancellationToken);
@@ -61,7 +62,8 @@ public class RegisterCommandHandler(
             string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink)
         );
 
-        var token = jwtTokenGenerator.GenerateToken(account, role: Roles.Patient);
+
+        var token = jwtTokenGenerator.GenerateToken(account, Roles.Patient);
 
         return new AuthenticationResult(
             account,

@@ -1,6 +1,7 @@
 using Appointment.Api.Data;
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Features.GetAppointment;
 
@@ -9,7 +10,10 @@ public static class GetAppointmentHandler
 
     public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(Guid id, AppointmentDbContext context)
     {
-        var appointment = await context.Appointments.FindAsync(id);
+        var appointment = await context.Appointments
+            .Include(a => a.Time)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
 
         if (appointment is null) return TypedResults.NotFound();
 

@@ -3,12 +3,13 @@ using System.Text.RegularExpressions;
 using ErrorOr;
 
 using Identity.Domain.Common;
+using Identity.Domain.Common.Interfaces;
 
 namespace Identity.Infrastructure.Security.PasswordHasher;
 
-public partial class PasswordHasher : IPasswordHasher
+public class PasswordHasher : IPasswordHasher
 {
-    public ErrorOr<string> HashPassword(string password)
+    public string HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
     }

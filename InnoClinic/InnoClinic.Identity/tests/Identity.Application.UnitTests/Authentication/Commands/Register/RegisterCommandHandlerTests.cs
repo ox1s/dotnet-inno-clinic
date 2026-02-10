@@ -1,5 +1,9 @@
 using FluentAssertions;
 
+using Microsoft.Extensions.Options;
+
+using NSubstitute;
+
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -9,22 +13,19 @@ using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
 
-using Microsoft.Extensions.Options;
-
-using NSubstitute;
 
 namespace Identity.Application.UnitTests.Authentication.Commands.Register;
 
 public class RegisterCommandHandlerTests
 {
+    private readonly IAccountsRepository _accountsRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IEmailSender _emailSender;
+    private readonly RegisterCommandHandler _handler;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IEmailVerificationLinkFactory _linkFactory;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IAccountsRepository _accountsRepository;
-    private readonly IEmailSender _emailSender;
-    private readonly IEmailVerificationLinkFactory _linkFactory;
-    private readonly RegisterCommandHandler _handler;
-    private readonly IDateTimeProvider _dateTimeProvider;
 
     public RegisterCommandHandlerTests()
     {
@@ -86,7 +87,8 @@ public class RegisterCommandHandlerTests
             command.Email,
             Arg.Any<string>(),
             Arg.Any<string>(),
-            Arg.Is<string>(body => body.Contains("http://verify-link") || body.Contains("https://verify-link")));
+            Arg.Is<string>(body => body.Contains("http://verify-link")
+                                   || body.Contains("https://verify-link")));
     }
 
     [Fact]
@@ -96,7 +98,8 @@ public class RegisterCommandHandlerTests
         var command = new RegisterCommand("exist@test.com", "Password123!");
 
         _accountsRepository
-            .ExistsByEmailAsync(Arg.Is<Email>(e => e.Value == command.Email), Arg.Any<CancellationToken>())
+            .ExistsByEmailAsync(Arg.Is<Email>(e => e.Value == command.Email),
+                Arg.Any<CancellationToken>())
             .Returns(true);
 
         // Act
@@ -105,8 +108,10 @@ public class RegisterCommandHandlerTests
         // Assert
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(AccountErrors.AlreadyExists);
-        await _accountsRepository.DidNotReceive().AddAccountAsync(Arg.Any<Account>(), Arg.Any<CancellationToken>());
+        await _accountsRepository.DidNotReceive()
+            .AddAccountAsync(Arg.Any<Account>(), Arg.Any<CancellationToken>());
         await _emailSender.DidNotReceive()
-            .SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            .SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
+                Arg.Any<string>());
     }
 }

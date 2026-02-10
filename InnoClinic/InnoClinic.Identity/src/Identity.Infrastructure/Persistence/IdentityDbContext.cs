@@ -13,6 +13,7 @@ public class IdentityDbContext(
     : DbContext(options), IUnitOfWork
 {
     public DbSet<Account> Accounts { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

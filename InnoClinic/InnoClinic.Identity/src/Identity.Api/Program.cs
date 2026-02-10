@@ -1,13 +1,12 @@
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 using Identity.Api.Exceptions;
 using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Persistence;
-
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -64,7 +63,6 @@ var app = builder.Build();
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
     });
 
-
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
@@ -79,10 +77,10 @@ var app = builder.Build();
     }
 
     app.UseHttpsRedirection();
-    app.MapControllers();
-
     app.UseAuthentication();
     app.UseAuthorization();
+
+    app.MapControllers();
 
     app.Run();
 }
