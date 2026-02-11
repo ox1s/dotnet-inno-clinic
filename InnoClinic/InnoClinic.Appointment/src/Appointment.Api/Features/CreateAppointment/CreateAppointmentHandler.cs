@@ -30,20 +30,19 @@ public class CreateAppointmentHandler
                 Code: "Validation",
                 Description: validationResult.ToString()));
 
+        // TODO: Обработать случай, конда пользователь это администратор      
         var patientIdClaim = user.FindFirst("id");
         if (patientIdClaim == null || !Guid.TryParse(patientIdClaim.Value, out var patientId))
             return Results.Unauthorized();
 
-        var timeRangeResult = TimeRange.Create(request.StartDateTime.ToUniversalTime(), request.EndDateTime.ToUniversalTime());
+        var timeRangeResult = TimeRange.Create(
+            request.StartDateTime.ToUniversalTime(),
+            request.EndDateTime.ToUniversalTime());
         timeRangeResult.ThrowIfNull();
         if (!timeRangeResult.Succeeded)
             return Results.BadRequest(timeRangeResult.Error.Description);
 
-        var isOverlapping = context.TimeRanges
-            .Any(a =>
-                a.Start == timeRangeResult.Value!.Start
-                && a.End == timeRangeResult.Value!.End);
-        if (isOverlapping)
+        if (await context.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
             return Results.BadRequest(Errors.OverlappingAppointment);
 
         var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
@@ -62,7 +61,7 @@ public class CreateAppointmentHandler
             doctorId: request.DoctorId,
             serviceId: request.ServiceId,
             officeId: request.OfficeId,
-            time: timeRangeResult.Value!);
+            duration: timeRangeResult.Value!);
 
         context.Appointments.Add(appointment);
 
@@ -75,8 +74,8 @@ public class CreateAppointmentHandler
                 DoctorId: appointment.DoctorId,
                 ServiceId: appointment.ServiceId,
                 OfficeId: appointment.OfficeId,
-                StartDateTime: appointment.Time.Start,
-                EndDateTime: appointment.Time.End));
+                StartDateTime: appointment.Duration.Start,
+                EndDateTime: appointment.Duration.End));
     }
 
 }

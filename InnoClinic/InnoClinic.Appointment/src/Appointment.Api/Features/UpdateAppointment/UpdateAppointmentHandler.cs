@@ -1,6 +1,9 @@
 
+using System.Security.Claims;
+
 using Appointment.Api.Common;
 using Appointment.Api.Data;
+using Appointment.Api.External;
 
 using FluentValidation;
 
@@ -13,40 +16,54 @@ namespace Appointment.Api.Features.UpdateAppointment;
 
 public class UpdateAppointmentHandler
 {
-    public static async Task<Results<Ok<UpdateAppointmentResponse>, NotFound>> HandleAsync(Guid id,
+    public static async Task<IResult> HandleAsync(Guid id,
         UpdateAppointmentRequest request,
         AppointmentDbContext context,
-        IValidator<UpdateAppointmentRequest> validator)
+        IValidator<UpdateAppointmentRequest> validator,
+        ClaimsPrincipal user,
+        IServiceGateway serviceGateway,
+        IOfficeGateway officeGateway,
+        IProfileGateway profileGateway)
     {
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
-            return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(new Error(
+            return TypedResults.BadRequest(new Error(
                 Code: "Validation",
                 Description: validationResult.ToString()));
 
         var appointment = await context.Appointments
-            .Include(a => a.Time)
+            .Include(a => a.Duration)
             .FirstOrDefaultAsync(a => a.Id == id);
         if (appointment is null)
             return TypedResults.NotFound();
 
-        var timeRangeResult = TimeRange.Create(request.StartDateTime, request.EndDateTime);
+        var timeRangeResult = TimeRange.Create(
+            request.StartDateTime.ToUniversalTime(),
+            request.EndDateTime.ToUniversalTime());
+            
         timeRangeResult.ThrowIfNull();
         if (!timeRangeResult.Succeeded)
-            return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(timeRangeResult.Error.Description);
+            return TypedResults.BadRequest(timeRangeResult.Error.Description);
 
-        var isOverlapping = context.TimeRanges
-            .Any(a =>
-                a.Start == timeRangeResult.Value!.Start
-                && a.End == timeRangeResult.Value!.End);
-        if (isOverlapping)
-            return (Results<Ok<UpdateAppointmentResponse>, NotFound>)Results.BadRequest(Errors.OverlappingAppointment);
+        if (await context.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
+            return TypedResults.BadRequest(Errors.OverlappingAppointment);
+
+        var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
+
+        if (!doctorActiveResult.Result)
+            return Results.BadRequest(Errors.DoctorIsNotActive);
+        if (!serviceActive.Result)
+            return Results.BadRequest(Errors.ServiceIsNotActive);
+        if (!officeActive.Result)
+            return Results.BadRequest(Errors.OfficeIsNotActive);
 
         appointment.Update(
             doctorId: request.DoctorId,
             serviceId: request.ServiceId,
             officeId: request.OfficeId,
-            time: timeRangeResult.Value!);
+            duration: timeRangeResult.Value!);
 
         await context.SaveChangesAsync();
 
@@ -57,7 +74,7 @@ public class UpdateAppointmentHandler
                 DoctorId: appointment.DoctorId,
                 ServiceId: appointment.ServiceId,
                 OfficeId: appointment.OfficeId,
-                StartDateTime: appointment.Time.Start,
-                EndDateTime: appointment.Time.End));
+                StartDateTime: appointment.Duration.Start,
+                EndDateTime: appointment.Duration.End));
     }
 }

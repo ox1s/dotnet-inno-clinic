@@ -8,10 +8,8 @@ public class Appointment
     public Guid DoctorId { get; private set; }
     public Guid ServiceId { get; private set; }
     public Guid OfficeId { get; private set; }
-    public DateOnly LocalDate => DateOnly.FromDateTime(Time.Start.Date);
-    public TimeRange Time { get; private set; } = null!;
-
-    public Guid TimeRangeId { get; private set; }
+    public TimeRange Duration { get; private set; } = null!;
+    public DateOnly LocalDate => DateOnly.FromDateTime(Duration.Start.Date);
     public bool IsApproved { get; set; }
 
     private Appointment(
@@ -19,7 +17,7 @@ public class Appointment
         Guid doctorId,
         Guid serviceId,
         Guid officeId,
-        TimeRange time,
+        TimeRange duration,
         Guid? id = null)
     {
         Id = id ?? Guid.NewGuid();
@@ -27,7 +25,7 @@ public class Appointment
         DoctorId = doctorId;
         ServiceId = serviceId;
         OfficeId = officeId;
-        Time = time;
+        Duration = duration;
         IsApproved = false;
     }
     public static Appointment Create(
@@ -35,10 +33,10 @@ public class Appointment
         Guid doctorId,
         Guid serviceId,
         Guid officeId,
-        TimeRange time,
+        TimeRange duration,
         Guid? id = null)
     {
-        var timeResult = TimeRange.Create(time.Start, time.End);
+        var timeResult = TimeRange.Create(duration.Start, duration.End);
         if (timeResult.Succeeded is false)
             throw new InvalidOperationException($"Invalid time range: {timeResult.Error.Code}");
 
@@ -47,7 +45,7 @@ public class Appointment
             doctorId,
             serviceId,
             officeId,
-            time,
+            timeResult.Value!,
             id);
     }
 
@@ -55,17 +53,18 @@ public class Appointment
         Guid doctorId,
         Guid serviceId,
         Guid officeId,
-        TimeRange time)
+        TimeRange duration)
     {
         DoctorId = doctorId;
         ServiceId = serviceId;
         OfficeId = officeId;
+        Duration = duration;
 
-        var timeResult = TimeRange.Create(time.Start, time.End);
+        var timeResult = TimeRange.Create(duration.Start, duration.End);
         if (timeResult.Succeeded is false)
             throw new InvalidOperationException($"Invalid time range: {timeResult.Error.Code}");
 
-        Time = timeResult.Value!;
+        Duration = timeResult.Value!;
 
         IsApproved = false;
     }

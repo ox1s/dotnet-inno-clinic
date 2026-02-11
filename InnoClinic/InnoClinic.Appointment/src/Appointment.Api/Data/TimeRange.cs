@@ -5,15 +5,12 @@ using Throw;
 namespace Appointment.Api.Data;
 
 public record TimeRange
-{
-    public Guid TimeRangeId { get; init; }
+{   
     public DateTimeOffset Start { get; init; }
     public DateTimeOffset End { get; init; }
 
     private TimeRange(DateTimeOffset start, DateTimeOffset end)
     {
-        TimeRangeId = Guid.NewGuid();
-
         Start = start.Throw().IfGreaterThanOrEqualTo(end);
         End = end;
     }
@@ -31,7 +28,7 @@ public record TimeRange
 
         return Result<TimeRange>.Success(new TimeRange(start, end));
     }
-    public TimeSpan Duration => End - Start;
+    public TimeSpan LengthInTime => End - Start;
     private TimeRange() { }
 
 }

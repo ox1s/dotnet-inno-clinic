@@ -18,7 +18,7 @@ namespace Appointment.Api.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("appointment")
-                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -49,45 +49,34 @@ namespace Appointment.Api.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("service_id");
 
-                    b.Property<Guid>("TimeRangeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("time_range_id");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TimeRangeId");
 
                     b.ToTable("appointments", "appointment");
                 });
 
-            modelBuilder.Entity("Appointment.Api.Data.TimeRange", b =>
-                {
-                    b.Property<Guid>("TimeRangeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("time_range_id");
-
-                    b.Property<DateTimeOffset>("End")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end");
-
-                    b.Property<DateTimeOffset>("Start")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start");
-
-                    b.HasKey("TimeRangeId");
-
-                    b.ToTable("time_ranges", "appointment");
-                });
-
             modelBuilder.Entity("Appointment.Api.Data.Appointment", b =>
                 {
-                    b.HasOne("Appointment.Api.Data.TimeRange", "Time")
-                        .WithMany()
-                        .HasForeignKey("TimeRangeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("Appointment.Api.Data.TimeRange", "Duration", b1 =>
+                        {
+                            b1.Property<Guid>("AppointmentId")
+                                .HasColumnType("uuid");
 
-                    b.Navigation("Time");
+                            b1.Property<DateTimeOffset>("End")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.Property<DateTimeOffset>("Start")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.HasKey("AppointmentId");
+
+                            b1.ToTable("appointments", "appointment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AppointmentId");
+                        });
+
+                    b.Navigation("Duration")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

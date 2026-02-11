@@ -11,7 +11,6 @@ public static class GetAppointmentHandler
     public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(Guid id, AppointmentDbContext context)
     {
         var appointment = await context.Appointments
-            .Include(a => a.Time)
             .FirstOrDefaultAsync(a => a.Id == id);
 
 
@@ -22,7 +21,7 @@ public static class GetAppointmentHandler
                 appointment.Id,
                 appointment.PatientId,
                 appointment.DoctorId,
-                StartDateTime: appointment.Time.Start,
-                EndDateTime: appointment.Time.End));
+                StartDateTime: appointment.Duration.Start,
+                EndDateTime: appointment.Duration.End));
     }
 }

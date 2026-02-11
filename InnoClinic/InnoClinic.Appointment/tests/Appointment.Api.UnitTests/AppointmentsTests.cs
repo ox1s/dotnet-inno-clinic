@@ -23,14 +23,14 @@ public class AppointmentsTests
             doctorId: doctorId,
             serviceId: serviceId,
             officeId: officeId,
-            time: timeRange.Value!);
+            duration: timeRange.Value!);
 
         // Assert
         appointment.PatientId.Equals(patientId);
         appointment.DoctorId.Equals(doctorId);
         appointment.ServiceId.Equals(serviceId);
         appointment.OfficeId.Equals(officeId);
-        appointment.Time.Equals(timeRange.Value!);
+        appointment.Duration.Equals(timeRange.Value!);
         appointment.IsApproved.Equals(false);
 
     }
@@ -43,7 +43,7 @@ public class AppointmentsTests
             doctorId: Guid.NewGuid(),
             serviceId: Guid.NewGuid(),
             officeId: Guid.NewGuid(),
-            time: TimeRange.Create(
+            duration: TimeRange.Create(
                 start: DateTimeOffset.UtcNow,
                 end: DateTimeOffset.UtcNow.AddHours(1)).Value!);
 
@@ -87,6 +87,6 @@ public class AppointmentsTests
             doctorId: doctorId,
             serviceId: serviceId,
             officeId: officeId,
-            time: timeRange.Value!));
+            duration: timeRange.Value!));
     }
 }

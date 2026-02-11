@@ -13,7 +13,7 @@ public sealed class ListAppointmentsHandler
         IProfileGateway profileGateway,
         IServiceGateway serviceGateway)
     {
-        var query = context.Appointments.Include(a => a.Time).AsNoTracking();
+        var query = context.Appointments.AsNoTracking();
 
         if (request.DoctorId.HasValue)
             query = query.Where(a =>
@@ -78,8 +78,8 @@ public sealed class ListAppointmentsHandler
                 DoctorMiddleName: doctor?.MiddleName ?? "Unknown",
                 ServiceId: a.ServiceId,
                 ServiceName: service?.Name ?? "Unknown",
-                StartDateTime: a.Time.Start,
-                EndDateTime: a.Time.End);
+                StartDateTime: a.Duration.Start,
+                EndDateTime: a.Duration.End);
         });
 
         if (request.SortBy is "Date")

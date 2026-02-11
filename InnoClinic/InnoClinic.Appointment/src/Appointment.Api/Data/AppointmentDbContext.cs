@@ -9,8 +9,6 @@ public class AppointmentDbContext(
     : DbContext(options)
 {
     public DbSet<Appointment> Appointments { get; set; } = null!;
-    public DbSet<TimeRange> TimeRanges { get; set; } = null!;
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("appointment");
@@ -18,4 +16,19 @@ public class AppointmentDbContext(
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
+    public async Task<bool> IsOverlappingAsync(
+        Guid doctorId,
+        TimeRange duration,
+        CancellationToken cancellationToken = default)
+    {
+        return await Appointments
+            .AnyAsync(a =>
+                a.DoctorId == doctorId &&
+                a.Duration.Start < duration.End &&
+                a.Duration.End > duration.Start
+                // TODO: && a.IsApproved
+                , 
+                cancellationToken);
+    }
+
 }

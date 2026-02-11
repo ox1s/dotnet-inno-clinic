@@ -40,14 +40,11 @@ public static class GetAvailableSlotsHandler
 
             if (slotRangeResult.Succeeded)
             {
+
                 var slotRange = slotRangeResult.Value!;
 
-                var isOverlapping = context.TimeRanges
-                    .Any(a =>
-                        a.Start == slotRange.Start
-                        && a.End == slotRange.End);
-
-                if (!isOverlapping)
+                // FEAT: overlapping appointments | я тут изменила на метод контекста
+                if (!await context.IsOverlappingAsync(request.DoctorId, slotRange))
                     availableSlots.Add(currentSlotStart);
             }
 
