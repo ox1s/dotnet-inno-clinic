@@ -44,5 +44,17 @@ namespace Appointment.Api {
                 resourceCulture = value;
             }
         }
+        
+        internal static string Work_StartTime {
+            get {
+                return ResourceManager.GetString("Work_StartTime", resourceCulture);
+            }
+        }
+        
+        internal static string Work_EndTime {
+            get {
+                return ResourceManager.GetString("Work_EndTime", resourceCulture);
+            }
+        }
     }
 }

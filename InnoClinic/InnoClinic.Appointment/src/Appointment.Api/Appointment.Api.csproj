@@ -35,4 +35,17 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Appointments_Resourses.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Appointments_Resourses.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Appointments_Resourses.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Appointments_Resourses.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

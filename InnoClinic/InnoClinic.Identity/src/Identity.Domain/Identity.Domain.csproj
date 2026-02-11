@@ -10,16 +10,16 @@
     <PackageReference Include="MediatR" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources.resx">
+    <EmbeddedResource Update="Identity_Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Resources.Designer.cs">
+    <Compile Update="Identity_Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Identity_Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

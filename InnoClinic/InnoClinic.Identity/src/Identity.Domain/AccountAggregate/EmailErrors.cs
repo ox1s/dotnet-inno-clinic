@@ -10,14 +10,14 @@ public static class EmailErrors
 
     public static readonly Error Empty = Error.Validation(
         "Email.Empty",
-        Resources.Email_Empty); // Frontend: "Please, enter the email"
+        Identity_Resources.Email_Empty); // Frontend: "Please, enter the email"
 
     public static readonly Error InvalidFormat = Error.Validation(
         "Email.InvalidFormat",
-        Resources.Email_InvalidFormat); // Frontend: "You've entered an invalid email"
+        Identity_Resources.Email_InvalidFormat); // Frontend: "You've entered an invalid email"
 
     public static readonly Error TooLong = Error.Validation(
         "Email.Invalids",
-        Resources.Email_TooLong);
+        Identity_Resources.Email_TooLong);
 
 }
