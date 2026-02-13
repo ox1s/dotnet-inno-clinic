@@ -8,11 +8,11 @@ namespace Appointment.Api.Features.GetAppointment;
 public static class GetAppointmentHandler
 {
 
-    public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(Guid id, AppointmentDbContext context)
+    public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(
+        Guid id,
+        IAppointmentRepository appointmentRepository)
     {
-        var appointment = await context.Appointments
-            .FirstOrDefaultAsync(a => a.Id == id);
-
+        var appointment = await appointmentRepository.GetByIdAsync(id);
 
         if (appointment is null) return TypedResults.NotFound();
 

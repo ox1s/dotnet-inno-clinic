@@ -14,4 +14,6 @@ public record ListAppointmentsResponse(
     Guid ServiceId,
     string ServiceName,
     DateTimeOffset StartDateTime,
-    DateTimeOffset EndDateTime);
+    DateTimeOffset EndDateTime,
+    int TotalCount
+    );

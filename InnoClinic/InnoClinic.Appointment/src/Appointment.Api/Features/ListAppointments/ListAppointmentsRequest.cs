@@ -10,4 +10,7 @@ public record ListAppointmentsRequest(
     DateOnly? DateEnd,
     bool? IsApproved,
     string? SortBy,
-    string? SortDirection);
+    string? SortDirection,
+    int Page,
+    int PageSize
+    );

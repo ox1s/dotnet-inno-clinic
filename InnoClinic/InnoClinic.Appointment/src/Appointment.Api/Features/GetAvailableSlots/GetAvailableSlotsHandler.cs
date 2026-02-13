@@ -11,7 +11,7 @@ public static class GetAvailableSlotsHandler
 {
     public static async Task<IResult> Handle(
         [AsParameters] GetAvailableSlotsRequest request,
-        AppointmentDbContext context,
+        IAppointmentRepository appointmentRepository,
         IServiceGateway serviceGateway)
     {
         var duration = await serviceGateway.GetServiceDurationAsync(request.ServiceId);
@@ -40,11 +40,11 @@ public static class GetAvailableSlotsHandler
 
             if (slotRangeResult.Succeeded)
             {
-
                 var slotRange = slotRangeResult.Value!;
 
                 // FEAT: overlapping appointments | я тут изменила на метод контекста
-                if (!await context.IsOverlappingAsync(request.DoctorId, slotRange))
+                if (!await appointmentRepository
+                        .IsOverlappingAsync(request.DoctorId, slotRange))
                     availableSlots.Add(currentSlotStart);
             }
 

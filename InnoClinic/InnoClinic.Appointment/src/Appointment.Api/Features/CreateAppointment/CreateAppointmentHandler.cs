@@ -6,8 +6,6 @@ using Appointment.Api.External;
 
 using FluentValidation;
 
-using Microsoft.EntityFrameworkCore;
-
 using Throw;
 
 namespace Appointment.Api.Features.CreateAppointment;
@@ -16,7 +14,7 @@ public class CreateAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(
         CreateAppointmentRequest request,
-        AppointmentDbContext context,
+        IAppointmentRepository appointmentRepository,
         IValidator<CreateAppointmentRequest> validator,
         ClaimsPrincipal user,
         IServiceGateway serviceGateway,
@@ -42,7 +40,7 @@ public class CreateAppointmentHandler
         if (!timeRangeResult.Succeeded)
             return Results.BadRequest(timeRangeResult.Error.Description);
 
-        if (await context.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
+        if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
             return Results.BadRequest(Errors.OverlappingAppointment);
 
         var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
@@ -63,9 +61,7 @@ public class CreateAppointmentHandler
             officeId: request.OfficeId,
             duration: timeRangeResult.Value!);
 
-        context.Appointments.Add(appointment);
-
-        await context.SaveChangesAsync();
+        await appointmentRepository.AddAsync(appointment);
 
         return Results.Ok(
             new CreateAppointmentResponse(

@@ -9,48 +9,49 @@ public sealed class ListAppointmentsHandler
 {
     public static async Task<IResult> Handler(
         [AsParameters] ListAppointmentsRequest request,
-        AppointmentDbContext context,
+        IAppointmentRepository appointmentRepository,
         IProfileGateway profileGateway,
         IServiceGateway serviceGateway)
     {
-        var query = context.Appointments.AsNoTracking();
+        // TODO: Разобраться
+        var filter = new AppointmentFilter(
+            Page: request.Page,
+            PageSize: request.PageSize,
+            DoctorId: request.DoctorId,
+            PatientId: request.PatientId,
+            ServiceId: request.ServiceId,
+            Date: request.Date,
+            DateStart: request.DateStart,
+            DateEnd: request.DateEnd,
+            IsApproved: request.IsApproved
+            );
+
+        var appointments = await appointmentRepository.SearchAsync(filter);
+        var totalCount = await appointmentRepository.CountAsync(filter);
 
         if (request.DoctorId.HasValue)
-            query = query.Where(a =>
-                a.DoctorId == request.DoctorId.Value);
+        {
+            var doctorIds = await appointmentRepository
+                .GetDoctorIdsByAppointmentAsync(request.DoctorId.Value);
 
+            var doctorsTask = await profileGateway.GetDoctorsAsync(doctorIds);
+        }
         if (request.PatientId.HasValue)
-            query = query.Where(a =>
-                a.PatientId == request.PatientId.Value);
+        {
+            var patientIds = await appointmentRepository
+                .GetPatientIdsByAppointmentAsync(request.PatientId.Value);
 
+            var patientsTask = await profileGateway.GetPatientsAsync(patientIds);
+        }
         if (request.ServiceId.HasValue)
-            query = query.Where(a =>
-                a.ServiceId == request.ServiceId.Value);
+        {
+            var serviceIds = await appointmentRepository
+                .GetServiceIdsByAppointmentAsync(request.ServiceId.Value);
 
-        if (request.Date.HasValue)
-            query = query.Where(a =>
-                a.LocalDate == request.Date.Value);
+            var servicesTask = await serviceGateway.GetServicesAsync(serviceIds);
+        }
 
-        if (request.DateStart.HasValue)
-            query = query.Where(a =>
-                a.LocalDate >= request.DateStart.Value);
-
-        if (request.DateEnd.HasValue)
-            query = query.Where(a =>
-                a.LocalDate <= request.DateEnd.Value);
-
-        if (request.IsApproved.HasValue)
-            query = query.Where(a =>
-                a.IsApproved == request.IsApproved.Value);
-
-        var appointments = await query.ToListAsync();
-
-        var doctorIds = appointments.Select(a => a.DoctorId).Distinct();
-        var patientIds = appointments.Select(a => a.PatientId).Distinct();
-        var serviceIds = appointments.Select(a => a.ServiceId).Distinct();
-
-        var doctorsTask = profileGateway.GetDoctorsAsync(doctorIds);
-        var patientsTask = profileGateway.GetPatientsAsync(patientIds);
+    var patientsTask = profileGateway.GetPatientsAsync(patientIds);
         var servicesTask = serviceGateway.GetServicesAsync(serviceIds);
 
         await Task.WhenAll(doctorsTask, patientsTask, servicesTask);
@@ -79,7 +80,9 @@ public sealed class ListAppointmentsHandler
                 ServiceId: a.ServiceId,
                 ServiceName: service?.Name ?? "Unknown",
                 StartDateTime: a.Duration.Start,
-                EndDateTime: a.Duration.End);
+                EndDateTime: a.Duration.End,
+                TotalCount: totalCount
+                );
         });
 
         if (request.SortBy is "Date")
@@ -112,4 +115,5 @@ public sealed class ListAppointmentsHandler
 
         return TypedResults.Ok(responses.ToList());
     }
+
 }

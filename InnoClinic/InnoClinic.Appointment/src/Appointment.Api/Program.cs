@@ -73,6 +73,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IProfileGateway, FakeProfileGateway>();
     services.AddScoped<IServiceGateway, FakeServiceGateway>();
     services.AddScoped<IOfficeGateway, FakeOfficeGateway>();
+    services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 }
 var app = builder.Build();
 {
