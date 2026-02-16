@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Http;
-
 using System.Security.Claims;
 
 using Identity.Application.Common.Interfaces;
+
+using Microsoft.AspNetCore.Http;
 
 namespace Identity.Infrastructure.Security.CurrentUserProvider;
 

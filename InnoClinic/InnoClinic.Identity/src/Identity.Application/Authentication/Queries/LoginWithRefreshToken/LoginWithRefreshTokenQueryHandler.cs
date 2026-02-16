@@ -1,9 +1,9 @@
 using ErrorOr;
 
-using MediatR;
-
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
+
+using MediatR;
 
 namespace Identity.Application.Authentication.Queries.LoginWithRefreshToken;
 

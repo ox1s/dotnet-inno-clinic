@@ -2,13 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Data;
 
-public class AppointmentRepository : IAppointmentRepository
+public class AppointmentRepository(AppointmentDbContext dbContext)
+    : IAppointmentRepository
 {
-    private readonly AppointmentDbContext _dbContext;
-    public AppointmentRepository(AppointmentDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppointmentDbContext _dbContext = dbContext;
+
     public async Task AddAsync(Appointment appointment, CancellationToken cancellationToken = default)
     {
         await _dbContext.Appointments.AddAsync(appointment, cancellationToken);
@@ -59,6 +57,10 @@ public class AppointmentRepository : IAppointmentRepository
         if (filter.ServiceId.HasValue)
             query = query.Where(a =>
                 a.ServiceId == filter.ServiceId.Value);
+
+        if (filter.OfficeId.HasValue)
+            query = query.Where(a =>
+                a.OfficeId == filter.OfficeId.Value);
 
         if (filter.Date.HasValue)
             query = query.Where(a =>

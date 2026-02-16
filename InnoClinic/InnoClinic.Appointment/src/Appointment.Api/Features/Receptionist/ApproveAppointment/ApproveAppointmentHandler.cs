@@ -1,0 +1,20 @@
+using Appointment.Api.Data;
+
+namespace Appointment.Api.Features.Receptionist.ApproveAppointment;
+
+public class ApproveAppointmentHandler
+{
+    public static async Task<IResult> HandleAsync(
+        Guid id,
+        AppointmentDbContext context)
+    {
+        var appointment = await context.Appointments.FindAsync(id);
+        if (appointment is null)
+            return Results.NotFound();
+        appointment.Approve();
+
+        await context.SaveChangesAsync();
+
+        return Results.Ok();
+    }
+}

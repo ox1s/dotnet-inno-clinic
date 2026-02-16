@@ -5,7 +5,7 @@ using Throw;
 namespace Appointment.Api.Data;
 
 public record TimeRange
-{   
+{
     public DateTimeOffset Start { get; init; }
     public DateTimeOffset End { get; init; }
 

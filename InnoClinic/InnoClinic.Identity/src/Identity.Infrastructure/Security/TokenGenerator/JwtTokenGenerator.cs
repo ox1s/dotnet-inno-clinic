@@ -3,11 +3,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
+
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure.Security.TokenGenerator;
 

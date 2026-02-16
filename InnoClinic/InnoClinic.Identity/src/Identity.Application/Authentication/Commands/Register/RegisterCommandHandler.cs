@@ -1,9 +1,5 @@
 using ErrorOr;
 
-using MediatR;
-
-using Microsoft.Extensions.Options;
-
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -12,6 +8,10 @@ using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+
+using MediatR;
+
+using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Authentication.Commands.Register;
 

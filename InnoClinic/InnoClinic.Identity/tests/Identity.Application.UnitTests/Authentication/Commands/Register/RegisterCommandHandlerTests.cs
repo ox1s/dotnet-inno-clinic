@@ -1,9 +1,5 @@
 using FluentAssertions;
 
-using Microsoft.Extensions.Options;
-
-using NSubstitute;
-
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
@@ -12,6 +8,10 @@ using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+
+using Microsoft.Extensions.Options;
+
+using NSubstitute;
 
 
 namespace Identity.Application.UnitTests.Authentication.Commands.Register;

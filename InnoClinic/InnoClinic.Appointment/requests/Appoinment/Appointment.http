@@ -66,3 +66,6 @@ Content-Type: application/json
 ### 8. Удалить appointment
 DELETE {{HostAddress}}/appointments/{{AppointmentId}}
 Authorization: Bearer {{Token}}
+
+
+полно-ТЕкстовый индекс или contains

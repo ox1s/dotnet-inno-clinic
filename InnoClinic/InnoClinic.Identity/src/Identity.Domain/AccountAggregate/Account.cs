@@ -64,5 +64,5 @@ public class Account : AggregateRoot
     {
         return passwordHasher.IsCorrectPassword(password, _passwordHash);
     }
-    private Account() {}
+    private Account() { }
 }

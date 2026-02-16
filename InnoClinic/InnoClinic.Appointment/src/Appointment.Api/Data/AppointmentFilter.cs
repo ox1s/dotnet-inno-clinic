@@ -6,6 +6,7 @@ public class AppointmentFilter
     public Guid? DoctorId { get; set; }
     public Guid? PatientId { get; set; }
     public Guid? ServiceId { get; set; }
+    public Guid? OfficeId { get; set; }
     public DateOnly? Date { get; set; }
     public DateOnly? DateStart { get; set; }
     public DateOnly? DateEnd { get; set; }
@@ -16,30 +17,32 @@ public class AppointmentFilter
     public SortDirection SortDirection { get; set; }
 
     public AppointmentFilter(
-        int Page,
-        int PageSize,
-        Guid? DoctorId,
-        Guid? PatientId,
-        Guid? ServiceId,
-        DateOnly? Date,
-        DateOnly? DateStart,
-        DateOnly? DateEnd,
-        bool? IsApproved,
-        SortOptions SortBy = SortOptions.Date,
-        SortDirection SortDirection = SortDirection.Asc)
+        int page,
+        int pageSize,
+        Guid? doctorId,
+        Guid? patientId,
+        Guid? serviceId,
+        Guid? officeId,
+        DateOnly? date,
+        DateOnly? dateStart,
+        DateOnly? dateEnd,
+        bool? isApproved,
+        SortOptions sortBy = SortOptions.Date,
+        SortDirection sortDirection = SortDirection.Asc)
 
     {
-        this.DoctorId = DoctorId;
-        this.PatientId = PatientId;
-        this.ServiceId = ServiceId;
-        this.Date = Date;
-        this.DateStart = DateStart;
-        this.DateEnd = DateEnd;
-        this.IsApproved = IsApproved;
-        this.SortBy = SortBy;
-        this.SortDirection = SortDirection;
-        this.Page = Page;
-        this.PageSize = PageSize;
+        DoctorId = doctorId;
+        PatientId = patientId;
+        ServiceId = serviceId;
+        OfficeId = officeId;
+        Date = date;
+        DateStart = dateStart;
+        DateEnd = dateEnd;
+        IsApproved = isApproved;
+        SortBy = sortBy;
+        SortDirection = sortDirection;
+        Page = page;
+        PageSize = pageSize;
     }
 
 }
