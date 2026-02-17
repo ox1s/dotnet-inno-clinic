@@ -1,1 +1,5 @@
-<Solution/>
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ClinicManagement.Api/ClinicManagement.Api.csproj" />
+  </Folder>
+</Solution>

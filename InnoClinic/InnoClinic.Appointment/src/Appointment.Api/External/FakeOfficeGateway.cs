@@ -6,5 +6,4 @@ public class FakeOfficeGateway : IOfficeGateway
     {
         return Task.FromResult(true);
     }
-
 }

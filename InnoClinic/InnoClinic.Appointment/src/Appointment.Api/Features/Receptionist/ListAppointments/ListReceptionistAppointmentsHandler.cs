@@ -1,5 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+
 using Appointment.Api.Data;
-using Appointment.Api.External;
 
 namespace Appointment.Api.Features.Receptionist.ListAppointments;
 
@@ -8,80 +9,81 @@ public class ListReceptionistAppointmentsHandler
     public static async Task<IResult> Handle(
         [AsParameters] ListReceptionistAppointmentsRequest request,
         IAppointmentRepository appointmentRepository,
-        IProfileGateway profileGateway,
-        IServiceGateway serviceGateway)
+        AppointmentDbContext dbContext)
     {
-        var filter = new AppointmentFilter(
-            page: request.Page,
-            pageSize: request.PageSize,
-            doctorId: request.DoctorId,
-            patientId: null,
-            serviceId: request.ServiceId,
-            officeId: request.OfficeId,
-            date: request.Date,
-            dateStart: null,
-            dateEnd: null,
-            isApproved: request.IsApproved
-        );
 
-        var appointments = await appointmentRepository.SearchAsync(filter);
-        var totalCount = await appointmentRepository.CountAsync(filter);
+        var timeZoneId = Appointments_Resourses.Clinics_TimeZone ?? "UTC";
+        var clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
-        var doctorIds = appointments.Select(a => a.DoctorId).Distinct();
-        var patientIds = appointments.Select(a => a.PatientId).Distinct();
-        var serviceIds = appointments.Select(a => a.ServiceId).Distinct();
+        var targetDate = request.Date ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, clinicTimeZone));
 
-        var doctorsTask = profileGateway.GetDoctorsAsync(doctorIds);
-        var patientsTask = profileGateway.GetPatientsAsync(patientIds);
-        var servicesTask = serviceGateway.GetServicesAsync(serviceIds);
+        var localStart = targetDate.ToDateTime(TimeOnly.MinValue);
+        var localEnd = localStart.AddDays(1);
 
-        await Task.WhenAll(doctorsTask, patientsTask, servicesTask);
+        var utcStart = TimeZoneInfo.ConvertTimeToUtc(localStart, clinicTimeZone);
+        var utcEnd = TimeZoneInfo.ConvertTimeToUtc(localEnd, clinicTimeZone);
 
-        var doctors = (await doctorsTask).ToDictionary(d => d.Id);
-        var patients = (await patientsTask).ToDictionary(p => p.Id);
-        var services = (await servicesTask).ToDictionary(s => s.Id);
+        // var query = dbContext.AppointmentViews.AsNoTracking();
 
-        var responseList = appointments.Select(a =>
-        {
-            var doc = doctors.GetValueOrDefault(a.DoctorId);
-            var pat = patients.GetValueOrDefault(a.PatientId);
-            var srv = services.GetValueOrDefault(a.ServiceId);
+        // if (request.Date.HasValue)
+        // {
+        //     query = query.Where(x => x.DurationStart >= utcStart && x.DurationStart < utcEnd);
+        // }
 
-            return new ListReceptionistAppointmentsResponse(
-                Id: a.Id,
-                TimeSlot: $"{a.Duration.Start:HH:mm} - {a.Duration.End:HH:mm}",
-                DoctorFullName: FormatFullName(doc?.FirstName, doc?.LastName, doc?.MiddleName),
-                PatientFullName: FormatFullName(pat?.FirstName, pat?.LastName, pat?.MiddleName),
-                PatientPhoneNumber: pat?.PhoneNumber ?? "N/A",
-                ServiceName: srv?.Name ?? "Unknown",
-                IsApproved: a.IsApproved,
-                TotalCount: totalCount
-            );
-        });
+        // if (request.DoctorId.HasValue)
+        //     query = query.Where(x => x.DoctorId == request.DoctorId);
 
-        // TODO: подумать над сортировкой 
-        IEnumerable<ListReceptionistAppointmentsResponse> sortedResponses;
+        // if (request.ServiceId.HasValue)
+        //     query = query.Where(x => x.ServiceId == request.ServiceId);
 
-        if (request.SortBy == "DoctorName")
-        {
-            sortedResponses = request.SortDirection == "Desc"
-                ? responseList.OrderByDescending(x => x.DoctorFullName).ThenByDescending(x => x.ServiceName)
-                : responseList.OrderBy(x => x.DoctorFullName).ThenBy(x => x.ServiceName);
-        }
-        else
-        {
-            sortedResponses = responseList
-                .OrderBy(x => x.TimeSlot)
-                .ThenBy(x => x.DoctorFullName)
-                .ThenBy(x => x.ServiceName);
-        }
+        // if (request.OfficeId.HasValue)
+        //     query = query.Where(x => x.OfficeId == request.OfficeId);
 
-        return TypedResults.Ok(sortedResponses.ToList());
+        // if (request.IsApproved.HasValue)
+        //     query = query.Where(x => x.IsApproved == request.IsApproved.Value);
+
+        // query = request.SortBy switch
+        // {
+        //     "DoctorName" => request.SortDirection == "Desc"
+        //         ? query.OrderByDescending(x => x.DoctorLastName).ThenByDescending(x => x.DoctorFirstName)
+        //         : query.OrderBy(x => x.DoctorLastName).ThenBy(x => x.DoctorFirstName),
+
+        //     "ServiceName" => request.SortDirection == "Desc"
+        //         ? query.OrderByDescending(x => x.ServiceName)
+        //         : query.OrderBy(x => x.ServiceName),
+
+        //     _ => query.OrderBy(x => x.DurationStart)
+        // };
+
+        // var totalCount = await query.CountAsync();
+
+        // var items = await query
+        //     .Skip((request.Page - 1) * request.PageSize)
+        //     .Take(request.PageSize)
+        //     .ToListAsync();
+
+        // var response = items.Select(x => new ListReceptionistAppointmentsResponse(
+        //             Id: a.Id,
+        //             TimeSlot: FormatTime(x.DurationStart, clinicTimeZone),
+        //             DoctorFullName: FormatFullName(doc?.FirstName, doc?.LastName, doc?.MiddleName),
+        //             PatientFullName: FormatFullName(pat?.FirstName, pat?.LastName, pat?.MiddleName),
+        //             PatientPhoneNumber: pat?.PhoneNumber ?? "N/A",
+        //             ServiceName: srv?.Name ?? "Unknown",
+        //             IsApproved: a.IsApproved,
+        //             TotalCount: totalCount
+        //         )
+        // );
+
+        return TypedResults.Ok(/*response*/);
     }
-
     private static string FormatFullName(string? first, string? last, string? middle)
     {
         var parts = new[] { last, first, middle }.Where(s => !string.IsNullOrWhiteSpace(s));
         return string.Join(" ", parts);
+    }
+    private static string FormatTime(DateTimeOffset utcTime, TimeZoneInfo tz)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(utcTime, tz);
+        return $"{localTime:HH:mm}";
     }
 }

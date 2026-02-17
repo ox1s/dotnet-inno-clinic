@@ -9,7 +9,6 @@ public class Appointment
     public Guid ServiceId { get; private set; }
     public Guid OfficeId { get; private set; }
     public TimeRange Duration { get; private set; } = null!;
-    public DateOnly LocalDate => DateOnly.FromDateTime(Duration.Start.Date);
     public bool IsApproved { get; set; }
 
     private Appointment(

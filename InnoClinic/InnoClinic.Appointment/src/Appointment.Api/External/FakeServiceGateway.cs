@@ -8,15 +8,4 @@ public class FakeServiceGateway : IServiceGateway
     {
         return Task.FromResult(true);
     }
-
-    public Task<IEnumerable<ServiceDto>> GetServicesAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
-    {
-        var services = ids.Select(id => new ServiceDto(id, "Medical Service", true));
-        return Task.FromResult(services);
-    }
-
-    public Task<TimeSpan?> GetServiceDurationAsync(Guid serviceId, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult<TimeSpan?>(TimeSpan.FromMinutes(30));
-    }
 }

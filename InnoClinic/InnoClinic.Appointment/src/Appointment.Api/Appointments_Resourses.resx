@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:schema id="root"
+        xmlns=""
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
 
         </xsd:element>
@@ -24,5 +27,8 @@
     </data>
     <data name="Work_EndTime" xml:space="preserve">
         <value>18:00</value>
+    </data>
+    <data name="Clinics_TimeZone" xml:space="preserve">
+        <value>Europe/Moscow</value>
     </data>
 </root>

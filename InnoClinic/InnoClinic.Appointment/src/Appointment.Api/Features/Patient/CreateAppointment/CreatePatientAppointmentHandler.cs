@@ -6,6 +6,8 @@ using Appointment.Api.External;
 
 using FluentValidation;
 
+using InnoClinic.Shared.DTOs;
+
 using Throw;
 
 namespace Appointment.Api.Features.CreateAppointment;
@@ -19,7 +21,9 @@ public class CreatePatientAppointmentHandler
         ClaimsPrincipal user,
         IServiceGateway serviceGateway,
         IOfficeGateway officeGateway,
-        IProfileGateway profileGateway)
+        IProfileGateway profileGateway,
+        IHttpClientFactory httpClienFactory,
+        ILogger logger)
     {
 
         var validationResult = await validator.ValidateAsync(request);
@@ -32,9 +36,12 @@ public class CreatePatientAppointmentHandler
         if (patientIdClaim == null || !Guid.TryParse(patientIdClaim.Value, out var patientId))
             return Results.Unauthorized();
 
+
         var timeRangeResult = TimeRange.Create(
             request.StartDateTime.ToUniversalTime(),
             request.EndDateTime.ToUniversalTime());
+
+
         timeRangeResult.ThrowIfNull();
         if (!timeRangeResult.Succeeded)
             return Results.BadRequest(timeRangeResult.Error.Description);
@@ -45,6 +52,24 @@ public class CreatePatientAppointmentHandler
         var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
         var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
         var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
+
+        // var checkServiceStatusRequest = new CheckStatus(request.ServiceId);
+        // var checkServiceStatusResult = await CheckServiceStatus(
+        //     request: checkServiceStatusRequest,
+        //     httpClientFactory: httpClienFactory,
+        //     logger: logger);
+
+        // var checkOfficeStatusRequest = new CheckStatus(request.OfficeId);
+        // var checkOfficeStatusResult = await CheckOfficeStatus(
+        //     request: checkOfficeStatusRequest,
+        //     httpClientFactory: httpClienFactory,
+        //     logger: logger);
+
+        // var checkDoctorStatusRequest = new CheckStatus(request.DoctorId);
+        // var checkDoctorStatusResult = await CheckDoctorStatus(
+        //     request: checkDoctorStatusRequest,
+        //     httpClientFactory: httpClienFactory,
+        //     logger: logger);
 
         if (!doctorActiveResult.Result)
             return Results.BadRequest(Errors.DoctorIsNotActive);
@@ -72,5 +97,82 @@ public class CreatePatientAppointmentHandler
                 StartDateTime: appointment.Duration.Start,
                 EndDateTime: appointment.Duration.End));
     }
+    private static async Task<bool> CheckServiceStatus(
+           CheckStatus request,
+           IHttpClientFactory httpClientFactory,
+           ILogger logger)
+    {
+        try
+        {
+            var client = httpClientFactory.CreateClient("ClinicManagementApi");
+            var response = await client.GetAsync($"services/{request.EntityId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadFromJsonAsync<CheckStatusResponse>();
+                return json?.Status == "Active";
+            }
 
+            logger.LogWarning(
+                "Failed to check service status. Status code: {StatusCode}",
+                response.StatusCode);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error check service status");
+            return false;
+        }
+    }
+    private static async Task<bool> CheckOfficeStatus(
+       CheckStatus request,
+       IHttpClientFactory httpClientFactory,
+       ILogger logger)
+    {
+        try
+        {
+            var client = httpClientFactory.CreateClient("ClinicManagementApi");
+            var response = await client.GetAsync($"offices/{request.EntityId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadFromJsonAsync<CheckStatusResponse>();
+                return json?.Status == "Active";
+            }
+
+            logger.LogWarning(
+                "Failed to check office status. Status code: {StatusCode}",
+                response.StatusCode);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error check office status");
+            return false;
+        }
+    }
+    private static async Task<bool> CheckDoctorStatus(
+       CheckStatus request,
+       IHttpClientFactory httpClientFactory,
+       ILogger logger)
+    {
+        try
+        {
+            var client = httpClientFactory.CreateClient("ProfileApi");
+            var response = await client.GetAsync($"doctors/{request.EntityId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadFromJsonAsync<CheckStatusResponse>();
+                return json?.Status == "At work";
+            }
+
+            logger.LogWarning(
+                "Failed to check doctor status. Status code: {StatusCode}",
+                response.StatusCode);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error check doctor status");
+            return false;
+        }
+    }
 }

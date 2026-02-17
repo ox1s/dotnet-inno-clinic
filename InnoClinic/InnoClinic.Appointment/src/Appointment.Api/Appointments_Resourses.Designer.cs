@@ -56,5 +56,11 @@ namespace Appointment.Api {
                 return ResourceManager.GetString("Work_EndTime", resourceCulture);
             }
         }
+        
+        internal static string Clinics_TimeZone {
+            get {
+                return ResourceManager.GetString("Clinics_TimeZone", resourceCulture);
+            }
+        }
     }
 }

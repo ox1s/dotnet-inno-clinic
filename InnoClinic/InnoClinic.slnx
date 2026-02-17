@@ -1,4 +1,8 @@
 <Solution>
+    <Folder Name="/InnoClinic.ClinicManagement/" />
+    <Folder Name="/InnoClinic.ClinicManagement/src/">
+        <Project Path="InnoClinic.ClinicManagement/src/ClinicManagement.Api/ClinicManagement.Api.csproj" />
+    </Folder>
     <Folder Name="/InnoClinic.Identity/" />
     <Folder Name="/InnoClinic.Identity/src/">
         <Project Path="InnoClinic.Identity/src/Identity.Api/Identity.Api.csproj" />

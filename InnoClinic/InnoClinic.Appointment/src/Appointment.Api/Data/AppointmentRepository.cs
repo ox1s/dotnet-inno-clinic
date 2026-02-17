@@ -33,50 +33,54 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
         TimeRange duration,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Appointments
-            .AnyAsync(a =>
-                a.DoctorId == doctorId &&
-                a.Duration.Start < duration.End &&
-                a.Duration.End > duration.Start
-                // TODO: && a.IsApproved
-                ,
-                cancellationToken);
+        return await Task.FromResult(false);
+        // return await _dbContext.AppointmentViews
+        //     .AnyAsync(a =>
+        //         a.DoctorId == doctorId &&
+        //         a.DurationStart < duration.End &&
+        //         a.DurationEnd > duration.Start
+        //         // TODO: && a.IsApproved
+        //         ,
+        //         cancellationToken);
     }
     private IQueryable<Appointment> BuildQuery(AppointmentFilter filter)
     {
+        // private IQueryable<AppointmentViews> BuildQuery(AppointmentFilter filter)
+        // {
         var query = _dbContext.Appointments.AsNoTracking();
-
-        if (filter.DoctorId.HasValue)
-            query = query.Where(a =>
-                a.DoctorId == filter.DoctorId.Value);
-
-        if (filter.PatientId.HasValue)
-            query = query.Where(a =>
-                a.PatientId == filter.PatientId.Value);
-
-        if (filter.ServiceId.HasValue)
-            query = query.Where(a =>
-                a.ServiceId == filter.ServiceId.Value);
-
-        if (filter.OfficeId.HasValue)
-            query = query.Where(a =>
-                a.OfficeId == filter.OfficeId.Value);
-
-        if (filter.Date.HasValue)
-            query = query.Where(a =>
-                a.LocalDate == filter.Date.Value);
-
-        if (filter.DateStart.HasValue)
-            query = query.Where(a =>
-                a.LocalDate >= filter.DateStart.Value);
-
-        if (filter.DateEnd.HasValue)
-            query = query.Where(a =>
-                a.LocalDate <= filter.DateEnd.Value);
-
-        if (filter.IsApproved.HasValue)
-            query = query.Where(a =>
-                a.IsApproved == filter.IsApproved.Value);
+        // var query = _dbContext.AppointmentViews.AsNoTracking();
+        //
+        // if (filter.DoctorId.HasValue)
+        //     query = query.Where(a =>
+        //         a.DoctorId == filter.DoctorId.Value);
+        //
+        // if (filter.PatientId.HasValue)
+        //     query = query.Where(a =>
+        //         a.PatientId == filter.PatientId.Value);
+        //
+        // if (filter.ServiceId.HasValue)
+        //     query = query.Where(a =>
+        //         a.ServiceId == filter.ServiceId.Value);
+        //
+        // if (filter.OfficeId.HasValue)
+        //     query = query.Where(a =>
+        //         a.OfficeId == filter.OfficeId.Value);
+        //
+        // if (filter.Date.HasValue)
+        //     query = query.Where(a =>
+        //         a.LocalDate == filter.Date.Value);
+        //
+        // if (filter.DateStart.HasValue)
+        //     query = query.Where(a =>
+        //         a.LocalDate >= filter.DateStart.Value);
+        //
+        // if (filter.DateEnd.HasValue)
+        //     query = query.Where(a =>
+        //         a.LocalDate <= filter.DateEnd.Value);
+        //
+        // if (filter.IsApproved.HasValue)
+        //     query = query.Where(a =>
+        //         a.IsApproved == filter.IsApproved.Value);
 
         return query;
     }
@@ -88,6 +92,8 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
     }
     public async Task<List<Appointment>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
     {
+        // public async Task<List<AppointmentViews>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
+        // {
         var query = BuildQuery(filter);
 
         query = query

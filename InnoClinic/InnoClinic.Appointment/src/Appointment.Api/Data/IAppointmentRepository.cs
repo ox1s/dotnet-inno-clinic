@@ -9,4 +9,7 @@ public interface IAppointmentRepository
     Task<bool> IsOverlappingAsync(Guid doctorId, TimeRange duration, CancellationToken cancellationToken = default);
     Task<List<Appointment>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default);
     Task<int> CountAsync(AppointmentFilter filter, CancellationToken cancellationToken = default);
+
+    // Task<List<AppointmentView>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default);
+    // Task<List<AppointmentView>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default);
 }
