@@ -19,6 +19,7 @@ internal sealed class UpdateService(
         Guid Id,
         string ServiceName,
         decimal Price,
+        string Currency,
         Guid CategoryId,
         Guid SpecializationId,
         bool IsActive);
@@ -28,11 +29,12 @@ internal sealed class UpdateService(
         await validator.ValidateAndThrowAsync(request);
 
         var service = await context.Services.FindAsync(request.Id);
-
         if (service is null) return false;
 
+        var price = new Price(request.Price, Currency.FromCode(request.Currency));
+
         service.ServiceName = request.ServiceName;
-        service.Price = request.Price;
+        service.Price = price;
         service.CategoryId = request.CategoryId;
         service.SpecializationId = request.SpecializationId;
         service.IsActive = request.IsActive;

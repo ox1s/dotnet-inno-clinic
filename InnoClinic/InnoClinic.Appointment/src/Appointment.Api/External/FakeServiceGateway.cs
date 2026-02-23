@@ -8,4 +8,8 @@ public class FakeServiceGateway : IServiceGateway
     {
         return Task.FromResult(true);
     }
+    public Task<TimeSpan?> GetServiceDurationAsync(Guid serviceId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult<TimeSpan?>(TimeSpan.FromMinutes(30));
+    }
 }

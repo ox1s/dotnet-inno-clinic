@@ -4,28 +4,19 @@ using ClinicManagement.Api.Database;
 using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
-using ClinicManagement.Api.External;
-using ClinicManagement.Api.Offices;
+using ClinicManagement.Api.ServiceCategories;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 using FluentValidation;
 
-using Npgsql;
-
-using OpenTelemetry;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 using Microsoft.OpenApi;
+using ClinicManagement.Api.Services;
+using ClinicManagement.Api.Specializations;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails(configure =>
 {
@@ -34,6 +25,7 @@ builder.Services.AddProblemDetails(configure =>
         context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
     };
 });
+
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
@@ -43,6 +35,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.
     Services.AddSwaggerGen(options =>
     {
+
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             Name = "Authorization",
@@ -60,25 +53,32 @@ builder.
                 new List<string>()
             }
         });
+
+        options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
     });
 
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("innoclinic-database")));
 
-builder.Services.AddSingleton<TokenProvider>();
-
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(o =>
+builder.Services
+    .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        o.RequireHttpsMetadata = false;
-        o.TokenValidationParameters = new TokenValidationParameters
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["Secret"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            ClockSkew = TimeSpan.Zero
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
         };
     });
 
@@ -86,28 +86,16 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<CreateOffice>();
+builder.Services.AddScoped<CreateService>();
+builder.Services.AddScoped<UpdateService>();
+builder.Services.AddScoped<ListServices>();
+builder.Services.AddScoped<GetService>();
+builder.Services.AddScoped<CreateServiceCategory>();
+builder.Services.AddScoped<CreateSpecialization>();
 
 builder.Services.AddEndpoints();
 
-builder.Logging.AddOpenTelemetry(logging =>
-{
-    logging.IncludeFormattedMessage = true;
-    logging.IncludeScopes = true;
-});
-
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource => resource.AddService("InnoClinic.ClinicManagement.Api"))
-    .WithTracing(tracing =>
-    {
-        tracing
-            .AddHttpClientInstrumentation()
-            .AddAspNetCoreInstrumentation()
-            .AddNpgsql();
-    })
-    .UseOtlpExporter();
-
-WebApplication app = builder.Build();
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -117,10 +105,16 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-app.MapEndpoints();
+//app.MapEndpoints();
+app.MapEndpoint<CreateService.Endpoint>();
+app.MapEndpoint<ListServices.Endpoint>();
+app.MapEndpoint<GetService.Endpoint>();
+app.MapEndpoint<UpdateService.Endpoint>();
+app.MapEndpoint<CreateServiceCategory.Endpoint>();
+app.MapEndpoint<CreateSpecialization.Endpoint>();
 
 app.UseExceptionHandler();
-//app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

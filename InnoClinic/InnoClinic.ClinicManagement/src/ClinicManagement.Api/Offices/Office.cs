@@ -11,13 +11,13 @@ public class Office
 
     public Guid Id { get; set; }
     public string Address { get; set; } = null!;
-    public Guid? PhotoId { get; set; }
+    public Photo Photo { get; set; }
     public string RegistryPhoneNumber { get; set; } = null!;
     public bool IsActive { get; set; }
 
     public static Office Create(
         string address,
-        Guid? photoId,
+        Photo photo,
         string registryPhoneNumber,
         bool isActive)
     {
@@ -25,17 +25,17 @@ public class Office
         {
             Id = Guid.NewGuid(),
             Address = address,
-            PhotoId = photoId,
+            Photo = photo,
             RegistryPhoneNumber = registryPhoneNumber,
             IsActive = isActive
         };
     }
 
-    public void Update(string address, string registryPhoneNumber, Guid? photoId, bool isActive)
+    public void Update(string address, string registryPhoneNumber, Photo photo, bool isActive)
     {
         Address = address;
         RegistryPhoneNumber = registryPhoneNumber;
-        PhotoId = photoId;
+        Photo = photo;
         IsActive = isActive;
     }
     private Office() { }

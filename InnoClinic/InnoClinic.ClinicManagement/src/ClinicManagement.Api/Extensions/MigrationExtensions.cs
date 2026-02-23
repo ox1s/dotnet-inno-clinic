@@ -1,8 +1,6 @@
 ﻿using ClinicManagement.Api.Database;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ClinicManagement.Api.Extensions;
 

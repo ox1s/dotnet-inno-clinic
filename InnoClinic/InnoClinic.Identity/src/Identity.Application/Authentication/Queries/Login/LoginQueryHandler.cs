@@ -36,11 +36,11 @@ public class LoginQueryHandler(
             || !account.IsCorrectPasswordHash(query.Password, passwordHasher))
             return AuthenticationErrors.InvalidCredentials;
 
-        // TODO: Реализовать через CurrentUserProvider
         var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
         if (profileResult.IsError) return AuthenticationErrors.InvalidCredentials;
 
         var (role, status) = profileResult.Value;
+
         if (role != Roles.Patient && status == "Inactive") return AccountErrors.AccountInactive;
 
         var refreshToken = new RefreshToken

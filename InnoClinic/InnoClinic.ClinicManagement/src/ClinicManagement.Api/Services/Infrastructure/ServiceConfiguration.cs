@@ -16,12 +16,14 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(x => x.Price)
-            .IsRequired()
-            .HasPrecision(18, 2);
-
         builder.Property(x => x.IsActive)
             .IsRequired();
+
+        builder.OwnsOne(service => service.Price, priceBuilder =>
+        {
+            priceBuilder.Property(price => price.Currency)
+                .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
+        });
 
         builder.HasOne<ServiceCategory>()
             .WithMany()

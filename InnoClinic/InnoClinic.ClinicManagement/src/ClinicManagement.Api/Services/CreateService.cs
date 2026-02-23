@@ -1,3 +1,4 @@
+using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Database;
 using ClinicManagement.Api.Endpoints;
 
@@ -8,6 +9,7 @@ using InnoClinic.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicManagement.Api.Services;
 
@@ -18,6 +20,7 @@ internal sealed class CreateService(
     public sealed record Request(
         string ServiceName,
         decimal Price,
+        string Currency,
         Guid CategoryId,
         Guid SpecializationId,
         bool IsActive);
@@ -26,16 +29,20 @@ internal sealed class CreateService(
     {
         await validator.ValidateAndThrowAsync(request);
 
-        var service = new Service
-        {
-            Id = Guid.NewGuid(),
-            ServiceName = request.ServiceName,
-            Price = request.Price,
-            CategoryId = request.CategoryId,
-            SpecializationId = request.SpecializationId,
-            IsActive = request.IsActive
-        };
+        var currency = Currency.FromCode(request.Currency);
+        var price = new Price(request.Price, currency);
 
+        if (price is null || currency is null)
+        {
+            throw new ApplicationException("The price is invalid");
+        }
+
+        var service = Service.Create(
+            request.CategoryId,
+            request.ServiceName,
+            price,
+            request.SpecializationId,
+            request.IsActive);
         context.Services.Add(service);
         await context.SaveChangesAsync();
 
@@ -52,7 +59,7 @@ internal sealed class CreateService(
                 return Results.Created($"/services/{serviceId}", serviceId);
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
+            .RequirePermission(Permissions.ServicesManipulate);
         }
     }
 }

@@ -14,6 +14,7 @@ internal sealed class GetService(AppDbContext context)
         Guid Id,
         string ServiceName,
         decimal Price,
+        string Currency,
         Guid CategoryId,
         string CategoryName,
         bool IsActive);
@@ -25,7 +26,8 @@ internal sealed class GetService(AppDbContext context)
             .Select(s => new Response(
                 s.Id,
                 s.ServiceName,
-                s.Price,
+                s.Price.Amount,
+                s.Price.Currency.Code,
                 s.CategoryId,
                 context.ServiceCategories
                     .Where(c => c.Id == s.CategoryId)

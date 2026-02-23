@@ -16,7 +16,7 @@ internal sealed class UpdateOffice(
     public sealed record Request(
         Guid Id,
         string Address,
-        Guid? PhotoId,
+        string PhotoUrl,
         string RegistryPhoneNumber,
         bool IsActive);
 
@@ -31,10 +31,12 @@ internal sealed class UpdateOffice(
             return false;
         }
 
+        var photo = new Photo(request.PhotoUrl);
+
         office.Update(
             request.Address,
             request.RegistryPhoneNumber,
-            request.PhotoId,
+            photo,
             request.IsActive);
 
         await context.SaveChangesAsync();

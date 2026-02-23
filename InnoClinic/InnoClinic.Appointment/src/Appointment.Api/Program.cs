@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     var services = builder.Services;
     services.AddEndpointsApiExplorer();
+    builder.Services.AddHttpClient();
+    builder.Logging.AddConsole();
 
     services
         .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

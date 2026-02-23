@@ -14,6 +14,7 @@ internal sealed class ListServices(AppDbContext context)
         Guid Id,
         string ServiceName,
         decimal Price,
+        string Currency,
         Guid CategoryId,
         string CategoryName,
         Guid SpecializationId,
@@ -37,7 +38,8 @@ internal sealed class ListServices(AppDbContext context)
             .Select(s => new Response(
                 s.Id,
                 s.ServiceName,
-                s.Price,
+                s.Price.Amount,
+                s.Price.Currency.Code,
                 s.CategoryId,
                 context.ServiceCategories
                     .Where(c => c.Id == s.CategoryId)

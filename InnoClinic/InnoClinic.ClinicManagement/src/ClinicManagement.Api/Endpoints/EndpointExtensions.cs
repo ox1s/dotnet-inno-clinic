@@ -43,4 +43,11 @@ public static class EndpointExtensions
 
         return app;
     }
+
+    public static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder builder)
+        where TEndpoint : IEndpoint, new()
+    {
+        new TEndpoint().MapEndpoint(builder);
+        return builder;
+    }
 }

@@ -9,4 +9,13 @@ public class ServiceCategory
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
     public int TimeSlotSize { get; set; }
+
+    public static ServiceCategory Create(string name, int timeSlotSize)
+    {
+        return new ServiceCategory
+        {
+            Name = name,
+            TimeSlotSize = timeSlotSize,
+        };
+    }
 }

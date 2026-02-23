@@ -14,7 +14,7 @@ public class FakeProfileService : IProfileService
 
         return Task.FromResult(
             ErrorOrFactory.From((
-                Role: Roles.Patient,
+                Role: Roles.Receptionist,
                 Status: "Active")));
 
         // return Task.FromResult(

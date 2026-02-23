@@ -15,7 +15,7 @@ internal sealed class CreateOffice(
 {
     public sealed record Request(
         string Address,
-        Guid? PhotoId,
+        string PhotoUrl,
         string RegistryPhoneNumber,
         bool IsActive);
 
@@ -23,10 +23,11 @@ internal sealed class CreateOffice(
     {
         await validator.ValidateAndThrowAsync(request);
 
+        var photo = new Photo(request.PhotoUrl) ?? throw new ApplicationException("The photo is invalid");
 
         var office = Office.Create(
             request.Address,
-            request.PhotoId,
+            photo,
             request.RegistryPhoneNumber,
             request.IsActive);
 

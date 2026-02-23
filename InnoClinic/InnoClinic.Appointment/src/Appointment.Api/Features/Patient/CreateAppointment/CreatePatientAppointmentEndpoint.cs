@@ -1,4 +1,5 @@
 using Appointment.Api.Endpoints;
+using Appointment.Api.Features.Patient.CreateAppointment;
 
 using InnoClinic.Shared;
 

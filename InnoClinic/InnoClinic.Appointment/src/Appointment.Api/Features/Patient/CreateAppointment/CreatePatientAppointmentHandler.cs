@@ -3,14 +3,14 @@ using System.Security.Claims;
 using Appointment.Api.Common;
 using Appointment.Api.Data;
 using Appointment.Api.External;
+using Appointment.Api.Features.CreateAppointment;
 
 using FluentValidation;
 
 using InnoClinic.Shared.DTOs;
 
 using Throw;
-
-namespace Appointment.Api.Features.CreateAppointment;
+namespace Appointment.Api.Features.Patient.CreateAppointment;
 
 public class CreatePatientAppointmentHandler
 {
@@ -22,8 +22,8 @@ public class CreatePatientAppointmentHandler
         IServiceGateway serviceGateway,
         IOfficeGateway officeGateway,
         IProfileGateway profileGateway,
-        IHttpClientFactory httpClienFactory,
-        ILogger logger)
+        IHttpClientFactory httpClientFactory,
+        ILogger<CreatePatientAppointmentRequest> logger)
     {
 
         var validationResult = await validator.ValidateAsync(request);
@@ -100,7 +100,7 @@ public class CreatePatientAppointmentHandler
     private static async Task<bool> CheckServiceStatus(
            CheckStatus request,
            IHttpClientFactory httpClientFactory,
-           ILogger logger)
+           ILogger<CreatePatientAppointmentRequest> logger)
     {
         try
         {
@@ -126,7 +126,7 @@ public class CreatePatientAppointmentHandler
     private static async Task<bool> CheckOfficeStatus(
        CheckStatus request,
        IHttpClientFactory httpClientFactory,
-       ILogger logger)
+       ILogger<CreatePatientAppointmentRequest> logger)
     {
         try
         {
@@ -152,7 +152,7 @@ public class CreatePatientAppointmentHandler
     private static async Task<bool> CheckDoctorStatus(
        CheckStatus request,
        IHttpClientFactory httpClientFactory,
-       ILogger logger)
+       ILogger<CreatePatientAppointmentRequest> logger)
     {
         try
         {
