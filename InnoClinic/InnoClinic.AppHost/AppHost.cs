@@ -1,6 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddDockerComposeEnvironment("inno-clinic-docker");
+var compose = builder.AddDockerComposeEnvironment("inno-clinic-docker");
+
+var seq = builder.AddSeq("seq")
+    .WithEnvironment("ACCEPT_EULA", "Y")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 var mailpit = builder.AddMailPit("mailpit");
 
@@ -17,21 +21,33 @@ var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
     .WithReference(mailpit)
     .WithReference(sharedDatabase)
     .WaitFor(sharedDatabase)
+    .WithReference(seq)
+    .WaitFor(seq)
     .WithEnvironment("AppUrl", "https://localhost:7777")
-    .WithEnvironment("WebAppUrl", "http://localhost:7778");
+    .WithEnvironment("WebAppUrl", "http://localhost:7778")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerComposeService((resource, service) => service.Name = "identity-api");
 
 var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
     .WithReference(sharedDatabase)
     .WaitFor(sharedDatabase)
+    .WithReference(seq)
+    .WaitFor(seq)
     .WithEnvironment("AppUrl", "https://localhost:7779")
-    .WithEnvironment("WebAppUrl", "http://localhost:7780");
+    .WithEnvironment("WebAppUrl", "http://localhost:7780")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerComposeService((resource, service) => service.Name = "appointment-api");
 
-var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("clinicmanagement-api")
+var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("clinic-management-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
     .WithReference(sharedDatabase)
     .WaitFor(sharedDatabase)
+    .WithReference(seq)
+    .WaitFor(seq)
     .WithEnvironment("AppUrl", "https://localhost:7781")
-    .WithEnvironment("WebAppUrl", "http://localhost:7782");
+    .WithEnvironment("WebAppUrl", "http://localhost:7782")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerComposeService((resource, service) => service.Name = "clinic-management-api");
 
 builder.Build().Run();

@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+<Project Sdk="Aspire.AppHost.Sdk/13.1.1">
   <ItemGroup>
     <ProjectReference Include="..\InnoClinic.Appointment\src\Appointment.Api\Appointment.Api.csproj" />
     <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj" />
@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.Docker" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.Seq" />
     <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
   </ItemGroup>
   <PropertyGroup>

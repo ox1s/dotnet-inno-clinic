@@ -10,6 +10,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aspire.Seq" />
     <PackageReference Include="ErrorOr" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />

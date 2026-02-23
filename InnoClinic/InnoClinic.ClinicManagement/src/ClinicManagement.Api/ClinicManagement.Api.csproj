@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aspire.Seq" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />

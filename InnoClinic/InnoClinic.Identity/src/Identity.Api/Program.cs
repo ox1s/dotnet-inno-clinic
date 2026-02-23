@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddHttpContextAccessor();
 
+    builder.AddSeqEndpoint("seq");
+
     builder.Services.AddEndpointsApiExplorer();
 
     // Source - https://stackoverflow.com/q

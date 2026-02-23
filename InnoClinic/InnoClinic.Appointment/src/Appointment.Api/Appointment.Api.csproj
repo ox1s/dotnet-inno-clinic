@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aspire.Seq" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
@@ -26,11 +27,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Throw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Migrations\" />

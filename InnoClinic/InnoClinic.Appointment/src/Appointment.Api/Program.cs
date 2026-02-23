@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddEndpointsApiExplorer();
     builder.Services.AddHttpClient();
     builder.Logging.AddConsole();
+    builder.AddSeqEndpoint("seq");
 
     services
         .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

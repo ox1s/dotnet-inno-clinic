@@ -25,6 +25,7 @@ builder.Services.AddProblemDetails(configure =>
         context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
     };
 });
+builder.AddSeqEndpoint("seq");
 
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
