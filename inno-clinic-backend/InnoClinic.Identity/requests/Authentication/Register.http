@@ -1,0 +1,11 @@
+
+@host = localhost:7777
+
+POST https://{{host}}/authentication/register
+Content-Type: application/json
+
+{
+    "email": "patient2@test.com",
+    "password": "123Q!231ew123"
+}
+
