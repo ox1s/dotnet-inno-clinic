@@ -24,7 +24,7 @@ public class AuthenticationController(ISender mediator)
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(request.Email, request.Password);
+        var command = new RegisterCommand(request.Email, request.Password, request.HardCodedRole);
         ErrorOr<AuthenticationResult> authResult = await mediator.Send(command);
 
         return authResult.Match(
@@ -45,7 +45,7 @@ public class AuthenticationController(ISender mediator)
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = new LoginQuery(request.Email, request.Password);
+        var query = new LoginQuery(request.Email, request.Password, request.HardCodedRole);
         var loginResult = await mediator.Send(query);
 
         if (loginResult.IsError && loginResult.FirstError == AuthenticationErrors.InvalidCredentials)

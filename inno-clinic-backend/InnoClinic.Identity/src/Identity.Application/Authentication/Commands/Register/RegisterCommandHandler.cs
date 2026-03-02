@@ -62,8 +62,8 @@ public class RegisterCommandHandler(
             string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink)
         );
 
-        // TODO: Захардкоженная роль
-        var token = jwtTokenGenerator.GenerateToken(account, Roles.Receptionist);
+        // TODO: Захардкоженная роль, пока передаю в метод
+        var token = jwtTokenGenerator.GenerateToken(account, command.HardCodedRole);
 
         return new AuthenticationResult(
             account,

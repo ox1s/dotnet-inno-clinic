@@ -36,11 +36,9 @@ public class CreatePatientAppointmentHandler
         if (patientIdClaim == null || !Guid.TryParse(patientIdClaim.Value, out var patientId))
             return Results.Unauthorized();
 
-
         var timeRangeResult = TimeRange.Create(
             request.StartDateTime.ToUniversalTime(),
             request.EndDateTime.ToUniversalTime());
-
 
         timeRangeResult.ThrowIfNull();
         if (!timeRangeResult.Succeeded)
