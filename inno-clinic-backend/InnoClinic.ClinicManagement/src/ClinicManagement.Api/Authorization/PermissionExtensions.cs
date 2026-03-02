@@ -18,4 +18,3 @@ public static class PermissionExtensions
             policy.AddRequirements(new PermissionAuthorizationRequirement(allowedPermissions)));
     }
 }
-

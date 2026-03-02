@@ -64,7 +64,8 @@ public class ApproveAppointmentHandler
                         .FitWidth();
                 }
 
-                page.Content().Column(column =>
+                page.Content()
+                    .Column(column =>
                 {
                     column.Spacing(28);
 

@@ -6,10 +6,10 @@ using FluentValidation;
 
 using InnoClinic.Shared;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicManagement.Api.Services;
 

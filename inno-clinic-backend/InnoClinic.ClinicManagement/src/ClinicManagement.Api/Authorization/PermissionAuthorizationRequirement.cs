@@ -32,4 +32,3 @@ public class PermissionAuthorizationRequirement(params string[] allowedPermissio
         return Task.CompletedTask;
     }
 }
-

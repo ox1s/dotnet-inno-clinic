@@ -5,16 +5,15 @@ using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
 using ClinicManagement.Api.ServiceCategories;
+using ClinicManagement.Api.Services;
+using ClinicManagement.Api.Specializations;
+
+using FluentValidation;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
-using FluentValidation;
-
 using Microsoft.OpenApi;
-using ClinicManagement.Api.Services;
-using ClinicManagement.Api.Specializations;
 
 var builder = WebApplication.CreateBuilder(args);
 
