@@ -41,8 +41,8 @@ public class LoginQueryHandler(
             || !account.IsCorrectPasswordHash(query.Password, passwordHasher))
             return AuthenticationErrors.InvalidCredentials;
 
-        // HARD CODED ROLE, пока передаю в запросе, так как нет профиля и ролей
-        //var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
+        // TODO: HARD CODED ROLE, пока передаю в запросе, так как нет профиля и ролей
+        // var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
         var profileResult = query.HardCodedRole switch
         {
             Roles.Patient => ErrorOrFactory.From((Role: Roles.Patient, Status: "Active")),
