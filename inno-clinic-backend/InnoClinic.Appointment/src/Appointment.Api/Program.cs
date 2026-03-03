@@ -19,8 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 
     logging.AddConsole();
 
-    builder.AddSeqEndpoint("seq");
-
     services.AddWebHostInfrastructure(configuration, environment);
 
     services.AddEndpoints();

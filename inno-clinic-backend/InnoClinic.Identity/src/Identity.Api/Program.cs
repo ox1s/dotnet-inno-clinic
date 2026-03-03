@@ -3,10 +3,8 @@ using HealthChecks.UI.Client;
 using Identity.Api.Extensions;
 using Identity.Application;
 using Identity.Infrastructure;
-using Identity.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.EntityFrameworkCore;
 
 using Serilog;
 
@@ -20,7 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
     );
 
     builder.AddServiceDefaults();
-    builder.AddSeqEndpoint("seq");
 
     services
         .AddApi(builder.Configuration, builder.Environment)
@@ -41,11 +38,7 @@ var app = builder.Build();
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
     });
 
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-        dbContext.Database.Migrate();
-    }
+    await app.InitializeAsync();
 
     app.UseExceptionHandler();
 

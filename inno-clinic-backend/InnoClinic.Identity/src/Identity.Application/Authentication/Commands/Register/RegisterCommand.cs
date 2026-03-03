@@ -8,6 +8,5 @@ namespace Identity.Application.Authentication.Commands.Register;
 
 public record RegisterCommand(
     string Email,
-    string Password,
-    string HardCodedRole)
+    string Password)
     : IRequest<ErrorOr<AuthenticationResult>>;

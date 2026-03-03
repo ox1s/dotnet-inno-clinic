@@ -4,7 +4,6 @@ using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
-using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
@@ -61,9 +60,7 @@ public class RegisterCommandHandler(
             _emailSettings.WelcomeSubject,
             string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink)
         );
-
-        // TODO: Захардкоженная роль, пока передаю в метод
-        var token = jwtTokenGenerator.GenerateToken(account, command.HardCodedRole);
+        var token = jwtTokenGenerator.GenerateToken(account, Roles.Patient);
 
         return new AuthenticationResult(
             account,

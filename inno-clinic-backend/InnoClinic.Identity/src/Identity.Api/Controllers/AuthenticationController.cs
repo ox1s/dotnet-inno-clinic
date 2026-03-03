@@ -1,6 +1,5 @@
 using ErrorOr;
 
-using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Authentication.Commands.RevokeRefreshToken;
 using Identity.Application.Authentication.Commands.VerifyEmail;
 using Identity.Application.Authentication.Common;
@@ -8,7 +7,12 @@ using Identity.Application.Authentication.Queries.Login;
 using Identity.Application.Authentication.Queries.LoginWithRefreshToken;
 using Identity.Contracts.Authentication;
 
+using InnoClinic.Shared;
+
 using MediatR;
+using RegisterDoctorCommand = Identity.Application.Authentication.Commands.Register.Doctor.RegisterCommand;
+using RegisterPatientCommand = Identity.Application.Authentication.Commands.Register.Patient.RegisterCommand;
+using RegisterReceptionistCommand = Identity.Application.Authentication.Commands.Register.Receptionist.RegisterCommand;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +28,35 @@ public class AuthenticationController(ISender mediator)
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(request.Email, request.Password, request.HardCodedRole);
-        ErrorOr<AuthenticationResult> authResult = await mediator.Send(command);
+        Task<ErrorOr<AuthenticationResult>> registerTask = request.HardCodedRole switch
+        {
+            Roles.Doctor => mediator.Send(new RegisterDoctorCommand(request.Email, request.Password)),
+            Roles.Receptionist => mediator.Send(new RegisterReceptionistCommand(request.Email, request.Password)),
+            _ => mediator.Send(new RegisterPatientCommand(request.Email, request.Password))
+        };
+        ErrorOr<AuthenticationResult> authResult = await registerTask;
 
         return authResult.Match(
             authResult => base.Ok(MapToAuthResponse(authResult)),
             Problem);
+    }
+
+    [HttpPost("patient/register")]
+    public Task<IActionResult> RegisterPatient(RegisterRequest request)
+    {
+        return RegisterByCommand(new RegisterPatientCommand(request.Email, request.Password));
+    }
+
+    [HttpPost("doctor/register")]
+    public Task<IActionResult> RegisterDoctor(RegisterRequest request)
+    {
+        return RegisterByCommand(new RegisterDoctorCommand(request.Email, request.Password));
+    }
+
+    [HttpPost("receptionist/register")]
+    public Task<IActionResult> RegisterReceptionist(RegisterRequest request)
+    {
+        return RegisterByCommand(new RegisterReceptionistCommand(request.Email, request.Password));
     }
 
     [HttpGet("verify-email", Name = "VerifyEmailRoute")]
@@ -87,6 +114,15 @@ public class AuthenticationController(ISender mediator)
 
         return result.Match(
             deleted => Ok("Refresh tokens revoked successfully!"),
+            Problem);
+    }
+
+    private async Task<IActionResult> RegisterByCommand(IRequest<ErrorOr<AuthenticationResult>> command)
+    {
+        ErrorOr<AuthenticationResult> authResult = await mediator.Send(command);
+
+        return authResult.Match(
+            authResult => base.Ok(MapToAuthResponse(authResult)),
             Problem);
     }
 

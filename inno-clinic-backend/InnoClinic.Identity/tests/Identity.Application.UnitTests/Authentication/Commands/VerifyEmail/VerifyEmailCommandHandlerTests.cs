@@ -8,6 +8,8 @@ using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 using Identity.TestCommon.TestUtils.Services;
 
+using Microsoft.Extensions.Logging;
+
 using NSubstitute;
 
 namespace Identity.Application.UnitTests.Authentication.Commands.VerifyEmail;
@@ -18,18 +20,23 @@ public class VerifyEmailCommandHandlerTests
     private readonly IUnitOfWork _unitOfWork;
     private readonly VerifyEmailCommandHandler _handler;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly ILogger<VerifyEmailCommandHandler> _logger;
 
     public VerifyEmailCommandHandlerTests()
     {
         _accountsRepository = Substitute.For<IAccountsRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _dateTimeProvider = Substitute.For<IDateTimeProvider>();
+        _logger = Substitute.For<ILogger<VerifyEmailCommandHandler>>();
 
         _handler = new VerifyEmailCommandHandler(
             _accountsRepository,
             _unitOfWork,
-            _dateTimeProvider);
+            _dateTimeProvider,
+            _logger
+        );
     }
+
 
     [Fact]
     public async Task Handle_WhenTokenIsValid_ShouldVerifyAccountAndCommitChanges()
