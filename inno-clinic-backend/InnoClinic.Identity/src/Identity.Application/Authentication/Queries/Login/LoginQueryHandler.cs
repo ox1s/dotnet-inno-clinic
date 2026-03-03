@@ -1,7 +1,5 @@
 using ErrorOr;
 
-using Serilog;
-
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
 using Identity.Domain.AccountAggregate;
@@ -13,6 +11,8 @@ using InnoClinic.Shared;
 using MediatR;
 
 using Microsoft.Extensions.Logging;
+
+using Serilog;
 
 namespace Identity.Application.Authentication.Queries.Login;
 
