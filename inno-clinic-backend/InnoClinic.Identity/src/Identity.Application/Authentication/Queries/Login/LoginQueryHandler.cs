@@ -1,4 +1,5 @@
 using ErrorOr;
+
 using Serilog;
 
 using Identity.Application.Authentication.Common;
