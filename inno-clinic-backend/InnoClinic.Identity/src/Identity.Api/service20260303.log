@@ -1,0 +1,313 @@
+2026-03-03 10:07:34.238 +03:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:07:34.442 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:07:34.486 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:07:34.493 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:07:34.493 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:07:34.494 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:07:34.497 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:07:34.546 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:07:35.418 +03:00 [INF] Application is shutting down...
+2026-03-03 10:08:19.232 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:08:19.380 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:08:19.419 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:08:19.425 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:08:19.426 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:08:19.427 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:08:19.430 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:08:19.477 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:09:40.298 +03:00 [INF] Application is shutting down...
+2026-03-03 10:09:49.724 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:09:49.946 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:09:49.994 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:09:50.003 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:09:50.005 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:09:50.006 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:09:50.010 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:09:50.070 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:09:54.933 +03:00 [INF] Application is shutting down...
+2026-03-03 10:10:21.867 +03:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:10:22.010 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:10:22.051 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:10:22.058 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:10:22.059 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:10:22.061 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:10:22.063 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:10:22.116 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:10:40.504 +03:00 [INF] Application is shutting down...
+2026-03-03 10:11:17.817 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:11:17.963 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:11:18.003 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:11:18.010 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:11:18.011 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:11:18.012 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:11:18.014 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:11:18.060 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:11:36.947 +03:00 [INF] Application is shutting down...
+2026-03-03 10:12:15.068 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:12:15.255 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:12:15.318 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:12:15.331 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:12:15.333 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:12:15.335 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:12:15.340 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:12:15.482 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:17:29.824 +03:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:17:30.023 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:17:30.098 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:17:30.114 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:17:30.117 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:17:30.119 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:17:30.123 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:17:30.243 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:22:09.759 +03:00 [ERR] Failed executing DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:22:09.993 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:22:10.005 +03:00 [INF] Applying migration '20260202115545_InitialCreate'.
+2026-03-03 10:22:10.030 +03:00 [INF] Applying migration '20260209080548_CreateRefreshTokens'.
+2026-03-03 10:22:10.038 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:22:10.106 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:22:10.393 +03:00 [WRN] The ASP.NET Core developer certificate is only trusted by some clients. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert
+2026-03-03 10:22:10.405 +03:00 [INF] Now listening on: https://localhost:41465
+2026-03-03 10:22:10.405 +03:00 [INF] Now listening on: http://localhost:35167
+2026-03-03 10:22:10.406 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-03-03 10:22:10.406 +03:00 [INF] Hosting environment: Development
+2026-03-03 10:22:10.406 +03:00 [INF] Content root path: /home/ox1s/Projects/innowise/dotnet-inno-clinic/inno-clinic-backend/InnoClinic.Identity/src/Identity.Api
+2026-03-03 10:22:22.941 +03:00 [INF] Application is shutting down...
+2026-03-03 10:22:45.311 +03:00 [INF] Executed DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:22:45.601 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-03-03 10:22:45.692 +03:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'identity') THEN
+        CREATE SCHEMA identity;
+    END IF;
+END $EF$;
+CREATE TABLE IF NOT EXISTS identity."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-03-03 10:22:45.708 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-03-03 10:22:45.710 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE identity."__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-03-03 10:22:45.712 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM identity."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-03-03 10:22:45.716 +03:00 [INF] No migrations were applied. The database is already up to date.
+2026-03-03 10:22:45.827 +03:00 [INF] User profile is available. Using '/home/ox1s/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-03-03 10:22:46.486 +03:00 [WRN] The ASP.NET Core developer certificate is only trusted by some clients. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert
+2026-03-03 10:22:46.508 +03:00 [INF] Now listening on: https://localhost:43045
+2026-03-03 10:22:46.509 +03:00 [INF] Now listening on: http://localhost:42457
+2026-03-03 10:22:46.511 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-03-03 10:22:46.511 +03:00 [INF] Hosting environment: Development
+2026-03-03 10:22:46.511 +03:00 [INF] Content root path: /home/ox1s/Projects/innowise/dotnet-inno-clinic/inno-clinic-backend/InnoClinic.Identity/src/Identity.Api
+2026-03-03 10:23:01.301 +03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7777/authentication/login - application/json 112
+2026-03-03 10:23:01.494 +03:00 [INF] Executing endpoint 'Identity.Api.Controllers.AuthenticationController.Login (Identity.Api)'
+2026-03-03 10:23:01.573 +03:00 [INF] Route matched with {action = "Login", controller = "Authentication"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Identity.Contracts.Authentication.LoginRequest) on controller Identity.Api.Controllers.AuthenticationController (Identity.Api).
+2026-03-03 10:23:01.580 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-03-03 10:23:01.653 +03:00 [INF] Executing action method Identity.Api.Controllers.AuthenticationController.Login (Identity.Api) - Validation state: "Valid"
+2026-03-03 10:23:02.447 +03:00 [INF] Executed DbCommand (59ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a.email, a.email_verification_token, a.email_verification_token_expiration, a.is_email_verified, a.phone_number, a.photo_id, a.password_hash, a.created_at, a.created_by, a.updated_at, a.updated_by
+FROM identity.accounts AS a
+WHERE a.email = @email
+LIMIT 1
+2026-03-03 10:23:02.483 +03:00 [INF] Executed action method Identity.Api.Controllers.AuthenticationController.Login (Identity.Api), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 825.1252ms.
+2026-03-03 10:23:02.501 +03:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2026-03-03 10:23:02.544 +03:00 [INF] Executed action Identity.Api.Controllers.AuthenticationController.Login (Identity.Api) in 964.6465ms
+2026-03-03 10:23:02.544 +03:00 [INF] Executed endpoint 'Identity.Api.Controllers.AuthenticationController.Login (Identity.Api)'
+2026-03-03 10:23:02.557 +03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7777/authentication/login - 401 null application/problem+json; charset=utf-8 1288.4802ms
+2026-03-03 10:23:09.254 +03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7777/authentication/register - application/json 112
+2026-03-03 10:23:09.261 +03:00 [INF] Executing endpoint 'Identity.Api.Controllers.AuthenticationController.Register (Identity.Api)'
+2026-03-03 10:23:09.277 +03:00 [INF] Route matched with {action = "Register", controller = "Authentication"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(Identity.Contracts.Authentication.RegisterRequest) on controller Identity.Api.Controllers.AuthenticationController (Identity.Api).
+2026-03-03 10:23:09.286 +03:00 [INF] Executing action method Identity.Api.Controllers.AuthenticationController.Register (Identity.Api) - Validation state: "Valid"
+2026-03-03 10:23:09.462 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM identity.accounts AS a
+    WHERE a.email = @email)
+2026-03-03 10:23:10.131 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = Boolean), @p5='?', @p6='?' (DbType = Guid), @p7='?', @p8='?' (DbType = DateTime), @p9='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO identity.accounts ("Id", email, email_verification_token, email_verification_token_expiration, is_email_verified, phone_number, photo_id, password_hash, created_at, created_by)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+2026-03-03 10:23:10.169 +03:00 [INF] Sending email to receptionist@clinic.com with subject Welcome to InnoClinic! Please verify your email.
+2026-03-03 10:23:10.628 +03:00 [INF] Email sent successfully!
+2026-03-03 10:23:10.667 +03:00 [INF] Executed action method Identity.Api.Controllers.AuthenticationController.Register (Identity.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1381.2224ms.
+2026-03-03 10:23:10.668 +03:00 [INF] Executing OkObjectResult, writing value of type 'Identity.Contracts.Authentication.AuthenticationResponse'.
+2026-03-03 10:23:10.677 +03:00 [INF] Executed action Identity.Api.Controllers.AuthenticationController.Register (Identity.Api) in 1399.9697ms
+2026-03-03 10:23:10.678 +03:00 [INF] Executed endpoint 'Identity.Api.Controllers.AuthenticationController.Register (Identity.Api)'
+2026-03-03 10:23:10.681 +03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7777/authentication/register - 200 null application/json; charset=utf-8 1426.353ms
+2026-03-03 10:23:14.549 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7777/Authentication/verify-email?accountId=28e563c4-a2d2-498a-b872-78e0b1d7807c&token=0ff3fc3f-acb5-4457-a6be-0e56e541ca04 - null null
+2026-03-03 10:23:14.565 +03:00 [INF] Executing endpoint 'Identity.Api.Controllers.AuthenticationController.VerifyEmail (Identity.Api)'
+2026-03-03 10:23:14.581 +03:00 [INF] Route matched with {action = "VerifyEmail", controller = "Authentication"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] VerifyEmail(System.Guid, System.String) on controller Identity.Api.Controllers.AuthenticationController (Identity.Api).
+2026-03-03 10:23:14.589 +03:00 [INF] Executing action method Identity.Api.Controllers.AuthenticationController.VerifyEmail (Identity.Api) - Validation state: "Valid"
+2026-03-03 10:23:14.642 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@accountId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a.email, a.email_verification_token, a.email_verification_token_expiration, a.is_email_verified, a.phone_number, a.photo_id, a.password_hash, a.created_at, a.created_by, a.updated_at, a.updated_by
+FROM identity.accounts AS a
+WHERE a."Id" = @accountId
+LIMIT 1
+2026-03-03 10:23:14.681 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[@p7='?' (DbType = Guid), @p0='?', @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Boolean), @p4='?', @p5='?' (DbType = Guid), @p6='?'], CommandType='"Text"', CommandTimeout='30']
+UPDATE identity.accounts SET email = @p0, email_verification_token = @p1, email_verification_token_expiration = @p2, is_email_verified = @p3, phone_number = @p4, photo_id = @p5, password_hash = @p6
+WHERE "Id" = @p7;
+2026-03-03 10:23:14.683 +03:00 [INF] Executed action method Identity.Api.Controllers.AuthenticationController.VerifyEmail (Identity.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 92.9877ms.
+2026-03-03 10:23:14.683 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2026-03-03 10:23:14.684 +03:00 [INF] Executed action Identity.Api.Controllers.AuthenticationController.VerifyEmail (Identity.Api) in 102.7594ms
+2026-03-03 10:23:14.684 +03:00 [INF] Executed endpoint 'Identity.Api.Controllers.AuthenticationController.VerifyEmail (Identity.Api)'
+2026-03-03 10:23:14.685 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7777/Authentication/verify-email?accountId=28e563c4-a2d2-498a-b872-78e0b1d7807c&token=0ff3fc3f-acb5-4457-a6be-0e56e541ca04 - 200 null text/plain; charset=utf-8 136.4801ms
+2026-03-03 10:23:19.049 +03:00 [INF] Request starting HTTP/1.1 POST https://localhost:7777/authentication/login - application/json 112
+2026-03-03 10:23:19.068 +03:00 [INF] Executing endpoint 'Identity.Api.Controllers.AuthenticationController.Login (Identity.Api)'
+2026-03-03 10:23:19.095 +03:00 [INF] Route matched with {action = "Login", controller = "Authentication"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Identity.Contracts.Authentication.LoginRequest) on controller Identity.Api.Controllers.AuthenticationController (Identity.Api).
+2026-03-03 10:23:19.117 +03:00 [INF] Executing action method Identity.Api.Controllers.AuthenticationController.Login (Identity.Api) - Validation state: "Valid"
+2026-03-03 10:23:19.338 +03:00 [INF] Executed DbCommand (41ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a.email, a.email_verification_token, a.email_verification_token_expiration, a.is_email_verified, a.phone_number, a.photo_id, a.password_hash, a.created_at, a.created_by, a.updated_at, a.updated_by
+FROM identity.accounts AS a
+WHERE a.email = @email
+LIMIT 1
+2026-03-03 10:23:20.007 +03:00 [INF] Executed DbCommand (75ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTime), @p3='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO identity.refresh_tokens (refresh_token_id, "AccountId", "ExpiresOnUtc", token)
+VALUES (@p0, @p1, @p2, @p3);
+2026-03-03 10:23:20.035 +03:00 [INF] User details: Email { Value = receptionist@clinic.com }, *************
+2026-03-03 10:23:20.070 +03:00 [INF] Executed action method Identity.Api.Controllers.AuthenticationController.Login (Identity.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 949.5331ms.
+2026-03-03 10:23:20.075 +03:00 [INF] Executing OkObjectResult, writing value of type 'Identity.Contracts.Authentication.LoginResponse'.
+2026-03-03 10:23:20.104 +03:00 [INF] Executed action Identity.Api.Controllers.AuthenticationController.Login (Identity.Api) in 1008.9077ms
+2026-03-03 10:23:20.107 +03:00 [INF] Executed endpoint 'Identity.Api.Controllers.AuthenticationController.Login (Identity.Api)'
+2026-03-03 10:23:20.115 +03:00 [INF] Request finished HTTP/1.1 POST https://localhost:7777/authentication/login - 200 null application/json; charset=utf-8 1074.3183ms
+2026-03-03 10:25:47.977 +03:00 [INF] Application is shutting down...

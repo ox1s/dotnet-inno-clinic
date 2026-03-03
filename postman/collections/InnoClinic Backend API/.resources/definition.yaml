@@ -1,0 +1,73 @@
+$kind: collection
+name: InnoClinic Backend API
+description: |-
+  # InnoClinic Backend API Collection
+
+  This collection contains all API endpoints for the InnoClinic medical clinic management system.
+
+  ## Services Overview
+
+  The backend consists of three microservices:
+
+  ### 1. Identity API (Authentication)
+  - User registration and login
+  - JWT token management
+  - Email verification
+  - Refresh token handling
+
+  ### 2. Appointment API
+  - Appointment management (CRUD)
+  - Available slots lookup
+  - Doctor schedule viewing
+  - Receptionist appointment approval
+
+  ### 3. Clinic Management API
+  - Office management
+  - Medical services management
+  - Service categories
+  - Specializations
+
+  ## Authentication
+
+  Most endpoints require JWT Bearer authentication. To authenticate:
+  1. Use the **Register** or **Login** endpoint to obtain an access token
+  2. The token will be automatically used for subsequent requests via the `{{accessToken}}` variable
+
+  ## Roles
+
+  The system supports the following roles:
+  - **Patient**: Can create and manage their own appointments
+  - **Doctor**: Can view their schedule
+  - **Receptionist**: Can manage all appointments and approve them
+
+  ## Usage
+
+  1. Set the `baseUrl` variable to your API server URL
+  2. Register or login to get an access token
+  3. Use the endpoints according to your role
+
+variables:
+  - key: baseUrl
+    value: 'http://localhost:5000'
+    description: Base URL for the API server
+  - key: identityBaseUrl
+    value: 'http://localhost:5001'
+    description: Base URL for the Identity API
+  - key: appointmentBaseUrl
+    value: 'http://localhost:5002'
+    description: Base URL for the Appointment API
+  - key: clinicManagementBaseUrl
+    value: 'http://localhost:5003'
+    description: Base URL for the Clinic Management API
+  - key: accessToken
+    value: ''
+    description: JWT access token (set after login)
+  - key: refreshToken
+    value: ''
+    description: Refresh token for token renewal
+
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{accessToken}}'

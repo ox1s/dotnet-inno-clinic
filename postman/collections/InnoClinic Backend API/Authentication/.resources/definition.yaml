@@ -1,0 +1,7 @@
+$kind: collection
+name: Authentication
+description: |-
+  Authentication endpoints for user registration, login, and token management.
+  
+  These endpoints are part of the Identity API service.
+order: 1000

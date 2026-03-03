@@ -1,0 +1,41 @@
+$kind: http-request
+name: List Appointments
+description: 'US-13: View appointment list by receptionist'
+method: GET
+url: '{{appointmentBaseUrl}}/receptionist/appointments'
+order: 1000
+queryParams:
+  - key: page
+    value: '1'
+    description: Page number
+  - key: pageSize
+    value: '10'
+    description: Number of items per page
+  - key: doctorId
+    value: ''
+    description: Filter by doctor ID (optional)
+    disabled: true
+  - key: serviceId
+    value: ''
+    description: Filter by service ID (optional)
+    disabled: true
+  - key: officeId
+    value: ''
+    description: Filter by office ID (optional)
+    disabled: true
+  - key: date
+    value: ''
+    description: Filter by date (optional)
+    disabled: true
+  - key: isApproved
+    value: ''
+    description: Filter by approval status (optional)
+    disabled: true
+  - key: sortBy
+    value: ''
+    description: Sort field (optional)
+    disabled: true
+  - key: sortDirection
+    value: 'Asc'
+    description: Sort direction - Asc or Desc (optional)
+    disabled: true

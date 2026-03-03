@@ -1,0 +1,17 @@
+$kind: http-request
+name: Create Office
+method: POST
+url: '{{clinicManagementBaseUrl}}/offices'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "address": "123 Medical Center Drive",
+      "photoUrl": "https://example.com/office-photo.jpg",
+      "registryPhoneNumber": "+1-555-0100",
+      "isActive": true
+    }

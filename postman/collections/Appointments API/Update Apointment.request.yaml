@@ -1,0 +1,19 @@
+$kind: http-request
+url: https://{{appointment-host}}/appointments/{{appointmentId}}
+method: PUT
+body:
+  type: json
+  content: |
+    {
+      "patientId": "{{patientId}}",
+      "doctorId": "{{doctorId}}",
+      "serviceId": "{{serviceId}}",
+      "officeId": "{{officeId}}",
+      "startDateTime": "{{startDateTime}}",
+      "endDateTime": "{{endDateTime}}"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+order: 5000

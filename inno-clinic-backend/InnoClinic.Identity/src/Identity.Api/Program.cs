@@ -1,55 +1,29 @@
 using HealthChecks.UI.Client;
 
-using Identity.Api.Exceptions;
+using Identity.Api.Extensions;
 using Identity.Application;
 using Identity.Infrastructure;
 using Identity.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
+
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    var services = builder.Services;
+    var host = builder.Host;
+
+    builder.Host.UseSerilog((context, loggerConfig) =>
+        loggerConfig.ReadFrom.Configuration(context.Configuration)
+    );
+
     builder.AddServiceDefaults();
-
-    builder.Services.AddControllers();
-    builder.Services.AddHttpContextAccessor();
-
     builder.AddSeqEndpoint("seq");
 
-    builder.Services.AddEndpointsApiExplorer();
-
-    // Source - https://stackoverflow.com/q
-    // Posted by Nermin, modified by community. See post 'Timeline' for change history
-    // Retrieved 2026-01-16, License - CC BY-SA 4.0
-
-    builder.Services.AddSwaggerGen(options =>
-    {
-
-        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-        {
-            Name = "Authorization",
-            Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.Http,
-            Scheme = "Bearer",
-            BearerFormat = "JWT"
-        });
-
-        options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
-        {
-        {
-            new OpenApiSecuritySchemeReference("Bearer"),
-            new List<string>()
-        }
-        });
-    });
-
-    builder.Services.AddProblemDetails();
-    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
-    builder.Services
+    services
+        .AddApi(builder.Configuration, builder.Environment)
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
 }
@@ -61,6 +35,7 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
     app.MapHealthChecks("health", new HealthCheckOptions
     {
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -71,6 +46,7 @@ var app = builder.Build();
         var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
         dbContext.Database.Migrate();
     }
+
     app.UseExceptionHandler();
 
     if (app.Environment.IsDevelopment())

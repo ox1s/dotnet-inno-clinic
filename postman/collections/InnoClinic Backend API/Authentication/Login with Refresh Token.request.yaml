@@ -1,0 +1,30 @@
+$kind: http-request
+name: Login with Refresh Token
+method: POST
+url: '{{identityBaseUrl}}/Authentication/login-with-refresh-token'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "refreshToken": "{{refreshToken}}"
+    }
+auth:
+  type: noauth
+  credentials: []
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      if (pm.response.code === 200) {
+          const response = pm.response.json();
+          if (response.token) {
+              pm.collectionVariables.set("accessToken", response.token);
+          }
+          if (response.refreshToken) {
+              pm.collectionVariables.set("refreshToken", response.refreshToken);
+          }
+      }

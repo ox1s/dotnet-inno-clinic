@@ -1,0 +1,65 @@
+name: InnoClinic
+values:
+  - key: identity-host
+    value: 'localhost:7777'
+    enabled: true
+  - key: clinicmanagement-host
+    value: 'localhost:7781'
+    enabled: true
+  - key: appointment-host
+    value: 'localhost:7779'
+    enabled: true
+  - key: accessToken
+    value: ''
+    enabled: true
+  - key: refreshToken
+    value: ''
+    enabled: true
+  - key: secretKey
+    value: ''
+    enabled: true
+  - key: userId
+    value: ''
+    enabled: true
+  - key: email
+    value: test@test.com
+    enabled: true
+  - key: password
+    value: 123Q!231ew123
+    enabled: true
+  - key: doctorId
+    value: d28888e9-2ba9-473a-a40f-e38cb54f9b35
+    enabled: true
+  - key: patientId
+    value: 2c3b574a-291d-40bf-bbc2-dea7669831c
+    enabled: true
+  - key: officeId
+    value: 0c87574b-4555-44fc-9160-e7f390c3e552
+    enabled: true
+  - key: serviceId
+    value: 0c87777b-4523-44fc-9160-e7f390c3e552
+    enabled: true
+  - key: startDateTime
+    value: '2025-02-25T14:00:00'
+    enabled: true
+  - key: endDateTime
+    value: '2025-02-25T15:00:00'
+    enabled: true
+  - key: appointmentId
+    value: 90ddf14b-cb3e-4bb7-b8e3-7d44b8ff54b6
+    enabled: true
+  - key: receptionist-email
+    value: receptionist@innoclinic.com
+    enabled: true
+  - key: categoryId
+    value: ''
+    enabled: true
+  - key: specializationId
+    value: ''
+    enabled: true
+  - key: patient-email
+    value: patient@innoclinic.com
+    enabled: true
+  - key: role-patient
+    value: Patient
+    enabled: true

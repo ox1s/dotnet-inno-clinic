@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Service
+method: GET
+url: '{{clinicManagementBaseUrl}}/services/{{serviceId}}'
+order: 2000
+pathVariables:
+  - key: serviceId
+    value: ''
+    description: The service ID to retrieve

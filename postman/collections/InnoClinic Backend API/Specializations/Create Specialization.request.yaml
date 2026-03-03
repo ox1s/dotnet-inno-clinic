@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Specialization
+description: 'Requires SpecializationsManipulate permission'
+method: POST
+url: '{{clinicManagementBaseUrl}}/specializations'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "specializationName": "General Practice",
+      "isActive": true
+    }

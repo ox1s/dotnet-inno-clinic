@@ -1,0 +1,6 @@
+$kind: http-request
+url: https://{{appointment-host}}/receptionist/appointments/?{{serviceId}}
+method: GET
+queryParams:
+  "{{serviceId}}": null
+order: 4000

@@ -1,0 +1,8 @@
+$kind: collection
+name: Specializations
+description: |-
+  Medical specialization management endpoints.
+  
+  Part of the Clinic Management API service.
+  Requires SpecializationsManipulate permission.
+order: 9000

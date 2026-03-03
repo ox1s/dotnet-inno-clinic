@@ -1,0 +1,15 @@
+$kind: http-request
+name: Get Available Slots
+method: GET
+url: '{{appointmentBaseUrl}}/appointments/slots'
+order: 4000
+queryParams:
+  - key: doctorId
+    value: ''
+    description: The doctor ID to check availability for
+  - key: serviceId
+    value: ''
+    description: The service ID
+  - key: dateTime
+    value: '2025-01-15T00:00:00Z'
+    description: The date to check availability for

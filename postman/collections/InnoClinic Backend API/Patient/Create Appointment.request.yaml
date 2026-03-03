@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create Appointment
+description: 'US-6: Create an appointment. Requires Patient role.'
+method: POST
+url: '{{appointmentBaseUrl}}/patient/appointments'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "doctorId": "00000000-0000-0000-0000-000000000000",
+      "serviceId": "00000000-0000-0000-0000-000000000000",
+      "officeId": "00000000-0000-0000-0000-000000000000",
+      "startDateTime": "2025-01-15T09:00:00Z",
+      "endDateTime": "2025-01-15T09:30:00Z"
+    }

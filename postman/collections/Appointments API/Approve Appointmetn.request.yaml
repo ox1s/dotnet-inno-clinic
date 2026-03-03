@@ -1,0 +1,8 @@
+$kind: http-request
+url: https://{{appointment-host}}/receptionist/appointments/{{appointmentId}}/approve
+method: POST
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+order: 7000

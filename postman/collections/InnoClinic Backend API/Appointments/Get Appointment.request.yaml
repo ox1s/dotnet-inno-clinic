@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Appointment
+method: GET
+url: '{{appointmentBaseUrl}}/appointments/{{appointmentId}}'
+order: 1000
+pathVariables:
+  - key: appointmentId
+    value: ''
+    description: The appointment ID to retrieve

@@ -1,0 +1,4 @@
+$kind: http-request
+url: https://{{appointment-host}}/receptionist/appointments/
+method: GET
+order: 6000

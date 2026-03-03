@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://{{clinicmanagement-host}}/service-categories
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "categoryName" : "Category 1",
+        "timeSlotSize" : 1
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Create category successful", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Category Id saved", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('id');
+          
+          var categoryId = jsonData.id;
+
+          pm.environment.set("categoryId", categoryId);
+      });
+    language: text/javascript
+order: 5000

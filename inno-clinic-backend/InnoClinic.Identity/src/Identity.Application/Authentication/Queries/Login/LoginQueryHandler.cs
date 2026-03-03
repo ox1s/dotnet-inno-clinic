@@ -1,4 +1,5 @@
 using ErrorOr;
+using Serilog;
 
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
@@ -10,6 +11,8 @@ using InnoClinic.Shared;
 
 using MediatR;
 
+using Microsoft.Extensions.Logging;
+
 namespace Identity.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandler(
@@ -18,7 +21,8 @@ public class LoginQueryHandler(
     IAccountsRepository accountsRepository,
     IRefreshTokensRepository refreshTokensRepository,
     IUnitOfWork unitOfWork,
-    IProfileService profileService)
+    IProfileService profileService,
+    ILogger<LoginQueryHandler> logger)
     : IRequestHandler
         <LoginQuery,
         ErrorOr<LoginResult>>
@@ -61,6 +65,8 @@ public class LoginQueryHandler(
 
         await refreshTokensRepository.AddRefreshTokenAsync(refreshToken, cancellationToken);
         await unitOfWork.CommitChangesAsync(cancellationToken);
+
+        Log.Information("User {Email} logged in", email);
 
         return new LoginResult(jwtTokenGenerator.GenerateToken(account, role), refreshToken.Token);
     }

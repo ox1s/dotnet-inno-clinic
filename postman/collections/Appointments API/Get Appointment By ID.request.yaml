@@ -1,0 +1,7 @@
+$kind: http-request
+url: https://{{appointment-host}}/appointments/{{appointmentId}}
+method: GET
+body:
+  type: text
+  content: ""
+order: 2000
