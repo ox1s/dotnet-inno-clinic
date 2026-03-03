@@ -32,24 +32,6 @@ public class AuthenticationController(ISender mediator)
             Problem);
     }
 
-    [HttpPost("patient/register")]
-    public Task<IActionResult> RegisterPatient(RegisterRequest request)
-    {
-        return RegisterByCommand(new RegisterCommand(request.Email, request.Password));
-    }
-
-    [HttpPost("doctor/register")]
-    public Task<IActionResult> RegisterDoctor(RegisterRequest request)
-    {
-        return RegisterByCommand(new RegisterCommand(request.Email, request.Password));
-    }
-
-    [HttpPost("receptionist/register")]
-    public Task<IActionResult> RegisterReceptionist(RegisterRequest request)
-    {
-        return RegisterByCommand(new RegisterCommand(request.Email, request.Password));
-    }
-
     [HttpGet("verify-email", Name = "VerifyEmailRoute")]
     public async Task<IActionResult> VerifyEmail([FromQuery] Guid accountId, [FromQuery] string token)
     {
@@ -105,15 +87,6 @@ public class AuthenticationController(ISender mediator)
 
         return result.Match(
             deleted => Ok("Refresh tokens revoked successfully!"),
-            Problem);
-    }
-
-    private async Task<IActionResult> RegisterByCommand(IRequest<ErrorOr<AuthenticationResult>> command)
-    {
-        ErrorOr<AuthenticationResult> authResult = await mediator.Send(command);
-
-        return authResult.Match(
-            authResult => base.Ok(MapToAuthResponse(authResult)),
             Problem);
     }
 
