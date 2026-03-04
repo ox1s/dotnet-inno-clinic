@@ -40,8 +40,17 @@ var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("cli
     .WaitFor(sharedDatabase)
     .WithReference(sharedDatabase)
 
-    .WithEnvironment("AppUrl", "https://localhost:7781")
-    .WithEnvironment("WebAppUrl", "http://localhost:7782");
+    .WithEnvironment("AppUrl", "https://localhost:7113")
+    .WithEnvironment("WebAppUrl", "http://localhost:7114");
+
+var profileApi = builder.AddProject<Projects.Profile_Api>("profile-api")
+    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
+
+    .WaitFor(sharedDatabase)
+    .WithReference(sharedDatabase)
+
+    .WithEnvironment("AppUrl", "https://localhost:7123")
+    .WithEnvironment("WebAppUrl", "http://localhost:7124");
 
 // builder.AddViteApp("frontend", "../inno-clinic-frontend")
 //     .WithHttpEndpoint(env: "PORT")

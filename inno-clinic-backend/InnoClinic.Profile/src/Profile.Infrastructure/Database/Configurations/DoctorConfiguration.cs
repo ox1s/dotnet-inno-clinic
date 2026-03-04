@@ -21,7 +21,8 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .HasColumnName("office_id");
 
         builder.Property(d => d.CareerStartYear)
-            .HasColumnName("career_start_year");
+               .HasConversion(v => v.Year, v => CareerStartYear.From(v))
+               .HasColumnName("career_start_year");
 
         builder.Property(d => d.Status)
             .HasColumnName("status");

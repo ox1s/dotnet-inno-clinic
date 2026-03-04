@@ -1,8 +1,9 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.1">
+<Project Sdk="Aspire.AppHost.Sdk/13.1.2">
   <ItemGroup>
     <ProjectReference Include="..\InnoClinic.Appointment\src\Appointment.Api\Appointment.Api.csproj" />
     <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj" />
     <ProjectReference Include="..\InnoClinic.ClinicManagement\src\ClinicManagement.Api\ClinicManagement.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Profile\src\Profile.Api\Profile.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.Docker" />
