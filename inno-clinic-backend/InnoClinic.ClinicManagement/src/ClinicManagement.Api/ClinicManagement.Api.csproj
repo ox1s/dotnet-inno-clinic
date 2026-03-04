@@ -26,6 +26,6 @@
     <PackageReference Include="SixLabors.ImageSharp.Web" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
   </ItemGroup>
 </Project>
