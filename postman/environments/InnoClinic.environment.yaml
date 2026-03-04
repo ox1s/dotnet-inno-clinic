@@ -69,3 +69,6 @@ values:
   - key: receptionist-password
     value: ''
     enabled: true
+  - key: gateway-host
+    value: ''
+    enabled: true

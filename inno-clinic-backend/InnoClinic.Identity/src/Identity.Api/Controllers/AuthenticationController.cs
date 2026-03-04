@@ -45,7 +45,7 @@ public class AuthenticationController(ISender mediator)
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = new LoginQuery(request.Email, request.Password, request.HardCodedRole);
+        var query = new LoginQuery(request.Email, request.Password);
         var loginResult = await mediator.Send(query);
 
         if (loginResult.IsError && loginResult.FirstError == AuthenticationErrors.InvalidCredentials)

@@ -29,11 +29,13 @@ public class Account : AggregateRoot
     public static Account Create(
         Email email,
         string passwordHash,
-        IDateTimeProvider dateTimeProvider)
+        IDateTimeProvider dateTimeProvider,
+        Guid? id = null)
     {
         var account = new Account(
             email: email,
-            passwordHash: passwordHash);
+            passwordHash: passwordHash,
+            id: id);
         var now = dateTimeProvider.UtcNow;
         account.CreatedInfo = new CreateInfo(dateTimeProvider.UtcNow, account.Id);
         account.EmailVerificationTokenExpiration = now.AddDays(1);

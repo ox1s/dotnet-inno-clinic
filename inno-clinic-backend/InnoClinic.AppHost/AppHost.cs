@@ -52,6 +52,24 @@ var profileApi = builder.AddProject<Projects.Profile_Api>("profile-api")
     .WithEnvironment("AppUrl", "https://localhost:7123")
     .WithEnvironment("WebAppUrl", "http://localhost:7124");
 
+identityApi
+    .WithReference(profileApi)
+    .WaitFor(profileApi);
+
+
+var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
+    .WithReference(identityApi)
+    .WithReference(appointmentApi)
+    .WithReference(clinicManagementApi)
+    .WithReference(profileApi)
+
+    .WaitFor(identityApi)
+    .WaitFor(appointmentApi)
+    .WaitFor(clinicManagementApi)
+    .WaitFor(profileApi)
+
+    .WithExternalHttpEndpoints();
+
 // builder.AddViteApp("frontend", "../inno-clinic-frontend")
 //     .WithHttpEndpoint(env: "PORT")
 //     .WithReference(identityApi)

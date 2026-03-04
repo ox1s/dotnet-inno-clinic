@@ -3,6 +3,9 @@
     <Folder Name="/InnoClinic.ClinicManagement/src/">
         <Project Path="InnoClinic.ClinicManagement/src/ClinicManagement.Api/ClinicManagement.Api.csproj" />
     </Folder>
+    <Folder Name="/InnoClinic.Gateway/">
+        <Project Path="InnoClinic.Gateway/Gateway.Api/Gateway.Api.csproj" />
+    </Folder>
     <Folder Name="/InnoClinic.Identity/" />
     <Folder Name="/InnoClinic.Identity/src/">
         <Project Path="InnoClinic.Identity/src/Identity.Api/Identity.Api.csproj" />

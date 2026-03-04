@@ -4,7 +4,7 @@ using Profile.Infrastructure.Database;
 
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 
-public class CreateDoctorProfileHandler(ProfileDbContext dbContext)
+public class CreateDoctorProfileCommandHandler(ProfileDbContext dbContext)
 {
     public async Task Handle(CreateDoctorProfileCommand command)
     {

@@ -37,19 +37,17 @@ public class LoginQueryHandler(
         var email = emailResult.Value;
 
         var account = await accountsRepository.GetByEmailAsync(email, cancellationToken);
-        if (account == null
-            || !account.IsCorrectPasswordHash(query.Password, passwordHasher))
+        var isPasswordValid = account!.IsCorrectPasswordHash(query.Password, passwordHasher);
+        if (account == null)
             return AuthenticationErrors.InvalidCredentials;
 
-        // TODO: HARD CODED ROLE, пока передаю в запросе, так как нет профиля и ролей
-        // var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
-        var profileResult = query.HardCodedRole switch
+        if (!isPasswordValid)
         {
-            Roles.Patient => ErrorOrFactory.From((Role: Roles.Patient, Status: "Active")),
-            Roles.Doctor => ErrorOrFactory.From((Role: Roles.Doctor, Status: "Active")),
-            Roles.Receptionist => ErrorOrFactory.From((Role: Roles.Receptionist, Status: "Active")),
-            _ => ErrorOrFactory.From((Role: Roles.Patient, Status: "Active"))
-        };
+            logger.LogInformation("Incorrect password for login attempt for email {Email}", email);
+            return AuthenticationErrors.InvalidCredentials;
+        }
+
+        var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
         if (profileResult.IsError) return AuthenticationErrors.InvalidCredentials;
 
         var (role, status) = profileResult.Value;

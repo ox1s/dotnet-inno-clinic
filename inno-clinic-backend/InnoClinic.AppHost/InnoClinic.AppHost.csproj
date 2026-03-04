@@ -4,6 +4,7 @@
     <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj" />
     <ProjectReference Include="..\InnoClinic.ClinicManagement\src\ClinicManagement.Api\ClinicManagement.Api.csproj" />
     <ProjectReference Include="..\InnoClinic.Profile\src\Profile.Api\Profile.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Gateway\Gateway.Api\Gateway.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.Docker" />

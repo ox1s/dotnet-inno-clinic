@@ -91,6 +91,7 @@ public static class DependencyInjection
 
         private IServiceCollection AddServices(IConfiguration configuration)
         {
+            services.AddHttpClient();
             services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
             services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Section));
             var emailSettings = configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
@@ -101,7 +102,7 @@ public static class DependencyInjection
             }
 
             services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
-            services.AddScoped<IProfileService, FakeProfileService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             var mailPitConnectionString = configuration.GetConnectionString("mailpit");
 

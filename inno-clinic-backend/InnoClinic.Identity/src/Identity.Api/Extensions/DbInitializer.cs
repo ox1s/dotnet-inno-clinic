@@ -11,6 +11,7 @@ public static class DbInitializer
 {
     private const string DefaultReceptionistEmail = "receptionist@innoclinic.com";
     private const string DefaultReceptionistPassword = "RecepT1!";
+    private const string DefaultReceptionistAccountId = "817dfc4f-f275-484d-a47e-f461f54f02e4";
 
     public static async Task InitializeAsync(this WebApplication app, CancellationToken cancellationToken = default)
     {
@@ -30,6 +31,8 @@ public static class DbInitializer
             configuration["DbInitializer:Receptionist:Email"] ?? DefaultReceptionistEmail;
         var receptionistPassword =
             configuration["DbInitializer:Receptionist:Password"] ?? DefaultReceptionistPassword;
+        var receptionistAccountIdRaw =
+            configuration["DbInitializer:Receptionist:AccountId"] ?? DefaultReceptionistAccountId;
 
         var emailResult = Email.Create(receptionistEmail);
         if (emailResult.IsError)
@@ -41,17 +44,39 @@ public static class DbInitializer
             return;
         }
 
-        var email = emailResult.Value;
-        if (await accountsRepository.ExistsByEmailAsync(email, cancellationToken))
+        if (!Guid.TryParse(receptionistAccountIdRaw, out var receptionistAccountId))
         {
-            logger.LogInformation("Identity seed skipped: receptionist '{ReceptionistEmail}' already exists", receptionistEmail);
+            logger.LogError(
+                "Identity seed skipped: receptionist account id '{ReceptionistAccountId}' is invalid",
+                receptionistAccountIdRaw);
+            return;
+        }
+
+        var email = emailResult.Value;
+        var existingAccount = await accountsRepository.GetByEmailAsync(email, cancellationToken);
+        if (existingAccount is not null)
+        {
+            if (existingAccount.Id != receptionistAccountId)
+            {
+                logger.LogWarning(
+                    "Identity seed warning: receptionist '{ReceptionistEmail}' already exists with account id '{ExistingReceptionistAccountId}', expected '{ConfiguredReceptionistAccountId}'. Profile seed may not match until ids are aligned.",
+                    receptionistEmail,
+                    existingAccount.Id,
+                    receptionistAccountId);
+            }
+
+            logger.LogInformation(
+                "Identity seed skipped: receptionist '{ReceptionistEmail}' already exists with account id '{ReceptionistAccountId}'",
+                receptionistEmail,
+                existingAccount.Id);
             return;
         }
 
         var account = Account.Create(
             email,
             passwordHasher.HashPassword(receptionistPassword),
-            dateTimeProvider);
+            dateTimeProvider,
+            receptionistAccountId);
 
         if (account.EmailVerificationToken is { } emailVerificationToken)
         {
@@ -69,7 +94,8 @@ public static class DbInitializer
         await unitOfWork.CommitChangesAsync(cancellationToken);
 
         logger.LogInformation(
-            "Identity seed completed: receptionist '{ReceptionistEmail}' was created",
-            receptionistEmail);
+            "Identity seed completed: receptionist '{ReceptionistEmail}' was created with account id '{ReceptionistAccountId}'",
+            receptionistEmail,
+            receptionistAccountId);
     }
 }

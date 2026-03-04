@@ -1,13 +1,13 @@
 $kind: http-request
 name: Login as receptionist
-url: https://{{identity-host}}/authentication/login
+url: https://{{gateway-host}}/identity/authentication/login
 method: POST
 body:
   type: json
   content: |-
     {
         "email": "{{receptionist-email}}",
-        "password": "{{password}}"
+        "password": "{{receptionist-password}}"
     }
 scripts:
   - type: afterResponse

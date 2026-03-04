@@ -1,6 +1,6 @@
 $kind: http-request
 name: Create Doctor Profile
-url: https://{{profile-api-host}}/doctors
+url: https://{{gateway-host}}/profile/receptionists/doctors
 method: POST
 body:
   type: json
