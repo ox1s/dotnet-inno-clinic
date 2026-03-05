@@ -9,6 +9,9 @@ using Profile.Domain.Entities.Doctors;
 using Profile.Domain.Entities.Patients;
 using Profile.Domain.Entities.Receptionists;
 using Profile.Features.Receptionists.Create.CreateDoctorProfile;
+using InnoClinic.Shared;
+using Quartz;
+using Profile.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -18,10 +21,27 @@ var builder = WebApplication.CreateBuilder(args);
     var logging = builder.Logging;
     var host = builder.Host;
 
+    // builder.Services.AddQuartz(q =>
+    // {
+    //     var jobKey = new JobKey("StatusJob");
+
+    //     q.AddJob<SendActivityCheckJob>(opts => opts.WithIdentity(jobKey));
+
+    //     q.AddTrigger(opts => opts
+    //         .ForJob(jobKey)
+    //         .WithIdentity("TelegramStatusJob-trigger")
+    //         .WithCronSchedule("0 0 14 ? * MON-FRI")
+    //     );
+    // });
+
+    builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
     services.AddEndpointsApiExplorer();
     services.AddHttpClient();
 
-    host.UseWolverine();
+    host.UseWolverine(opts =>
+        opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly)
+    );
 
     services.AddHealthChecks();
 
@@ -39,36 +59,31 @@ var app = builder.Build();
 
     await app.InitializeAsync();
 
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    app.MapDefaultEndpoints();
-
-    // Тут ошибка надо попровить Wolverine handler, он не видит его, хотя в проекте он есть и там все нормально, надо разобраться почему так происходит
     app.MapPost("/receptionists/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
-        bus.InvokeAsync(command));
+        await bus.InvokeAsync(command))
+            .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
     app.MapGet("/profiles/{accountId:guid}", async (
         Guid accountId,
         ProfileDbContext dbContext,
         CancellationToken cancellationToken) =>
     {
-        var doctor = await dbContext.Set<Doctor>()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.AccountId == accountId, cancellationToken);
-
-        if (doctor is not null)
-        {
-            return Results.Ok(new { Role = "Doctor", Status = doctor.Status });
-        }
-
         var receptionistExists = await dbContext.Set<Receptionist>()
             .AsNoTracking()
             .AnyAsync(r => r.AccountId == accountId, cancellationToken);
 
         if (receptionistExists)
         {
-            return Results.Ok(new { Role = "Receptionist", Status = "Active" });
+            return Results.Ok(new { Role = Roles.Receptionist, Status = "Active" });
+        }
+
+        var doctor = await dbContext.Set<Doctor>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(d => d.AccountId == accountId, cancellationToken);
+
+        if (doctor is not null)
+        {
+            return Results.Ok(new { Role = Roles.Doctor, Status = doctor.Status });
         }
 
         var patientExists = await dbContext.Set<Patient>()
@@ -82,6 +97,13 @@ var app = builder.Build();
 
         return Results.NotFound();
     });
+
+
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapDefaultEndpoints();
 
 
     app.Run();

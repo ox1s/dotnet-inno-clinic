@@ -19,6 +19,9 @@
         <Project Path="InnoClinic.Identity/tests/Identity.Domain.UnitTests/Identity.Domain.UnitTests.csproj" />
         <Project Path="InnoClinic.Identity/tests/Identity.TestCommon/Identity.TestCommon.csproj" />
     </Folder>
+    <Folder Name="/Solution Items/">
+        <File Path="compose.yaml" />
+    </Folder>
     <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
 
     <Folder Name="/InnoClinic.Appointment/" />
@@ -29,6 +32,7 @@
     <Folder Name="/InnoClinic.Appointment/tests/">
         <Project Path="InnoClinic.Appointment/tests/Appointment.Api.UnitTests/Appointment.Api.UnitTests.csproj" />
     </Folder>
+    <Project Path="InnoClinic.Notification/InnoClinic.Notification.csproj" />
 
     <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
     <Folder Name="/InnoClinic.Profile/" />

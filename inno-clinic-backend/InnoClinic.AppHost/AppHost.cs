@@ -5,6 +5,10 @@ var compose = builder.AddDockerComposeEnvironment("inno-clinic-docker");
 
 var mailpit = builder.AddMailPit("mailpit");
 
+var python = builder.AddUvicornApp("python-api", "../InnoClinic.TelegramBot", "main:app")
+    .WithEnvironment("AppUrl", "https://localhost:6666")
+    .WithEnvironment("WebAppUrl", "http://localhost:6669");
+
 var postgres = builder.AddPostgres("postgres")
     .WithHostPort(5435)
     .WithPgAdmin()

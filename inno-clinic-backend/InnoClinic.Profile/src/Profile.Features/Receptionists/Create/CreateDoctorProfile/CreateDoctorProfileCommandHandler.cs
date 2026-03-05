@@ -4,9 +4,11 @@ using Profile.Infrastructure.Database;
 
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 
-public class CreateDoctorProfileCommandHandler(ProfileDbContext dbContext)
+public class CreateDoctorProfileCommandHandler
 {
-    public async Task Handle(CreateDoctorProfileCommand command)
+    public static async Task Handle(
+        CreateDoctorProfileCommand command,
+        ProfileDbContext dbContext)
     {
         var firstName = FirstName.Create(command.FirstName);
         var lastName = LastName.Create(command.LastName);

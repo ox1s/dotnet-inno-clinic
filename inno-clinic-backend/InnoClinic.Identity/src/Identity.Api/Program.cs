@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 
 using Identity.Api.Extensions;
+using Identity.Api.Middleware;
 using Identity.Application;
 using Identity.Infrastructure;
 
@@ -47,6 +48,9 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseMiddleware<RequestContextLoggingMiddleware>();
+    app.UseSerilogRequestLogging();
 
     app.UseHttpsRedirection();
     app.UseAuthentication();

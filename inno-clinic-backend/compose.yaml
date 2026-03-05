@@ -1,0 +1,7 @@
+﻿services:
+  innoclinic.notification:
+    image: innoclinic.notification
+    build:
+      context: .
+      dockerfile: InnoClinic.Notification/Dockerfile
+

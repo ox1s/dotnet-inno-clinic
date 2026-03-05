@@ -47,10 +47,11 @@ public class LoginQueryHandler(
             return AuthenticationErrors.InvalidCredentials;
         }
 
+        var (role, status) = (string.Empty, string.Empty);
         var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
-        if (profileResult.IsError) return AuthenticationErrors.InvalidCredentials;
-
-        var (role, status) = profileResult.Value;
+        if (profileResult.IsError) role = Roles.Patient; // Типо по дефолту возращаем пациента, даже если профиля няма. Все равно кредишаналы правильны
+        else
+            (role, status) = profileResult.Value;
 
         if (role != Roles.Patient && status == "Inactive") return AccountErrors.AccountInactive;
 

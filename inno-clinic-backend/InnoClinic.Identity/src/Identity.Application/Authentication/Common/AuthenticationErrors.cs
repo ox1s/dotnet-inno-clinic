@@ -15,4 +15,8 @@ public static class AuthenticationErrors
     public static readonly Error UserRoleNotFound = Error.Validation(
         code: "Authentication.UserRoleNotFound",
         description: "User role not found");
+
+    public static readonly Error ProfileNotFound = Error.Validation(
+        code: "Authentication.ProfileNotFound",
+        description: "Profile not found");
 }

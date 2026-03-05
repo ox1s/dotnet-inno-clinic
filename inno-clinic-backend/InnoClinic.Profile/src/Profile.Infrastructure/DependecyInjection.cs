@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 
+using Telegram.Bot;
+
 namespace Profile.Infrastructure;
 
 public static class DependecyInjection
@@ -14,6 +16,9 @@ public static class DependecyInjection
             IConfiguration configuration)
     {
         AddPersistence(services, configuration);
+
+        string botToken = configuration.GetValue<string>("BotToken") ?? throw new ArgumentNullException(nameof(configuration));
+        services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));
 
         return services;
     }
