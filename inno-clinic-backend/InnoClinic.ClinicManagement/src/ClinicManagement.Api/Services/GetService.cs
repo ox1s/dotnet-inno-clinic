@@ -1,9 +1,6 @@
 using ClinicManagement.Api.Database;
 using ClinicManagement.Api.Endpoints;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagement.Api.Services;

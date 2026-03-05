@@ -1,9 +1,4 @@
-using System.Net.Mail;
-using System.Text;
-
 using Identity.Application.Common.Interfaces;
-using Identity.Application.Common.Settings;
-using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.Repositories;
@@ -11,6 +6,7 @@ using Identity.Infrastructure.Security.CurrentUserProvider;
 using Identity.Infrastructure.Security.PasswordHasher;
 using Identity.Infrastructure.Security.TokenGenerator;
 using Identity.Infrastructure.Security.TokenValidation;
+using Identity.Infrastructure.Services.Bus;
 using Identity.Infrastructure.Services.Email;
 using Identity.Infrastructure.Services.Profile;
 using Identity.Infrastructure.Services.Time;
@@ -19,8 +15,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure;
 
@@ -93,36 +87,12 @@ public static class DependencyInjection
         {
             services.AddHttpClient();
             services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
-            services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Section));
-            var emailSettings = configuration.GetSection(EmailSettings.Section).Get<EmailSettings>();
-
-            if (emailSettings is null)
-            {
-                throw new InvalidOperationException("Email settings are missing");
-            }
 
             services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+
             services.AddScoped<IProfileService, ProfileService>();
 
-            var mailPitConnectionString = configuration.GetConnectionString("mailpit");
-
-            if (string.IsNullOrEmpty(mailPitConnectionString))
-            {
-                throw new InvalidOperationException("MailPit connection string is missing");
-            }
-
-            mailPitConnectionString = mailPitConnectionString.Replace("Endpoint=", "");
-
-            var uri = new Uri(mailPitConnectionString, UriKind.Absolute);
-
-            var host = uri.Host;
-            var port = uri.Port;
-
-            services
-                .AddFluentEmail(emailSettings.FromEmail, emailSettings.FromName)
-                .AddSmtpSender(new SmtpClient(host, port));
-
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IRabbitMqService, RabbitMqService>();
 
             return services;
         }

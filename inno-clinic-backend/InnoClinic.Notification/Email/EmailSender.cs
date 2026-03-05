@@ -1,16 +1,12 @@
 using FluentEmail.Core;
 
-using Identity.Application.Common.Interfaces;
-using Identity.Infrastructure.Exceptions;
+using InnoClinic.Notification.Exceptions;
 
-using Microsoft.Extensions.Logging;
-
-namespace Identity.Infrastructure.Services.Email;
+namespace InnoClinic.Notification.Email;
 
 public partial class EmailSender(
     IFluentEmail email,
     ILogger<EmailSender> logger)
-    : IEmailSender
 {
     public async Task SendEmailAsync(string to, string from, string subject, string body)
     {

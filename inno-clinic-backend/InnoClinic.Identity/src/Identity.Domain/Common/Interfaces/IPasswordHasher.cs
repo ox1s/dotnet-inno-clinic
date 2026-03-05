@@ -1,4 +1,3 @@
-using ErrorOr;
 namespace Identity.Domain.Common.Interfaces;
 
 public interface IPasswordHasher

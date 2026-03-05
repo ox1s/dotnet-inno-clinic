@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 
-using Telegram.Bot;
-
 namespace Profile.Infrastructure;
 
 public static class DependecyInjection
@@ -23,6 +21,8 @@ public static class DependecyInjection
     {
         string connectionString = configuration.GetConnectionString("innoclinic-database") ??
                                   throw new ArgumentNullException(nameof(configuration));
+
+        services.AddSingleton<SoftDeleteInterceptor>();
 
         services.AddDbContext<ProfileDbContext>(options =>
             options.UseNpgsql(connectionString));

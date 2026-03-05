@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 
-using Profile.Domain.Entities.AccountProfiles;
-
 namespace Profile.Infrastructure.Database;
 
 public class ProfileDbContext(
@@ -11,7 +9,6 @@ public class ProfileDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("profile");
-
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
         base.OnModelCreating(modelBuilder);

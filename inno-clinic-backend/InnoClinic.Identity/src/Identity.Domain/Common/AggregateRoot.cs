@@ -1,5 +1,3 @@
-using Identity.Domain.Common.Interfaces;
-
 namespace Identity.Domain.Common;
 
 public abstract class AggregateRoot : Entity

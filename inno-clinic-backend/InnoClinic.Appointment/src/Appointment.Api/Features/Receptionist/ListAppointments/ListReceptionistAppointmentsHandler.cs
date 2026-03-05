@@ -76,14 +76,4 @@ public class ListReceptionistAppointmentsHandler
 
         return TypedResults.Ok(/*response*/);
     }
-    private static string FormatFullName(string? first, string? last, string? middle)
-    {
-        var parts = new[] { last, first, middle }.Where(s => !string.IsNullOrWhiteSpace(s));
-        return string.Join(" ", parts);
-    }
-    private static string FormatTime(DateTimeOffset utcTime, TimeZoneInfo tz)
-    {
-        var localTime = TimeZoneInfo.ConvertTime(utcTime, tz);
-        return $"{localTime:HH:mm}";
-    }
 }

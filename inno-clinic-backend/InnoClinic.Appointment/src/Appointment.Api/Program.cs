@@ -7,49 +7,47 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-{
 
-    var services = builder.Services;
-    var configuration = builder.Configuration;
-    var environment = builder.Environment;
-    var logging = builder.Logging;
+var services = builder.Services;
+var configuration = builder.Configuration;
+var environment = builder.Environment;
+var logging = builder.Logging;
 
-    services.AddEndpointsApiExplorer();
-    services.AddHttpClient();
+services.AddEndpointsApiExplorer();
+services.AddHttpClient();
 
-    logging.AddConsole();
+logging.AddConsole();
 
-    services.AddWebHostInfrastructure(configuration, environment);
+services.AddWebHostInfrastructure(configuration, environment);
 
-    services.AddEndpoints();
+services.AddEndpoints();
 
-    services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-}
+services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbContext = scope.ServiceProvider
-            .GetRequiredService<AppointmentDbContext>();
-
-        if (dbContext.Database.IsRelational())
-        {
-            dbContext.Database.Migrate();
-        }
-    }
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    app.MapEndpoints();
-
-    app.Run();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<AppointmentDbContext>();
+
+    if (dbContext.Database.IsRelational())
+    {
+        await dbContext.Database.MigrateAsync();
+    }
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapEndpoints();
+
+await app.RunAsync();
 
 public partial class Program { }

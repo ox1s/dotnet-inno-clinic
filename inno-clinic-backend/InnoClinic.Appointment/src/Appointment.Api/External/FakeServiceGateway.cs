@@ -1,5 +1,3 @@
-using InnoClinic.Shared.DTOs;
-
 namespace Appointment.Api.External;
 
 public class FakeServiceGateway : IServiceGateway

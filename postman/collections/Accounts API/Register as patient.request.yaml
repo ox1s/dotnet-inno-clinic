@@ -1,6 +1,5 @@
 $kind: http-request
-name: Register as patient
-url: https://{{gateway-host}}/identity/authentication/register
+url: https://{{identity-host}}/authentication/register
 method: POST
 body:
   type: json

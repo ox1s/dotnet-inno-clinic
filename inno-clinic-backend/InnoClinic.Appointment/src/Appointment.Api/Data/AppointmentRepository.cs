@@ -43,7 +43,7 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
         //         ,
         //         cancellationToken);
     }
-    private IQueryable<Appointment> BuildQuery(AppointmentFilter filter)
+    private IQueryable<Appointment> BuildQuery()
     {
         // private IQueryable<AppointmentViews> BuildQuery(AppointmentFilter filter)
         // {

@@ -1,5 +1,4 @@
 $kind: http-request
-name: Register as receptionist
 url: https://{{identity-host}}/authentication/register
 method: POST
 body:
@@ -7,7 +6,8 @@ body:
   content: |-
     {
         "email": "{{receptionist-email}}",
-        "password": "{{receptionist-password}}"
+        "password": "{{password}}",
+        "hardCodedRole": "Receptionist"
     }
 scripts:
   - type: afterResponse

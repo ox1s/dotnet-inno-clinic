@@ -1,6 +1,0 @@
-@InnoClinic.Notification_HostAddress = http://localhost:5062
-
-GET {{InnoClinic.Notification_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

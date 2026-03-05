@@ -16,7 +16,7 @@ public class RefreshTokensRepository(IdentityDbContext context)
     }
     public async Task<RefreshToken?> GetRefreshTokenAsync(
         string queryRefreshToken,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         return await context.RefreshTokens
                    .Include(t => t.Account)
@@ -25,7 +25,7 @@ public class RefreshTokensRepository(IdentityDbContext context)
 
     public async Task RevokeRefreshTokensAsync(
         Guid accountId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         await context.RefreshTokens
             .Where(t => t.AccountId == accountId)

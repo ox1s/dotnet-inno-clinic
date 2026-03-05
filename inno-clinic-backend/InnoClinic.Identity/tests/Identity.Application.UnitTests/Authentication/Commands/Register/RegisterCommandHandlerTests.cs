@@ -4,10 +4,10 @@ using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
 using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
-using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+using InnoClinic.Shared.Contracts.Notifications;
 
 using Microsoft.Extensions.Options;
 
@@ -20,7 +20,7 @@ public class RegisterCommandHandlerTests
 {
     private readonly IAccountsRepository _accountsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IEmailSender _emailSender;
+    private readonly IRabbitMqService _rabbitMqService;
     private readonly RegisterCommandHandler _handler;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IEmailVerificationLinkFactory _linkFactory;
@@ -41,7 +41,7 @@ public class RegisterCommandHandlerTests
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _accountsRepository = Substitute.For<IAccountsRepository>();
-        _emailSender = Substitute.For<IEmailSender>();
+        _rabbitMqService = Substitute.For<IRabbitMqService>();
         _linkFactory = Substitute.For<IEmailVerificationLinkFactory>();
         _dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
@@ -52,10 +52,10 @@ public class RegisterCommandHandlerTests
             _passwordHasher,
             _unitOfWork,
             _accountsRepository,
-            _emailSender,
             _linkFactory,
             _dateTimeProvider,
-            options);
+            _rabbitMqService
+            );
     }
 
     [Fact]
@@ -83,12 +83,8 @@ public class RegisterCommandHandlerTests
         await _accountsRepository.Received(1).AddAccountAsync(Arg.Is<Account>(a =>
             a.Email.Value == command.Email), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(1).CommitChangesAsync(Arg.Any<CancellationToken>());
-        await _emailSender.Received(1).SendEmailAsync(
-            command.Email,
-            Arg.Any<string>(),
-            Arg.Any<string>(),
-            Arg.Is<string>(body => body.Contains("http://verify-link")
-                                   || body.Contains("https://verify-link")));
+        await _rabbitMqService.Received(1).PublishAsync(new SendVerificationEmailCommand(
+            Arg.Any<Guid>(), command.Email, "http://verify-link"));
     }
 
     [Fact]
@@ -110,8 +106,10 @@ public class RegisterCommandHandlerTests
         result.FirstError.Should().Be(AccountErrors.AlreadyExists);
         await _accountsRepository.DidNotReceive()
             .AddAccountAsync(Arg.Any<Account>(), Arg.Any<CancellationToken>());
-        await _emailSender.DidNotReceive()
-            .SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
-                Arg.Any<string>());
+        await _rabbitMqService.DidNotReceive()
+            .PublishAsync(new SendVerificationEmailCommand(
+                Arg.Any<Guid>(),
+                Arg.Any<string>(),
+                Arg.Any<string>()));
     }
 }

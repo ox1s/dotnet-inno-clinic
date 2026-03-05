@@ -1,22 +1,28 @@
 
 var builder = DistributedApplication.CreateBuilder(args);
+const string profileInternalSecret = "dev-internal-secret";
 
 var compose = builder.AddDockerComposeEnvironment("inno-clinic-docker");
 
 var mailpit = builder.AddMailPit("mailpit");
 
-var rabbitmq = builder.AddRabbitMQ("rabbitmq");
+var rabbitmq = builder.AddRabbitMQ("rabbitmq")
+                    .WithManagementPlugin();
 
 var mongo = builder.AddMongoDB("mongo")
-                   .WithLifetime(ContainerLifetime.Persistent);
+                .WithMongoExpress();
 
-var mongodb = mongo.AddDatabase("mongodb");
+var mongodb = mongo.AddDatabase("notifications-db");
 
-var python = builder.AddUvicornApp("python-api", "../InnoClinic.TelegramBot", "main:app")
+var notificationsApi = builder.AddProject<Projects.InnoClinic_Notification>("notifications-api")
+    .WaitFor(rabbitmq)
+    .WithReference(rabbitmq)
+
     .WaitFor(mongodb)
     .WithReference(mongodb)
-    .WithEnvironment("AppUrl", "https://localhost:6666")
-    .WithEnvironment("WebAppUrl", "http://localhost:6669");
+
+    .WaitFor(mailpit)
+    .WithReference(mailpit);
 
 var postgres = builder.AddPostgres("postgres")
     .WithHostPort(5435)
@@ -29,11 +35,11 @@ var sharedDatabase = postgres.AddDatabase("innoclinic-database");
 var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
 
-    .WaitFor(mailpit)
-    .WithReference(mailpit)
-
     .WaitFor(sharedDatabase)
     .WithReference(sharedDatabase)
+
+    .WaitFor(rabbitmq)
+    .WithReference(rabbitmq)
 
     .WithEnvironment("AppUrl", "https://localhost:7777")
     .WithEnvironment("WebAppUrl", "http://localhost:7778");
@@ -58,6 +64,7 @@ var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("cli
 
 var profileApi = builder.AddProject<Projects.Profile_Api>("profile-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
+    .WithEnvironment("InternalAuth__SharedSecret", profileInternalSecret)
 
     .WaitFor(sharedDatabase)
     .WithReference(sharedDatabase)
@@ -88,11 +95,5 @@ var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
     .WaitFor(profileApi)
 
     .WithExternalHttpEndpoints();
-
-// builder.AddViteApp("frontend", "../inno-clinic-frontend")
-//     .WithHttpEndpoint(env: "PORT")
-//     .WithReference(identityApi)
-//     .WithReference(appointmentApi)
-//     .WithReference(clinicManagementApi);
 
 builder.Build().Run();

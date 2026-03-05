@@ -6,6 +6,7 @@ using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+using InnoClinic.Shared.Contracts.Notifications;
 
 using MediatR;
 
@@ -17,14 +18,12 @@ public class CreateWorkerAccountCommandHandler(
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
     IAccountsRepository accountsRepository,
-    IEmailSender emailSender,
     IEmailVerificationLinkFactory linkFactory,
     IDateTimeProvider dateTimeProvider,
-    IOptions<EmailSettings> emailSettingsOptions)
+    IOptions<EmailSettings> emailSettingsOptions,
+    IRabbitMqService rabbitMqService)
     : IRequestHandler<CreateWorkerAccountCommand, ErrorOr<CreateWorkerAccountResult>>
 {
-    private readonly EmailSettings _emailSettings = emailSettingsOptions.Value;
-
     public async Task<ErrorOr<CreateWorkerAccountResult>> Handle(
         CreateWorkerAccountCommand command,
         CancellationToken cancellationToken)
@@ -63,11 +62,12 @@ public class CreateWorkerAccountCommandHandler(
         }
 
         var verificationLink = linkFactory.Create(account.Id, account.EmailVerificationToken);
-        await emailSender.SendEmailAsync(
-            account.Email.Value,
-            _emailSettings.FromEmail,
-            _emailSettings.WelcomeSubject,
-            string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink));
+
+        await rabbitMqService.PublishAsync(new SendVerificationEmailCommand(
+                    account.Id,
+                    account.Email.Value,
+                    verificationLink
+                ));
 
         return new CreateWorkerAccountResult(account.Id, account.Email.Value, normalizedRole);
     }

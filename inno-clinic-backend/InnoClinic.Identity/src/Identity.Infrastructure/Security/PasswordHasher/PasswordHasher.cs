@@ -1,8 +1,3 @@
-using System.Text.RegularExpressions;
-
-using ErrorOr;
-
-using Identity.Domain.Common;
 using Identity.Domain.Common.Interfaces;
 
 namespace Identity.Infrastructure.Security.PasswordHasher;

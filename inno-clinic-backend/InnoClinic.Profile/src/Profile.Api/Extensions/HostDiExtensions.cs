@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-using Profile.Infrastructure.Database;
-using Profile.Infrastructure.Database.Repositories;
-
 namespace Profile.Api.Extensions;
 
 public static class HostDiExtensions

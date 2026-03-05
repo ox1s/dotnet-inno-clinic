@@ -13,6 +13,8 @@ public class AccountProfileConfiguration : IEntityTypeConfiguration<AccountProfi
 
         builder.HasKey(a => a.Id);
 
+        builder.HasQueryFilter(a => !a.IsDeleted);
+
         builder.Property(a => a.Id)
             .HasColumnName("account_profile_id")
             .ValueGeneratedNever();

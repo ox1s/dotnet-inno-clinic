@@ -5,10 +5,6 @@ using FluentValidation;
 
 using InnoClinic.Shared;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-
 namespace ClinicManagement.Api.Services;
 
 internal sealed class UpdateService(

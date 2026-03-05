@@ -1,9 +1,6 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Database;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Services;
-
-using FluentValidation;
 namespace ClinicManagement.Api.ServiceCategories;
 
 public class CreateServiceCategory(

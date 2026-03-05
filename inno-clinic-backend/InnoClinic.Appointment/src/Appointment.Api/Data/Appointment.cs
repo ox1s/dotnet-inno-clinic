@@ -36,7 +36,7 @@ public class Appointment
         Guid? id = null)
     {
         var timeResult = TimeRange.Create(duration.Start, duration.End);
-        if (timeResult.Succeeded is false)
+        if (!timeResult.Succeeded)
             throw new InvalidOperationException($"Invalid time range: {timeResult.Error.Code}");
 
         return new Appointment(
@@ -60,7 +60,7 @@ public class Appointment
         Duration = duration;
 
         var timeResult = TimeRange.Create(duration.Start, duration.End);
-        if (timeResult.Succeeded is false)
+        if (!timeResult.Succeeded)
             throw new InvalidOperationException($"Invalid time range: {timeResult.Error.Code}");
 
         Duration = timeResult.Value!;

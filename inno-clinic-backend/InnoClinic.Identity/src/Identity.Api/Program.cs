@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
     var services = builder.Services;
     var host = builder.Host;
 
+    builder.AddRabbitMQClient(connectionName: "rabbitmq");
     builder.Host.UseSerilog((context, loggerConfig) =>
         loggerConfig.ReadFrom.Configuration(context.Configuration)
     );

@@ -1,4 +1,3 @@
-using Profile.Domain.Abstractions;
 using Profile.Domain.Entities.AccountProfiles;
 
 namespace Profile.Domain.Entities.Patients;

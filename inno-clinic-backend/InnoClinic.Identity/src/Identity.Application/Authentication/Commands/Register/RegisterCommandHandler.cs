@@ -2,15 +2,13 @@ using ErrorOr;
 
 using Identity.Application.Authentication.Common;
 using Identity.Application.Common.Interfaces;
-using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
+using InnoClinic.Shared.Contracts.Notifications;
 
 using MediatR;
-
-using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Authentication.Commands.Register;
 
@@ -19,13 +17,11 @@ public class RegisterCommandHandler(
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
     IAccountsRepository accountsRepository,
-    IEmailSender emailSender,
     IEmailVerificationLinkFactory linkFactory,
     IDateTimeProvider dateTimeProvider,
-    IOptions<EmailSettings> emailSettingsOptions)
+    IRabbitMqService rabbitMqService)
     : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
-    private readonly EmailSettings _emailSettings = emailSettingsOptions.Value;
     public async Task<ErrorOr<AuthenticationResult>> Handle(
         RegisterCommand command,
         CancellationToken cancellationToken)
@@ -54,12 +50,12 @@ public class RegisterCommandHandler(
 
         var verificationLink = linkFactory.Create(account.Id, account.EmailVerificationToken!);
 
-        await emailSender.SendEmailAsync(
+        await rabbitMqService.PublishAsync(new SendVerificationEmailCommand(
+            account.Id,
             account.Email.Value,
-            _emailSettings.FromEmail,
-            _emailSettings.WelcomeSubject,
-            string.Format(_emailSettings.WelcomeBodyTemplate, verificationLink)
-        );
+            verificationLink
+        ));
+
         var token = jwtTokenGenerator.GenerateToken(account, Roles.Patient);
 
         return new AuthenticationResult(

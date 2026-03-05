@@ -11,8 +11,8 @@ public class AppointmentFilter
     public DateOnly? DateStart { get; set; }
     public DateOnly? DateEnd { get; set; }
     public bool? IsApproved { get; set; }
-    public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
+    public int Page { get; set; }
+    public int PageSize { get; set; }
     public SortOptions SortBy { get; set; }
     public SortDirection SortDirection { get; set; }
 

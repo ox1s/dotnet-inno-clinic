@@ -3,10 +3,6 @@ using ClinicManagement.Api.Endpoints;
 
 using FluentValidation;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-
 namespace ClinicManagement.Api.Offices;
 
 internal sealed class UpdateOffice(

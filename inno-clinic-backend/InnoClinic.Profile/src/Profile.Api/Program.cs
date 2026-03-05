@@ -1,17 +1,17 @@
-using Wolverine;
-using Wolverine.RabbitMQ;
-
-using Profile.Infrastructure;
-using Profile.Infrastructure.Database;
+using InnoClinic.Shared;
 
 using Microsoft.EntityFrameworkCore;
+
 using Profile.Api.Extensions;
 using Profile.Domain.Entities.Doctors;
 using Profile.Domain.Entities.Patients;
 using Profile.Domain.Entities.Receptionists;
 using Profile.Features.Receptionists.Create.CreateDoctorProfile;
-using InnoClinic.Shared;
-using Quartz;
+using Profile.Infrastructure;
+using Profile.Infrastructure.Database;
+
+using Wolverine;
+using Wolverine.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -21,32 +21,24 @@ var builder = WebApplication.CreateBuilder(args);
     var logging = builder.Logging;
     var host = builder.Host;
 
-    // builder.Services.AddQuartz(q =>
-    // {
-    //     var jobKey = new JobKey("StatusJob");
-
-    //     q.AddJob<SendActivityCheckJob>(opts => opts.WithIdentity(jobKey));
-
-    //     q.AddTrigger(opts => opts
-    //         .ForJob(jobKey)
-    //         .WithIdentity("TelegramStatusJob-trigger")
-    //         .WithCronSchedule("0 0 14 ? * MON-FRI")
-    //     );
-    // });
-
-    // builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
     services.AddEndpointsApiExplorer();
     services.AddHttpClient();
 
     host.UseWolverine(opts =>
-    {
-        opts.UseRabbitMqUsingNamedConnection("rabbitmq")
-            .AutoProvision()
-            .UseConventionalRouting();
+        {
+            opts.PublishMessage<DoctorCreated>().ToRabbitExchange("telegram-notifications-queue");
 
-        opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly);
-    }
+            var rabbitConnectionString = builder.Configuration.GetConnectionString("rabbitmq");
+
+            if (rabbitConnectionString != null)
+            {
+                opts.UseRabbitMq(new Uri(rabbitConnectionString))
+                    .AutoProvision()
+                    .UseConventionalRouting();
+            }
+
+            opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly);
+        }
     );
 
     services.AddHealthChecks();
@@ -78,39 +70,27 @@ var app = builder.Build();
             .AsNoTracking()
             .AnyAsync(r => r.AccountId == accountId, cancellationToken);
 
-        if (receptionistExists)
-        {
-            return Results.Ok(new { Role = Roles.Receptionist, Status = "Active" });
-        }
+        if (receptionistExists) return Results.Ok(new { Role = Roles.Receptionist, Status = "Active" });
 
         var doctor = await dbContext.Set<Doctor>()
             .AsNoTracking()
             .FirstOrDefaultAsync(d => d.AccountId == accountId, cancellationToken);
 
-        if (doctor is not null)
-        {
-            return Results.Ok(new { Role = Roles.Doctor, Status = doctor.Status });
-        }
+        if (doctor is not null) return Results.Ok(new { Role = Roles.Doctor, doctor.Status });
 
         var patientExists = await dbContext.Set<Patient>()
             .AsNoTracking()
             .AnyAsync(p => p.AccountId == accountId, cancellationToken);
 
-        if (patientExists)
-        {
-            return Results.Ok(new { Role = "Patient", Status = "Active" });
-        }
+        if (patientExists) return Results.Ok(new { Role = Roles.Patient, Status = "Active" });
 
         return Results.NotFound();
     });
-
-
 
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapDefaultEndpoints();
-
 
     app.Run();
 }

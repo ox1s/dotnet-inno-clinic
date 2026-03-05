@@ -8,8 +8,12 @@ cloudResources:
     ../postman/collections/Clinic Management API: 52229656-4aa13e63-ffb3-4ea7-9a02-179c95a79677
     ../postman/collections/Accounts API: 52229656-c1d3552d-495b-42b7-bd90-bf09ae94b106
     ../postman/collections/Appointments API: 52229656-f2f86950-6541-4dff-98b1-5b274fde914f
+    ..\postman\collections\Clinic Management API: 52229656-4aa13e63-ffb3-4ea7-9a02-179c95a79677
+    ..\postman\collections\Accounts API: 52229656-c1d3552d-495b-42b7-bd90-bf09ae94b106
+    ..\postman\collections\Appointments API: 52229656-f2f86950-6541-4dff-98b1-5b274fde914f
   environments:
     ../postman/environments/InnoClinic.environment.yaml: 52229656-a4433294-78e3-47ed-a922-47efcd22ead9
+    ..\postman\environments\InnoClinic.environment.yaml: 52229656-a4433294-78e3-47ed-a922-47efcd22ead9
 
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:
