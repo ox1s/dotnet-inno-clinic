@@ -5,7 +5,16 @@ var compose = builder.AddDockerComposeEnvironment("inno-clinic-docker");
 
 var mailpit = builder.AddMailPit("mailpit");
 
+var rabbitmq = builder.AddRabbitMQ("rabbitmq");
+
+var mongo = builder.AddMongoDB("mongo")
+                   .WithLifetime(ContainerLifetime.Persistent);
+
+var mongodb = mongo.AddDatabase("mongodb");
+
 var python = builder.AddUvicornApp("python-api", "../InnoClinic.TelegramBot", "main:app")
+    .WaitFor(mongodb)
+    .WithReference(mongodb)
     .WithEnvironment("AppUrl", "https://localhost:6666")
     .WithEnvironment("WebAppUrl", "http://localhost:6669");
 
@@ -52,6 +61,12 @@ var profileApi = builder.AddProject<Projects.Profile_Api>("profile-api")
 
     .WaitFor(sharedDatabase)
     .WithReference(sharedDatabase)
+
+    .WaitFor(rabbitmq)
+    .WithReference(rabbitmq)
+
+    .WaitFor(mongodb)
+    .WithReference(mongodb)
 
     .WithEnvironment("AppUrl", "https://localhost:7123")
     .WithEnvironment("WebAppUrl", "http://localhost:7124");

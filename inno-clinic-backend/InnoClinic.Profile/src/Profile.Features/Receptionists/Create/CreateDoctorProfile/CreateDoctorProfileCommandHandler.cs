@@ -2,13 +2,16 @@ using Profile.Domain.Entities.AccountProfiles;
 using Profile.Domain.Entities.Doctors;
 using Profile.Infrastructure.Database;
 
+using Wolverine;
+
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 
 public class CreateDoctorProfileCommandHandler
 {
     public static async Task Handle(
         CreateDoctorProfileCommand command,
-        ProfileDbContext dbContext)
+        ProfileDbContext dbContext,
+        IMessageBus bus)
     {
         var firstName = FirstName.Create(command.FirstName);
         var lastName = LastName.Create(command.LastName);
@@ -30,5 +33,7 @@ public class CreateDoctorProfileCommandHandler
 
         dbContext.Set<Doctor>().Add(doctor);
         await dbContext.SaveChangesAsync();
+
+        await bus.PublishAsync(new DoctorCreated(command.Email, doctor.AccountId));
     }
 }

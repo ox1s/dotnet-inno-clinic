@@ -1,4 +1,5 @@
 using Wolverine;
+using Wolverine.RabbitMQ;
 
 using Profile.Infrastructure;
 using Profile.Infrastructure.Database;
@@ -11,7 +12,6 @@ using Profile.Domain.Entities.Receptionists;
 using Profile.Features.Receptionists.Create.CreateDoctorProfile;
 using InnoClinic.Shared;
 using Quartz;
-using Profile.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -34,13 +34,19 @@ var builder = WebApplication.CreateBuilder(args);
     //     );
     // });
 
-    builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    // builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
     services.AddEndpointsApiExplorer();
     services.AddHttpClient();
 
     host.UseWolverine(opts =>
-        opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly)
+    {
+        opts.UseRabbitMqUsingNamedConnection("rabbitmq")
+            .AutoProvision()
+            .UseConventionalRouting();
+
+        opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly);
+    }
     );
 
     services.AddHealthChecks();

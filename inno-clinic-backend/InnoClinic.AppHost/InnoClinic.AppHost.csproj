@@ -8,8 +8,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.Docker" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.Python" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" />
     <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
   </ItemGroup>
   <PropertyGroup>

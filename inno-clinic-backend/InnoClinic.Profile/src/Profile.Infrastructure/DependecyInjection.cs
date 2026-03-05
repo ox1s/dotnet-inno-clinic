@@ -17,9 +17,6 @@ public static class DependecyInjection
     {
         AddPersistence(services, configuration);
 
-        string botToken = configuration.GetValue<string>("BotToken") ?? throw new ArgumentNullException(nameof(configuration));
-        services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));
-
         return services;
     }
     private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
