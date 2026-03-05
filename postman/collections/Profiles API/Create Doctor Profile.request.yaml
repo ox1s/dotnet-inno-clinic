@@ -17,4 +17,8 @@ body:
       "careerStartYear": 2010,
       "status": "At work"
     }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 order: 1772624395991

@@ -1,5 +1,6 @@
 $kind: http-request
-url: https://{{identity-host}}/authentication/login
+name: Login as patiient
+url: https://{{gateway-host}}/identity/authentication/login
 method: POST
 body:
   type: json

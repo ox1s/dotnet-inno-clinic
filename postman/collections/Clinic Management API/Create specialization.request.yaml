@@ -1,5 +1,6 @@
 $kind: http-request
-url: https://{{clinicmanagement-host}}/specializations
+name: Create specialization
+url: https://{{gateway-host}}/clinic-management/specializations
 method: POST
 body:
   type: json
