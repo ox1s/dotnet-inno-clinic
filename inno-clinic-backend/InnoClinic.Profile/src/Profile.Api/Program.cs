@@ -56,10 +56,13 @@ host.UseWolverine(opts =>
                 .AutoProvision();
         }
         opts.PublishMessage<DoctorCreated>()
-            .ToRabbitExchange(
-                "doctor-events");
+            .ToRabbitExchange("doctor-created-events");
+
+        opts.PublishMessage<SendDailyPollCommand>()
+            .ToRabbitExchange("notifications");
 
         opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly);
+        opts.Discovery.IncludeAssembly(typeof(EmailReminderJob).Assembly);
     }
 );
 

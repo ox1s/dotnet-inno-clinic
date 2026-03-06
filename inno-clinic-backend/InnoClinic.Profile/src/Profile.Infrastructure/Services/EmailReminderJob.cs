@@ -26,7 +26,6 @@ public class EmailReminderJob(
 {
     private readonly IMongoCollection<Account> _accountsCollection =
         mongoDb.GetDatabase("notifications-db").GetCollection<Account>("accounts");
-    public const string Name = nameof(EmailReminderJob);
 
     public async Task Execute(IJobExecutionContext context)
     {

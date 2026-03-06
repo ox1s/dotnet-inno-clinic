@@ -14,11 +14,11 @@ using RabbitMQ.Client.Events;
 
 namespace InnoClinic.Notification.Consumers;
 
-public class EmailPollConsumer(
+public class SendDailyPollCommandConsumer(
     IConnection connection,
     EmailSender emailSender,
     IOptions<EmailSettings> emailOptions,
-    ILogger<EmailPollConsumer> logger,
+    ILogger<SendDailyPollCommandConsumer> logger,
     IMongoClient mongoDb)
     : BackgroundService
 {
@@ -31,8 +31,8 @@ public class EmailPollConsumer(
 
     private IChannel? _channel;
     private readonly EmailSettings _emailSettings = emailOptions.Value;
-    private const string ExchangeName = "doctor-events";
-    private const string QueueName = "telegram-notifications-queue";
+    private const string ExchangeName = "notifications";
+    private const string QueueName = "email-notifications-queue";
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _channel = await connection.CreateChannelAsync(cancellationToken: stoppingToken);
@@ -88,7 +88,7 @@ public class EmailPollConsumer(
         };
 
         await _channel.BasicConsumeAsync(
-            queue: "email-verification-queue",
+            queue: QueueName,
             autoAck: false,
             consumer: consumer,
             cancellationToken: stoppingToken);

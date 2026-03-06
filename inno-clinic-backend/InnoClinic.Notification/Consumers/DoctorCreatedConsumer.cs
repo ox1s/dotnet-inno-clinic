@@ -25,7 +25,7 @@ public class DoctorCreatedConsumer(
     private IChannel? _channel;
     private readonly IMongoCollection<Account> _accountsCollection =
         mongoDb.GetDatabase("notifications-db").GetCollection<Account>("accounts");
-    private const string ExchangeName = "doctor-events";
+    private const string ExchangeName = "doctor-created-events";
     private const string QueueName = "telegram-notifications-queue";
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
