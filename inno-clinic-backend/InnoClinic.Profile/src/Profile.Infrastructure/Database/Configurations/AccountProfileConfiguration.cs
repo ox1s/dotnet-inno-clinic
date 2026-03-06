@@ -44,5 +44,12 @@ public class AccountProfileConfiguration : IEntityTypeConfiguration<AccountProfi
                 v => new MiddleName(v))
             .HasColumnName("middle_name")
             .HasMaxLength(50);
+
+        builder.Property(a => a.IsDeleted)
+            .HasColumnName("is_deleted")
+            .HasDefaultValue(false);
+
+        builder.Property(a => a.DeletedOnUtc)
+            .HasColumnName("deleted_on_utc");
     }
 }

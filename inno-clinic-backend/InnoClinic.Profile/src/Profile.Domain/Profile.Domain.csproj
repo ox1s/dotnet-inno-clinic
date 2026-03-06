@@ -10,4 +10,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
+  </ItemGroup>
 </Project>

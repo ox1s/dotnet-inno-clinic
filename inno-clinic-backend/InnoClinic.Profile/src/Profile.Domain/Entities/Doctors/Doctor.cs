@@ -8,7 +8,7 @@ public class Doctor : AccountProfile
     public Guid SpecializationId { get; set; }
     public Guid OfficeId { get; set; }
     public CareerStartYear CareerStartYear { get; set; }
-    public string Status { get; set; }
+    public Status Status { get; set; }
 
 
     private Doctor(
@@ -20,7 +20,7 @@ public class Doctor : AccountProfile
         Guid specializationId,
         Guid officeId,
         CareerStartYear careerStartYear,
-        string status
+        Status status
         ) : base(firstName,
                  lastName,
                  middleName,
@@ -42,7 +42,7 @@ public class Doctor : AccountProfile
         Guid specializationId,
         Guid officeId,
         CareerStartYear careerStartYear,
-        string status)
+        Status status)
     {
         return new Doctor(
             firstName,
@@ -54,5 +54,9 @@ public class Doctor : AccountProfile
             officeId,
             careerStartYear,
             status);
+    }
+    public void UpdateStatus(Status newStatus)
+    {
+        Status = newStatus;
     }
 }

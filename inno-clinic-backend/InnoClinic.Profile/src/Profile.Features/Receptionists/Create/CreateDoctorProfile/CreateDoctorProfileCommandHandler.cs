@@ -20,6 +20,7 @@ public class CreateDoctorProfileCommandHandler
         var middleName = MiddleName.Create(command.MiddleName);
 
         var careerStartYear = CareerStartYear.From(command.CareerStartYear);
+        var status = Status.From(command.Status);
 
         var doctor = Doctor.Create(
             accountId: command.AccountId,
@@ -30,7 +31,7 @@ public class CreateDoctorProfileCommandHandler
             specializationId: command.SpecializationId,
             officeId: command.OfficeId,
             careerStartYear: careerStartYear,
-            status: command.Status
+            status: status
         );
 
         dbContext.Set<Doctor>().Add(doctor);
