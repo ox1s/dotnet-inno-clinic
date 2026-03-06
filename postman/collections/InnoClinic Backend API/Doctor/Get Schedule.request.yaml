@@ -1,6 +1,4 @@
 $kind: http-request
-name: Get Schedule
-description: 'US-10: View appointment schedule by doctor. Requires Doctor role.'
+url: "{{appointmentBaseUrl}}/doctor/schedule"
 method: GET
-url: '{{appointmentBaseUrl}}/doctor/schedule'
 order: 1000

@@ -4,6 +4,8 @@ using Profile.Infrastructure.Database;
 
 using Wolverine;
 
+using InnoClinic.Shared.DTOs;
+
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 
 public class CreateDoctorProfileCommandHandler

@@ -1,5 +1,6 @@
 $kind: http-request
-url: https://{{appointment-host}}/patient/appointments
+name: Create Appointment
+url: https://{{gateway-host}}/appointment/patient/appointments
 method: POST
 body:
   type: json

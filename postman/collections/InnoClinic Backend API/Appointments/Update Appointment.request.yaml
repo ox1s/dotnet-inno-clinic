@@ -1,24 +1,13 @@
 $kind: http-request
-name: Update Appointment
-description: 'Requires Patient or Receptionist role'
+url: "{{appointmentBaseUrl}}:/appointments/{{appointmentId}}#"
 method: PUT
-url: '{{appointmentBaseUrl}}/appointments/{{appointmentId}}'
-order: 2000
+headers:
+  Content-Type: application/json
 pathVariables:
   - key: appointmentId
-    value: ''
+    value: ""
     description: The appointment ID to update
-headers:
-  - key: Content-Type
-    value: application/json
 body:
   type: json
-  content: |-
-    {
-      "patientId": "00000000-0000-0000-0000-000000000000",
-      "doctorId": "00000000-0000-0000-0000-000000000000",
-      "serviceId": "00000000-0000-0000-0000-000000000000",
-      "officeId": "00000000-0000-0000-0000-000000000000",
-      "startDateTime": "2025-01-15T09:00:00Z",
-      "endDateTime": "2025-01-15T09:30:00Z"
-    }
+  content: ""
+order: 2000

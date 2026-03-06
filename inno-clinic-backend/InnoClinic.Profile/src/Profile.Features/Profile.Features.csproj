@@ -14,5 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Profile.Domain\Profile.Domain.csproj" />
     <ProjectReference Include="..\Profile.Infrastructure\Profile.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
   </ItemGroup>
 </Project>

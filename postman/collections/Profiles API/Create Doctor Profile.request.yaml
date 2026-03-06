@@ -4,21 +4,21 @@ url: https://{{gateway-host}}/profile/receptionists/doctors
 method: POST
 body:
   type: json
-  content: |
+  content: |-
     {
-      "accountId": "{{userId}}",
+      "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "firstName": "Григорий",
       "lastName": "Григорьев",
       "middleName": "Григорьевич",
-      "dateOfBirth": "1988-11-23",
-      "email": "grig@innoclinic.com",
+      "dateOfBirth": "2000-03-06",
+      "email": "doctor@innoclinic.com",
       "specializationId": "{{specializationId}}",
       "officeId": "{{officeId}}",
-      "careerStartYear": 2010,
-      "status": "At work"
+      "careerStartYear": 2000,
+      "status": "At Work"
     }
 auth:
   type: bearer
   credentials:
     token: "{{accessToken}}"
-order: 1772624395991
+order: 1000

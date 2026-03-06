@@ -1,20 +1,9 @@
 $kind: http-request
-name: Create Service
-description: 'Requires ServicesManipulate permission'
+url: "{{clinicManagementBaseUrl}}/services"
 method: POST
-url: '{{clinicManagementBaseUrl}}/services'
-order: 3000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
-  content: |-
-    {
-      "serviceName": "General Consultation",
-      "price": 100.00,
-      "currency": "USD",
-      "categoryId": "00000000-0000-0000-0000-000000000000",
-      "specializationId": "00000000-0000-0000-0000-000000000000",
-      "isActive": true
-    }
+  content: ""
+order: 3000

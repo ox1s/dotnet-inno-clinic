@@ -1,9 +1,8 @@
 $kind: http-request
-name: Delete Office
+url: "{{clinicManagementBaseUrl}}:/offices/{{officeId}}#"
 method: DELETE
-url: '{{clinicManagementBaseUrl}}/offices/{{officeId}}'
-order: 3000
 pathVariables:
   - key: officeId
-    value: ''
+    value: ""
     description: The office ID to delete
+order: 3000

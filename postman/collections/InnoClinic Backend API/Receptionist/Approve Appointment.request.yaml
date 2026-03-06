@@ -1,10 +1,8 @@
 $kind: http-request
-name: Approve Appointment
-description: 'US-14: Approve appointment. Requires Receptionist role.'
+url: "{{appointmentBaseUrl}}:/receptionist/appointments/{{appointmentId}}/approve#"
 method: POST
-url: '{{appointmentBaseUrl}}/receptionist/appointments/{{appointmentId}}/approve'
-order: 2000
 pathVariables:
   - key: appointmentId
-    value: ''
+    value: ""
     description: The appointment ID to approve
+order: 2000

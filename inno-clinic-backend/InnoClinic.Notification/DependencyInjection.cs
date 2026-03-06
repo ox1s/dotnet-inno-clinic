@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using System.Text.Json;
 
 using InnoClinic.Notification.Consumers;
 using InnoClinic.Notification.Email;
@@ -26,8 +27,11 @@ public static class DependencyInjection
             .AddFluentEmail(emailSettings.FromEmail, emailSettings.FromName)
             .AddSmtpSender(new SmtpClient(uri.Host, uri.Port));
 
+
         services.AddTransient<EmailSender>();
         services.AddHostedService<EmailVerificationConsumer>();
+        services.AddHostedService<DoctorCreatedConsumer>();
+
         return services;
     }
 }

@@ -1,7 +1,6 @@
 $kind: collection
-name: Doctor
 description: |-
   Doctor-specific endpoints for schedule management.
-  
+
   Requires Doctor role authentication.
 order: 4000

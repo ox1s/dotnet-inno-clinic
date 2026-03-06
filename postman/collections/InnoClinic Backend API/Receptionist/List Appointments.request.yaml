@@ -1,41 +1,39 @@
 $kind: http-request
-name: List Appointments
-description: 'US-13: View appointment list by receptionist'
+url: "{{appointmentBaseUrl}}:/receptionist/appointments?page=1&pageSize=10#"
 method: GET
-url: '{{appointmentBaseUrl}}/receptionist/appointments'
-order: 1000
 queryParams:
   - key: page
-    value: '1'
+    value: "1"
     description: Page number
   - key: pageSize
-    value: '10'
+    value: "10"
     description: Number of items per page
   - key: doctorId
-    value: ''
+    value: ""
+    disabled: true
     description: Filter by doctor ID (optional)
-    disabled: true
   - key: serviceId
-    value: ''
+    value: ""
+    disabled: true
     description: Filter by service ID (optional)
-    disabled: true
   - key: officeId
-    value: ''
+    value: ""
+    disabled: true
     description: Filter by office ID (optional)
-    disabled: true
   - key: date
-    value: ''
+    value: ""
+    disabled: true
     description: Filter by date (optional)
-    disabled: true
   - key: isApproved
-    value: ''
+    value: ""
+    disabled: true
     description: Filter by approval status (optional)
-    disabled: true
   - key: sortBy
-    value: ''
+    value: ""
+    disabled: true
     description: Sort field (optional)
-    disabled: true
   - key: sortDirection
-    value: 'Asc'
-    description: Sort direction - Asc or Desc (optional)
+    value: Asc
     disabled: true
+    description: Sort direction - Asc or Desc (optional)
+order: 1000

@@ -11,6 +11,8 @@ cloudResources:
     ..\postman\collections\Clinic Management API: 52229656-4aa13e63-ffb3-4ea7-9a02-179c95a79677
     ..\postman\collections\Accounts API: 52229656-c1d3552d-495b-42b7-bd90-bf09ae94b106
     ..\postman\collections\Appointments API: 52229656-f2f86950-6541-4dff-98b1-5b274fde914f
+    ../postman/collections/Profiles API: 52229656-1eec9ea6-2e73-4967-9aea-a112d8d2639a
+    ../postman/collections/InnoClinic Backend API: 52229656-163ea000-3f67-4bdc-87dc-8e217db858a0
   environments:
     ../postman/environments/InnoClinic.environment.yaml: 52229656-a4433294-78e3-47ed-a922-47efcd22ead9
     ..\postman\environments\InnoClinic.environment.yaml: 52229656-a4433294-78e3-47ed-a922-47efcd22ead9

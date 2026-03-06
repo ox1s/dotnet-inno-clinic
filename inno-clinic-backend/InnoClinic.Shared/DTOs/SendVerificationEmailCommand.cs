@@ -1,4 +1,4 @@
-namespace InnoClinic.Shared.Contracts.Notifications;
+namespace InnoClinic.Shared.DTOs;
 
 public record SendVerificationEmailCommand(
     Guid AccountId,

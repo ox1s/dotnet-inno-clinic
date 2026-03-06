@@ -1,4 +1,4 @@
-namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
+namespace InnoClinic.Shared.DTOs;
 
 public record DoctorCreated(
     string Email,

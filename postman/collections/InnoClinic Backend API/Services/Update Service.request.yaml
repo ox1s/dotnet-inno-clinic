@@ -1,25 +1,13 @@
 $kind: http-request
-name: Update Service
-description: 'Requires Receptionist role'
+url: "{{clinicManagementBaseUrl}}:/services/{{serviceId}}#"
 method: PUT
-url: '{{clinicManagementBaseUrl}}/services/{{serviceId}}'
-order: 4000
+headers:
+  Content-Type: application/json
 pathVariables:
   - key: serviceId
-    value: ''
+    value: ""
     description: The service ID to update
-headers:
-  - key: Content-Type
-    value: application/json
 body:
   type: json
-  content: |-
-    {
-      "id": "{{serviceId}}",
-      "serviceName": "General Consultation",
-      "price": 120.00,
-      "currency": "USD",
-      "categoryId": "00000000-0000-0000-0000-000000000000",
-      "specializationId": "00000000-0000-0000-0000-000000000000",
-      "isActive": true
-    }
+  content: ""
+order: 4000

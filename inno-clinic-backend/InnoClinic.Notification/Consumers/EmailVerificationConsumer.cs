@@ -2,12 +2,9 @@ using System.Text;
 using System.Text.Json;
 
 using InnoClinic.Notification.Email;
-using InnoClinic.Notification.Entities;
-using InnoClinic.Shared.Contracts.Notifications;
+using InnoClinic.Shared.DTOs;
 
 using Microsoft.Extensions.Options;
-
-using MongoDB.Driver;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -18,14 +15,11 @@ public class EmailVerificationConsumer(
     IConnection connection,
     EmailSender emailSender,
     IOptions<EmailSettings> emailOptions,
-    ILogger<EmailVerificationConsumer> logger,
-    IMongoClient mongoDb) : BackgroundService
+    ILogger<EmailVerificationConsumer> logger)
+    : BackgroundService
 {
     private IChannel? _channel;
     private readonly EmailSettings _emailSettings = emailOptions.Value;
-    private readonly IMongoCollection<Account> _accountsCollection =
-        mongoDb.GetDatabase("notifications-db").GetCollection<Account>("accounts");
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _channel = await connection.CreateChannelAsync(cancellationToken: stoppingToken);
@@ -47,28 +41,12 @@ public class EmailVerificationConsumer(
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var command = JsonSerializer.Deserialize<SendVerificationEmailCommand>(message);
-                logger.LogInformation("Received request to send email to: {Email}", command?.Email);
-                if (command is null) throw new ArgumentNullException(nameof(command));
 
-                await emailSender.SendEmailAsync(
-                    command.Email,
-                    _emailSettings.FromEmail,
-                    _emailSettings.WelcomeSubject,
-                    string.Format(_emailSettings.WelcomeBodyTemplate, command?.VerificationLink)
-                );
-
-                var filter = Builders<Account>.Filter.Eq(x => x.Id, command.AccountId);
-                var update = Builders<Account>.Update
-                    .Set(x => x.Email, command.Email)
-                    .SetOnInsert(x => x.Id, command.AccountId);
-
-                await _accountsCollection.UpdateOneAsync(
-                    filter,
-                    update,
-                    new UpdateOptions { IsUpsert = true },
-                    cancellationToken: stoppingToken);
-
-                logger.LogInformation("Account {AccountId} synced to MongoDB", command.AccountId);
+                if (command != null)
+                {
+                    logger.LogInformation("Received request to send email to: {Email}", command.Email);
+                    await SendEmailAsync(command);
+                }
 
                 await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
             }
@@ -86,6 +64,21 @@ public class EmailVerificationConsumer(
             cancellationToken: stoppingToken);
 
         await Task.Delay(Timeout.Infinite, stoppingToken);
+    }
+
+    private async Task SendEmailAsync(
+        SendVerificationEmailCommand command)
+    {
+        logger.LogInformation("Begin sending email to: {AccountId}", command.AccountId);
+
+        await emailSender.SendEmailAsync(
+            command.Email,
+            _emailSettings.FromEmail,
+            _emailSettings.WelcomeSubject,
+            string.Format(_emailSettings.WelcomeBodyTemplate, command.VerificationLink)
+        );
+
+        logger.LogInformation("Email sent to: {AccountId}", command.AccountId);
     }
 
     public override void Dispose()

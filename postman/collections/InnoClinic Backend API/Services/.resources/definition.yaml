@@ -1,8 +1,7 @@
 $kind: collection
-name: Services
 description: |-
   Medical services management endpoints.
-  
+
   Part of the Clinic Management API service.
   Requires authentication.
 order: 7000

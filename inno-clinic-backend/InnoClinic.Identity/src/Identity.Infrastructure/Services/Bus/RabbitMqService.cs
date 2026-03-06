@@ -3,7 +3,7 @@ using System.Text.Json;
 
 using Identity.Application.Common.Interfaces;
 
-using InnoClinic.Shared.Contracts.Notifications;
+using InnoClinic.Shared.DTOs;
 
 using RabbitMQ.Client;
 

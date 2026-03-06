@@ -1,7 +1,6 @@
 $kind: collection
-name: Appointments
 description: |-
   General appointment endpoints accessible to multiple roles.
-  
+
   These endpoints are part of the Appointment API service.
 order: 2000

@@ -1,8 +1,7 @@
 $kind: collection
-name: Service Categories
 description: |-
   Service category management endpoints.
-  
+
   Part of the Clinic Management API service.
   Requires ServicesManipulate permission.
 order: 8000

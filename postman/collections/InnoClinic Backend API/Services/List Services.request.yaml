@@ -1,14 +1,13 @@
 $kind: http-request
-name: List Services
+url: "{{clinicManagementBaseUrl}}:/services#"
 method: GET
-url: '{{clinicManagementBaseUrl}}/services'
-order: 1000
 queryParams:
   - key: isActive
-    value: 'true'
+    value: "true"
+    disabled: true
     description: Filter by active status (optional)
-    disabled: true
   - key: specializationId
-    value: ''
-    description: Filter by specialization ID (optional)
+    value: ""
     disabled: true
+    description: Filter by specialization ID (optional)
+order: 1000

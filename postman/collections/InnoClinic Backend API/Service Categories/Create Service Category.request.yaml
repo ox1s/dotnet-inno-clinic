@@ -1,16 +1,9 @@
 $kind: http-request
-name: Create Service Category
-description: 'Requires ServicesManipulate permission'
+url: "{{clinicManagementBaseUrl}}/service-categories"
 method: POST
-url: '{{clinicManagementBaseUrl}}/service-categories'
-order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
-  content: |-
-    {
-      "categoryName": "Consultation",
-      "timeSlotSize": 30
-    }
+  content: ""
+order: 1000

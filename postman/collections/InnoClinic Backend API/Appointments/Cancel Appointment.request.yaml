@@ -1,9 +1,8 @@
 $kind: http-request
-name: Cancel Appointment
+url: "{{appointmentBaseUrl}}:/appointments/{{appointmentId}}#"
 method: DELETE
-url: '{{appointmentBaseUrl}}/appointments/{{appointmentId}}'
-order: 3000
 pathVariables:
   - key: appointmentId
-    value: ''
+    value: ""
     description: The appointment ID to cancel
+order: 3000

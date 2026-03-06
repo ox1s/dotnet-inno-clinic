@@ -7,7 +7,7 @@ using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
-using InnoClinic.Shared.Contracts.Notifications;
+using InnoClinic.Shared.DTOs;
 
 using Microsoft.Extensions.Options;
 

@@ -1,22 +1,13 @@
 $kind: http-request
-name: Update Office
+url: "{{clinicManagementBaseUrl}}:/offices/{{officeId}}#"
 method: PUT
-url: '{{clinicManagementBaseUrl}}/offices/{{officeId}}'
-order: 2000
+headers:
+  Content-Type: application/json
 pathVariables:
   - key: officeId
-    value: ''
+    value: ""
     description: The office ID to update
-headers:
-  - key: Content-Type
-    value: application/json
 body:
   type: json
-  content: |-
-    {
-      "id": "{{officeId}}",
-      "address": "123 Medical Center Drive",
-      "photoUrl": "https://example.com/office-photo.jpg",
-      "registryPhoneNumber": "+1-555-0100",
-      "isActive": true
-    }
+  content: ""
+order: 2000

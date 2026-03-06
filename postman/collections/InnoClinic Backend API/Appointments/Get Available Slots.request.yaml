@@ -1,15 +1,15 @@
 $kind: http-request
-name: Get Available Slots
+url: "{{appointmentBaseUrl}}:/appointments/slots?doctorId=&serviceId=&dateTime=\
+  2025-01-15T00:00:00Z#"
 method: GET
-url: '{{appointmentBaseUrl}}/appointments/slots'
-order: 4000
 queryParams:
   - key: doctorId
-    value: ''
+    value: ""
     description: The doctor ID to check availability for
   - key: serviceId
-    value: ''
+    value: ""
     description: The service ID
   - key: dateTime
-    value: '2025-01-15T00:00:00Z'
+    value: 2025-01-15T00:00:00Z
     description: The date to check availability for
+order: 4000

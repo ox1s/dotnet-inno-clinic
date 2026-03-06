@@ -1,4 +1,4 @@
-using InnoClinic.Shared.Contracts.Notifications;
+using InnoClinic.Shared.DTOs;
 
 namespace Identity.Application.Common.Interfaces;
 
