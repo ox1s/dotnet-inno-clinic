@@ -36,6 +36,8 @@ public class CreateDoctorProfileCommandHandler
 
         dbContext.Set<Doctor>().Add(doctor);
         await dbContext.SaveChangesAsync();
+        // TODO: Doctor repository
+
 
         await bus.PublishAsync(new DoctorCreated(command.Email, doctor.AccountId));
     }

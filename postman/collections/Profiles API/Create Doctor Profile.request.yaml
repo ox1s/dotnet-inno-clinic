@@ -6,16 +6,16 @@ body:
   type: json
   content: |-
     {
-      "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "accountId": "{{$guid}}",
       "firstName": "Григорий",
       "lastName": "Григорьев",
       "middleName": "Григорьевич",
       "dateOfBirth": "2000-03-06",
-      "email": "doctor@innoclinic.com",
+      "email": "doctor{{$guid}}@innoclinic.com",
       "specializationId": "{{specializationId}}",
       "officeId": "{{officeId}}",
       "careerStartYear": 2000,
-      "status": "At Work"
+      "status": "At work"
     }
 auth:
   type: bearer

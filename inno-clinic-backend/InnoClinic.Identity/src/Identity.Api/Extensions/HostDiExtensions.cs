@@ -13,7 +13,7 @@ public static class HostDiExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddAuth(configuration);
+        services.AddAuth();
         services.AddProblemDetails();
         services.AddExceptionHandler<GlobalExceptionHandler>();
 

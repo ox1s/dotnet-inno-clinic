@@ -4,7 +4,7 @@ using Profile.Domain.Abstractions;
 
 namespace Profile.Infrastructure.Database;
 
-internal abstract class Repository<T>
+public abstract class Repository<T>
     where T : Entity
 {
     protected readonly ProfileDbContext DbContext;

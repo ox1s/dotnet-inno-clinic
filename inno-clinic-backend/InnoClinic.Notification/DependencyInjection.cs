@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddTransient<EmailSender>();
         services.AddHostedService<EmailVerificationConsumer>();
         services.AddHostedService<DoctorCreatedConsumer>();
+        services.AddHostedService<EmailPollConsumer>();
 
         return services;
     }

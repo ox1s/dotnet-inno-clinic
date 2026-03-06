@@ -7,9 +7,13 @@ using Profile.Api.Extensions;
 using Profile.Domain.Entities.Doctors;
 using Profile.Domain.Entities.Patients;
 using Profile.Domain.Entities.Receptionists;
+using Profile.Features.Doctors.EditDoctorProfile;
 using Profile.Features.Receptionists.Create.CreateDoctorProfile;
 using Profile.Infrastructure;
 using Profile.Infrastructure.Database;
+using Profile.Infrastructure.Services;
+
+using Quartz;
 
 using Wolverine;
 using Wolverine.RabbitMQ;
@@ -23,6 +27,24 @@ var host = builder.Host;
 
 services.AddEndpointsApiExplorer();
 services.AddHttpClient();
+
+builder.AddMongoDBClient("notifications-db");
+
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey("StatusJob");
+
+    q.AddJob<EmailReminderJob>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("TelegramStatusJob-trigger")
+        .WithCronSchedule("0 * * ? * *")
+    //.WithCronSchedule("0 0 16 ? * MON-FRI")
+    );
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 host.UseWolverine(opts =>
     {
@@ -60,6 +82,10 @@ await app.InitializeAsync();
 app.MapPost("/receptionists/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
     await bus.InvokeAsync(command))
         .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
+
+app.MapPut("/doctors/status", async (EditDoctorStatusCommand command, IMessageBus bus) =>
+    await bus.InvokeAsync(command))
+        .RequireAuthorization(policy => policy.RequireRole(Roles.Doctor));
 
 app.MapGet("/profiles/{accountId:guid}", async (
     Guid accountId,
