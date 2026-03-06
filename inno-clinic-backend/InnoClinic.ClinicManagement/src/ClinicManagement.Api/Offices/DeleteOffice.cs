@@ -17,18 +17,4 @@ internal sealed class DeleteOffice(AppDbContext context)
 
         return true;
     }
-
-    internal sealed class Endpoint : IEndpoint
-    {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapDelete("offices/{id:guid}", async (Guid id, DeleteOffice useCase) =>
-            {
-                bool success = await useCase.Handle(id);
-                return success ? Results.NoContent() : Results.NotFound();
-            })
-            .WithTags(OfficeEndpoints.Tag)
-            .RequireAuthorization();
-        }
-    }
 }

@@ -5,9 +5,9 @@ namespace Profile.Domain.Entities.AccountProfiles;
 public abstract class AccountProfile : Entity, ISoftDeletable
 {
     public Guid AccountId { get; set; }
-    public FirstName FirstName { get; set; } = null!;
-    public LastName LastName { get; set; } = null!;
-    public MiddleName MiddleName { get; set; } = null!;
+    public FirstName FirstName { get; set; }
+    public LastName LastName { get; set; }
+    public MiddleName MiddleName { get; set; }
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeletedOnUtc { get; set; }
 

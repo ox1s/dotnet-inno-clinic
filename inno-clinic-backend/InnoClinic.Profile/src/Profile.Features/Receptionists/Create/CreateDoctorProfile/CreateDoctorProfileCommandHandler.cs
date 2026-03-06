@@ -1,10 +1,10 @@
+using InnoClinic.Shared.DTOs;
+
 using Profile.Domain.Entities.AccountProfiles;
 using Profile.Domain.Entities.Doctors;
 using Profile.Infrastructure.Database;
 
 using Wolverine;
-
-using InnoClinic.Shared.DTOs;
 
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 

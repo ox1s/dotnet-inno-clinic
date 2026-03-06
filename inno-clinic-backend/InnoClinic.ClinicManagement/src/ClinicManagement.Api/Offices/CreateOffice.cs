@@ -32,18 +32,4 @@ internal sealed class CreateOffice(
 
         return office.Id;
     }
-
-    internal sealed class Endpoint : IEndpoint
-    {
-        public void MapEndpoint(IEndpointRouteBuilder app)
-        {
-            app.MapPost("offices", async (Request request, CreateOffice useCase) =>
-            {
-                Guid officeId = await useCase.Handle(request);
-                return Results.Created($"/offices/{officeId}", officeId);
-            })
-            .WithTags(OfficeEndpoints.Tag)
-            .RequireAuthorization();
-        }
-    }
 }

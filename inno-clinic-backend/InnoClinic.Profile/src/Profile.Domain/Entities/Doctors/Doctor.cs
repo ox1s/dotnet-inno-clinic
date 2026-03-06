@@ -8,7 +8,7 @@ public class Doctor : AccountProfile
     public Guid SpecializationId { get; set; }
     public Guid OfficeId { get; set; }
     public CareerStartYear CareerStartYear { get; set; }
-    public string Status { get; set; } = null!;
+    public string Status { get; set; }
 
 
     private Doctor(

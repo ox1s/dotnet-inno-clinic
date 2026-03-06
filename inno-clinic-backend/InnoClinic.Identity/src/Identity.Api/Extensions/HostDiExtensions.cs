@@ -19,7 +19,7 @@ public static class HostDiExtensions
 
         return services;
     }
-    private static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuth(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
         {
