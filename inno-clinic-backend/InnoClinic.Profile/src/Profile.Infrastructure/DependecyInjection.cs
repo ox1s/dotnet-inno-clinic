@@ -28,6 +28,7 @@ public static class DependecyInjection
         services.AddDbContext<ProfileDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+        services.AddScoped<AccountRepository>();
         services.AddScoped<DoctorRepository>();
         services.AddScoped<PatientRepository>();
         services.AddScoped<ReceptionistRepository>();

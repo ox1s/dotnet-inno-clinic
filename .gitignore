@@ -63,3 +63,4 @@ inno-clinic-backend/**/*Features/**/*.md
 postman/
 .postman/
 docker-compose-artifactis/
+.venv

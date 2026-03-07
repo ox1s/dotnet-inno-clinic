@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddHostedService<EmailVerificationConsumer>();
         services.AddHostedService<DoctorCreatedConsumer>();
         services.AddHostedService<SendDailyPollCommandConsumer>();
+        services.AddHostedService<TelegramAccountLinkedConsumer>();
 
         return services;
     }

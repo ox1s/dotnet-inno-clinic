@@ -11,11 +11,8 @@ public class LinkTelegramAccountCommandHandler
 {
     public static async Task Handle(
         LinkTelegramAccountCommand command,
-        ProfileDbContext dbContext,
-        DoctorRepository doctorRepository,
         IMessageBus bus)
     {
-
         await bus.PublishAsync(new TelegramAccountLinked(
             AccountId: command.AccountId,
             TelegramId: command.TelegramId

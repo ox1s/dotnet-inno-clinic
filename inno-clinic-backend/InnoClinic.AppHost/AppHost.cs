@@ -6,6 +6,9 @@ var mailpit = builder.AddMailPit("mailpit");
 var rabbitmq = builder.AddRabbitMQ("rabbitmq")
                     .WithManagementPlugin();
 
+var botApiKey = builder.Configuration["BotSettings:ApiKey"];
+var telegramToken = builder.Configuration["BotSettings:BotToken"];
+
 var mongo = builder.AddMongoDB("mongo")
                 .WithMongoExpress()
                 .WithLifetime(ContainerLifetime.Persistent);
@@ -91,5 +94,12 @@ var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
     .WaitFor(notificationsApi)
 
     .WithExternalHttpEndpoints();
+
+
+var telegramBot = builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
+    .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)
+    .WithEnvironment("API_KEY", botApiKey)
+    .WithEnvironment("BACKEND_API_URL", profileApi.GetEndpoint("https"))
+    .WaitFor(profileApi);
 
 await builder.Build().RunAsync();
