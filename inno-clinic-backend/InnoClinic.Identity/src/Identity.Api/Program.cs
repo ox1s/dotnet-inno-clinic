@@ -10,54 +10,52 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-{
-    var services = builder.Services;
-    var host = builder.Host;
+var services = builder.Services;
+var host = builder.Host;
 
-    builder.AddRabbitMQClient(connectionName: "rabbitmq");
-    builder.Host.UseSerilog((context, loggerConfig) =>
-        loggerConfig.ReadFrom.Configuration(context.Configuration)
-    );
+builder.AddRabbitMQClient(connectionName: "rabbitmq");
+host.UseSerilog((context, loggerConfig) =>
+    loggerConfig.ReadFrom.Configuration(context.Configuration)
+);
 
-    builder.AddServiceDefaults();
+builder.AddServiceDefaults();
 
-    services
-        .AddApi(builder.Configuration, builder.Environment)
-        .AddApplication()
-        .AddInfrastructure(builder.Configuration);
-}
+services
+    .AddApi(builder.Configuration, builder.Environment)
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
+
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    app.MapHealthChecks("health", new HealthCheckOptions
-    {
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    });
-
-    await app.InitializeAsync();
-
-    app.UseExceptionHandler();
-
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    app.UseMiddleware<RequestContextLoggingMiddleware>();
-    app.UseSerilogRequestLogging();
-
-    app.UseHttpsRedirection();
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    app.MapControllers();
-
-    app.Run();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+await app.InitializeAsync();
+
+app.UseExceptionHandler();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseMiddleware<RequestContextLoggingMiddleware>();
+app.UseSerilogRequestLogging();
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+await app.RunAsync();
