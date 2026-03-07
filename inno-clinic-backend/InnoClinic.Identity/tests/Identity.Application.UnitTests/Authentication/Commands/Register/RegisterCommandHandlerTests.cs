@@ -83,8 +83,12 @@ public class RegisterCommandHandlerTests
         await _accountsRepository.Received(1).AddAccountAsync(Arg.Is<Account>(a =>
             a.Email.Value == command.Email), Arg.Any<CancellationToken>());
         await _unitOfWork.Received(1).CommitChangesAsync(Arg.Any<CancellationToken>());
-        await _rabbitMqService.Received(1).PublishAsync(new SendVerificationEmailCommand(
-            Arg.Any<Guid>(), command.Email, "http://verify-link"));
+        await _rabbitMqService.Received(1).PublishAsync(
+            Arg.Is<SendVerificationEmailCommand>(cmd =>
+                cmd.Email == command.Email &&
+                cmd.VerificationLink == "http://verify-link"
+            )
+        );
     }
 
     [Fact]
@@ -107,9 +111,9 @@ public class RegisterCommandHandlerTests
         await _accountsRepository.DidNotReceive()
             .AddAccountAsync(Arg.Any<Account>(), Arg.Any<CancellationToken>());
         await _rabbitMqService.DidNotReceive()
-            .PublishAsync(new SendVerificationEmailCommand(
-                Arg.Any<Guid>(),
-                Arg.Any<string>(),
-                Arg.Any<string>()));
+            .PublishAsync(
+                Arg.Is<SendVerificationEmailCommand>(cmd =>
+                cmd.Email == command.Email &&
+                cmd.VerificationLink == "http://verify-link"));
     }
 }

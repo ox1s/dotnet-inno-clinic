@@ -1,4 +1,4 @@
-namespace Profile.Features.Doctors.EditDoctorProfile;
+namespace Profile.Features.Doctors.EditDoctorStatus;
 
 public record EditDoctorStatusCommand(
     string Status

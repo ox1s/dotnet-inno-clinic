@@ -6,7 +6,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.Docker" Version="13.1.2-preview.1.26125.13" />
+    <PackageVersion Include="Aspire.Hosting.MongoDB" Version="13.1.2" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.1.2" />
+    <PackageVersion Include="Aspire.Hosting.Python" Version="13.1.2" />
+    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="13.1.2" />
     <PackageVersion Include="Aspire.Hosting.Testing" Version="13.0.0" />
     <PackageVersion Include="Aspire.MongoDB.Driver" Version="13.1.2" />
     <PackageVersion Include="Aspire.RabbitMQ.Client" Version="13.1.2" />
@@ -28,12 +31,14 @@
     <PackageVersion Include="libphonenumber-csharp" Version="9.0.23" />
     <PackageVersion Include="MediatR" Version="14.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="10.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics" Version="10.0.3" />
@@ -46,6 +51,7 @@
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="10.2.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="MongoDB.Driver" Version="3.7.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="Npgsql.OpenTelemetry" Version="10.0.1" />
@@ -60,7 +66,6 @@
     <PackageVersion Include="PhoneNumber" Version="1.1.1" />
     <PackageVersion Include="Quartz" Version="3.16.1" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.16.1" />
-    <PackageVersion Include="Aspire.Hosting.Python" Version="13.1.2" />
     <PackageVersion Include="QuestPDF" Version="2026.2.2" />
     <PackageVersion Include="RabbitMQ.Client" Version="7.2.1" />
     <PackageVersion Include="Serilog" Version="4.3.1" />
@@ -77,11 +82,9 @@
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.20.0.135146" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.2" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.3" />
-    <PackageVersion Include="Aspire.Hosting.MongoDB" Version="13.1.2" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.3" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
     <PackageVersion Include="Telegram.Bot.AspNetCore" Version="22.5.0" />
-    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="13.1.2" />
     <PackageVersion Include="Throw" Version="1.4.0" />
     <PackageVersion Include="WolverineFx" Version="5.17.0" />
     <PackageVersion Include="WolverineFx.RabbitMQ" Version="5.17.0" />

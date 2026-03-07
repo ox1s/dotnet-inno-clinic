@@ -1,8 +1,11 @@
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
+using Profile.Infrastructure.Auth;
 
 namespace Profile.Api.Extensions;
 
@@ -10,8 +13,9 @@ public static class HostDiExtensions
 {
     public static IServiceCollection AddWebHostInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
-        services.AddAuth(configuration);
+        services.AddHttpContextAccessor();
 
+        services.AddAuth(configuration);
 
         return services;
     }
@@ -39,7 +43,18 @@ public static class HostDiExtensions
             };
         });
 
-        services.AddAuthorization();
+        services.AddSingleton<IAuthorizationHandler, BotApiKeyHandler>();
+
+        services.AddAuthorization(
+            options =>
+            {
+                options.AddPolicy("BotPolicy", policy =>
+                {
+                    policy.Requirements.Add(new BotApiKeyRequirement());
+                    policy.AuthenticationSchemes.Clear();
+                });
+            }
+        );
 
         return services;
     }

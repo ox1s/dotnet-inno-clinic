@@ -73,7 +73,15 @@ public class SendDailyPollCommandConsumer(
                 if (command != null)
                 {
                     logger.LogInformation("Received request to send daily poll email: {Commmand}", command);
+
                     var account = await _accountsCollection.Find(x => x.Id == command.AccountId).FirstOrDefaultAsync();
+                    if (account == null)
+                    {
+                        logger.LogWarning("Account with Id {AccountId} not found in MongoDB. Skipping email.", command.AccountId);
+                        await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
+                        return;
+                    }
+
                     logger.LogInformation("This email exist in mongoDb, so email will be sent to: {Person} with {Id}", account.Email, account.Id);
                     await SendEmailAsync(command.AccountId, account.Email, command.Message, command.TelegramLink);
                 }

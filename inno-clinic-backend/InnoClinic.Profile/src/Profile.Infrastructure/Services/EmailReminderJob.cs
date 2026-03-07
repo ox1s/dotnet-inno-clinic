@@ -29,15 +29,17 @@ public class EmailReminderJob(
 
         var doctorIds = await doctorRepository.GetGuidsAsync();
 
+        var filter = Builders<Account>.Filter.In(x => x.Id, doctorIds);
+        var accounts = await _accountsCollection.Find(filter).ToListAsync();
+        var accountsDict = accounts.ToDictionary(a => a.Id);
+
         foreach (var docId in doctorIds)
         {
-            var mapping = await _accountsCollection
-                                        .Find(m => m.Id == docId)
-                                        .FirstOrDefaultAsync();
+            accountsDict.TryGetValue(docId, out var mapping);
 
-            if (mapping == null)
+            if (mapping == null || string.IsNullOrEmpty(mapping.TelegramId))
             {
-                var token = Convert.ToBase64String(docId.ToByteArray());
+                var token = docId.ToString("N");
                 var link = $"https://t.me/inno_clinic_bot?start={token}";
 
                 logger.LogInformation("Email begin sending to {AccountId}", docId);

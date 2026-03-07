@@ -4,7 +4,7 @@ using Profile.Domain.Entities.Doctors;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 
-namespace Profile.Features.Doctors.EditDoctorProfile;
+namespace Profile.Features.Doctors.EditDoctorStatus;
 
 public class EditDoctorStatusCommandHandler
 {

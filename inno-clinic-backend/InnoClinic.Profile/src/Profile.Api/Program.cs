@@ -7,7 +7,8 @@ using Profile.Api.Extensions;
 using Profile.Domain.Entities.Doctors;
 using Profile.Domain.Entities.Patients;
 using Profile.Domain.Entities.Receptionists;
-using Profile.Features.Doctors.EditDoctorProfile;
+using Profile.Features.Doctors.EditDoctorStatus;
+using Profile.Features.Doctors.EditDoctorStatusByBot;
 using Profile.Features.Receptionists.Create.CreateDoctorProfile;
 using Profile.Infrastructure;
 using Profile.Infrastructure.Database;
@@ -61,8 +62,12 @@ host.UseWolverine(opts =>
         opts.PublishMessage<SendDailyPollCommand>()
             .ToRabbitExchange("notifications");
 
+        opts.PublishMessage<TelegramAccountLinked>()
+            .ToRabbitExchange("telegram-account-linked-events");
+
         opts.Discovery.IncludeAssembly(typeof(CreateDoctorProfileCommandHandler).Assembly);
         opts.Discovery.IncludeAssembly(typeof(EmailReminderJob).Assembly);
+        opts.Discovery.IncludeAssembly(typeof(LinkTelegramAccountCommandHandler).Assembly);
     }
 );
 
@@ -89,6 +94,14 @@ app.MapPost("/receptionists/doctors", async (CreateDoctorProfileCommand command,
 app.MapPut("/doctors/status", async (EditDoctorStatusCommand command, IMessageBus bus) =>
     await bus.InvokeAsync(command))
         .RequireAuthorization(policy => policy.RequireRole(Roles.Doctor));
+
+app.MapPut("/bot/doctors/status", async (EditDoctorStatusByBotCommand command, IMessageBus bus) =>
+    await bus.InvokeAsync(command))
+        .RequireAuthorization("BotPolicy");
+
+app.MapPost("/bot/accounts/link-telegram", async (LinkTelegramAccountCommand command, IMessageBus bus) =>
+    await bus.InvokeAsync(command))
+        .RequireAuthorization("BotPolicy");
 
 app.MapGet("/profiles/{accountId:guid}", async (
     Guid accountId,

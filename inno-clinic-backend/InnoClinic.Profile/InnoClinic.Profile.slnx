@@ -5,4 +5,7 @@
     <Project Path="src/Profile.Features/Profile.Features.csproj" />
     <Project Path="src/Profile.Infrastructure/Profile.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Profile.UnitTests.Features/Profile.UnitTests.Features.csproj" />
+  </Folder>
 </Solution>

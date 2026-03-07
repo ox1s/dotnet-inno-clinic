@@ -8,10 +8,11 @@ public record Status(string Value)
     {
         switch (value)
         {
+            // TODO: Убрать хардкод
             case Statuses.AtWork:
-                return new Status("At Work");
+                return new Status("At work");
             case Statuses.OnVacation:
-                return new Status("On Vacation");
+                return new Status("On vacation");
             case Statuses.SickDay:
                 return new Status("Sick Day");
             case Statuses.SickLeave:
@@ -19,7 +20,7 @@ public record Status(string Value)
             case Statuses.SelfIsolation:
                 return new Status("Self-Isolation");
             case Statuses.LeaveWithoutPay:
-                return new Status("Leave Without Pay");
+                return new Status("Leave without pay");
             default:
                 throw new ArgumentException($"Invalid status value: {value}");
         }

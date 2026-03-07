@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Profile.Infrastructure.Auth;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 
@@ -14,7 +16,6 @@ public static class DependecyInjection
             IConfiguration configuration)
     {
         AddPersistence(services, configuration);
-
         return services;
     }
     private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
