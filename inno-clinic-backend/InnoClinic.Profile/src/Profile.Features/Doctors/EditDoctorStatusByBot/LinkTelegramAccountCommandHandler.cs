@@ -1,8 +1,5 @@
 using InnoClinic.Shared.DTOs;
 
-using Profile.Infrastructure.Database;
-using Profile.Infrastructure.Database.Repositories;
-
 using Wolverine;
 
 namespace Profile.Features.Doctors.EditDoctorStatusByBot;

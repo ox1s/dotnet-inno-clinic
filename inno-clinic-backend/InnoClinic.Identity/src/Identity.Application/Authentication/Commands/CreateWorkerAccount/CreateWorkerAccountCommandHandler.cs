@@ -1,7 +1,6 @@
 using ErrorOr;
 
 using Identity.Application.Common.Interfaces;
-using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 
@@ -9,8 +8,6 @@ using InnoClinic.Shared;
 using InnoClinic.Shared.DTOs;
 
 using MediatR;
-
-using Microsoft.Extensions.Options;
 
 namespace Identity.Application.Authentication.Commands.CreateWorkerAccount;
 

@@ -1,5 +1,4 @@
 using System.Net.Mail;
-using System.Text.Json;
 
 using InnoClinic.Notification.Consumers;
 using InnoClinic.Notification.Email;

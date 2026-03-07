@@ -10,8 +10,6 @@ using Moq;
 
 using Profile.Infrastructure.Auth;
 
-using Xunit;
-
 namespace Profile.Infrastructure.UnitTests.Auth;
 
 public class BotApiKeyHandlerTests

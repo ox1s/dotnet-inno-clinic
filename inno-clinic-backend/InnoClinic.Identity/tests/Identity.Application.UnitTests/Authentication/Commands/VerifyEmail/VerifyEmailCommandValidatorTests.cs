@@ -1,5 +1,3 @@
-using Bogus;
-
 using FluentAssertions;
 
 using Identity.Application.Authentication.Commands.VerifyEmail;

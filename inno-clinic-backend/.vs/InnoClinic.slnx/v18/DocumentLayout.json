@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C575B694-81F6-477C-A33D-E0B608415907}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|p:\\c#learning\\dotnet-inno-clinic\\inno-clinic-backend\\innoclinic.profile\\tests\\profile.features.unittests\\editdoctorstatusbybotcommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C575B694-81F6-477C-A33D-E0B608415907}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|solutionrelative:innoclinic.profile\\tests\\profile.features.unittests\\editdoctorstatusbybotcommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C575B694-81F6-477C-A33D-E0B608415907}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|p:\\c#learning\\dotnet-inno-clinic\\inno-clinic-backend\\innoclinic.profile\\tests\\profile.features.unittests\\profile.features.unittests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{C575B694-81F6-477C-A33D-E0B608415907}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|solutionrelative:innoclinic.profile\\tests\\profile.features.unittests\\profile.features.unittests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{7B927C5D-A3B7-9DED-B033-03A18E1E105C}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|p:\\c#learning\\dotnet-inno-clinic\\inno-clinic-backend\\innoclinic.profile\\tests\\profile.features.unittests\\editdoctorstatusbybotcommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B927C5D-A3B7-9DED-B033-03A18E1E105C}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|solutionrelative:innoclinic.profile\\tests\\profile.features.unittests\\editdoctorstatusbybotcommandhandlertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreatedHandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,6 +45,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B927C5D-A3B7-9DED-B033-03A18E1E105C}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|p:\\c#learning\\dotnet-inno-clinic\\inno-clinic-backend\\innoclinic.profile\\tests\\profile.features.unittests\\profile.features.unittests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7B927C5D-A3B7-9DED-B033-03A18E1E105C}|InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj|solutionrelative:innoclinic.profile\\tests\\profile.features.unittests\\profile.features.unittests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,16 +62,15 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Profile.Features.UnitTests",
+              "DocumentIndex": 11,
+              "Title": "Profile.Features.UnitTests.csproj",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj",
               "ToolTip": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj",
               "RelativeToolTip": "InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\Profile.Features.UnitTests.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-07T17:25:45.746Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T17:25:45.746Z"
             },
             {
               "$type": "Document",
@@ -81,14 +80,14 @@
               "RelativeDocumentMoniker": "InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\EditDoctorStatusByBotCommandHandlerTests.cs",
               "ToolTip": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\EditDoctorStatusByBotCommandHandlerTests.cs",
               "RelativeToolTip": "InnoClinic.Profile\\tests\\Profile.Features.UnitTests\\EditDoctorStatusByBotCommandHandlerTests.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAowA4AAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAACUAAAAAAAAAAAAowAwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-07T17:18:40.012Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "DoctorCreatedHandler.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreatedHandler.cs",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreatedHandler.cs",
@@ -99,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "DoctorCreated.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreated.cs",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\DoctorCreated.cs",
@@ -110,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "CreateDoctorProfileCommandHandler.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommandHandler.cs",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommandHandler.cs",
@@ -118,12 +117,11 @@
               "RelativeToolTip": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommandHandler.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T19:35:36.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:35:36.588Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "CreateDoctorProfileCommand.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommand.cs",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommand.cs",
@@ -131,12 +129,11 @@
               "RelativeToolTip": "InnoClinic.Profile\\src\\Profile.Features\\Receptionists\\Create\\CreateDoctorProfile\\CreateDoctorProfileCommand.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T19:35:34.524Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:35:34.524Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "DependencyInjection.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Notification\\DependencyInjection.cs",
               "RelativeDocumentMoniker": "InnoClinic.Notification\\DependencyInjection.cs",
@@ -149,7 +146,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "InnoClinic.Notification.csproj",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Notification\\InnoClinic.Notification.csproj",
               "RelativeDocumentMoniker": "InnoClinic.Notification\\InnoClinic.Notification.csproj",
@@ -157,12 +154,11 @@
               "RelativeToolTip": "InnoClinic.Notification\\InnoClinic.Notification.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T19:32:02.897Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:32:02.897Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "Profile.Api.csproj",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Profile\\src\\Profile.Api\\Profile.Api.csproj",
               "RelativeDocumentMoniker": "InnoClinic.Profile\\src\\Profile.Api\\Profile.Api.csproj",
@@ -170,12 +166,11 @@
               "RelativeToolTip": "InnoClinic.Profile\\src\\Profile.Api\\Profile.Api.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T19:28:36.301Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:28:36.301Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "Identity.Api.csproj",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Identity\\src\\Identity.Api\\Identity.Api.csproj",
               "RelativeDocumentMoniker": "InnoClinic.Identity\\src\\Identity.Api\\Identity.Api.csproj",
@@ -183,12 +178,11 @@
               "RelativeToolTip": "InnoClinic.Identity\\src\\Identity.Api\\Identity.Api.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T19:28:20.241Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:28:20.241Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Appointment\\src\\Appointment.Api\\Program.cs",
               "RelativeDocumentMoniker": "InnoClinic.Appointment\\src\\Appointment.Api\\Program.cs",
@@ -196,12 +190,11 @@
               "RelativeToolTip": "InnoClinic.Appointment\\src\\Appointment.Api\\Program.cs",
               "ViewState": "AgIAACYAAAAAAAAAAAAAwDQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T19:26:22.947Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:26:22.947Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "P:\\C#Learning\\dotnet-inno-clinic\\inno-clinic-backend\\InnoClinic.Notification\\Program.cs",
               "RelativeDocumentMoniker": "InnoClinic.Notification\\Program.cs",
@@ -209,8 +202,7 @@
               "RelativeToolTip": "InnoClinic.Notification\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T19:24:34.735Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T19:24:34.735Z"
             }
           ]
         }

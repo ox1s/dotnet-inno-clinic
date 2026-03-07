@@ -1,7 +1,5 @@
 using Appointment.Api.Data;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace Appointment.Api.Features.Receptionist.ListAppointments;
 
 public class ListReceptionistAppointmentsHandler

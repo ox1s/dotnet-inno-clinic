@@ -8,8 +8,6 @@ using Profile.Features.Doctors.EditDoctorStatusByBot;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 
-using Xunit;
-
 namespace Profile.UnitTests.Features.Doctors;
 
 public class EditDoctorStatusByBotCommandHandlerTests

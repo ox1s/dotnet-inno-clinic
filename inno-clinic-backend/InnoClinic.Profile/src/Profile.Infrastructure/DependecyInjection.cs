@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Profile.Infrastructure.Auth;
 using Profile.Infrastructure.Database;
 using Profile.Infrastructure.Database.Repositories;
 

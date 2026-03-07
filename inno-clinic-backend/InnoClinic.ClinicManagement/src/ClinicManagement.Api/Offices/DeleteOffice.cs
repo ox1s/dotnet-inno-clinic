@@ -1,5 +1,4 @@
 using ClinicManagement.Api.Database;
-using ClinicManagement.Api.Endpoints;
 
 namespace ClinicManagement.Api.Offices;
 

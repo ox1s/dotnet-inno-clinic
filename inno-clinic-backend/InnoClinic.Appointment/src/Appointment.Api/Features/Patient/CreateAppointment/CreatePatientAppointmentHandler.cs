@@ -7,8 +7,6 @@ using Appointment.Api.Features.CreateAppointment;
 
 using FluentValidation;
 
-using InnoClinic.Shared.DTOs;
-
 using Throw;
 namespace Appointment.Api.Features.Patient.CreateAppointment;
 
