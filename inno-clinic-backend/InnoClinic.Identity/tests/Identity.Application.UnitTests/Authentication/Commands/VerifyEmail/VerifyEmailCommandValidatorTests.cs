@@ -9,7 +9,6 @@ namespace Identity.Application.UnitTests.Authentication.Commands.VerifyEmail;
 public class VerifyEmailCommandValidatorTests
 {
     private readonly VerifyEmailCommandValidator _validator = new();
-    private readonly Faker _faker = new();
 
     [Theory]
     [InlineData("notEmpty", true)]

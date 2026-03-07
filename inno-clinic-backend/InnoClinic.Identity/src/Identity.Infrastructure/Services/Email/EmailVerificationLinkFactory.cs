@@ -45,6 +45,6 @@ public class EmailVerificationLinkFactory(
                 host: HostString.FromUriComponent(baseUrl));
         }
 
-        return uri ?? throw new Exception("Could not generate email verification link");
+        return uri ?? throw new EmailSendingException("Could not generate email verification link");
     }
 }

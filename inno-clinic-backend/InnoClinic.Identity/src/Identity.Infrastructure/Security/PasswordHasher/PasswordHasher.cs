@@ -9,8 +9,8 @@ public class PasswordHasher : IPasswordHasher
         return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
     }
 
-    public bool IsCorrectPassword(string password, string hash)
+    public bool IsCorrectPassword(string password, string passwordHash)
     {
-        return BCrypt.Net.BCrypt.EnhancedVerify(password, hash);
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash);
     }
 }

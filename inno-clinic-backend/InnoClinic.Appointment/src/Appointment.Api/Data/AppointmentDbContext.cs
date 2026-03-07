@@ -9,6 +9,7 @@ public class AppointmentDbContext(
     : DbContext(options)
 {
     public DbSet<Appointment> Appointments { get; set; } = null!;
+    // TODO: фильтрация
     // public DbSet<AppointmentView> AppointmentViews { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

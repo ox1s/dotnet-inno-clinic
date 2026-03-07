@@ -7,6 +7,4 @@ public abstract class AggregateRoot : Entity
     }
 
     protected AggregateRoot() { }
-
-    // TODO: Domain Events
 }

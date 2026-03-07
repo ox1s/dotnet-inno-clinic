@@ -2,7 +2,7 @@ using Appointment.Api.Data;
 
 namespace Appointment.Api.Features.Appointments.CancelAppointment;
 
-public sealed class CancelAppointmentHandler
+public static class CancelAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(
         Guid id,

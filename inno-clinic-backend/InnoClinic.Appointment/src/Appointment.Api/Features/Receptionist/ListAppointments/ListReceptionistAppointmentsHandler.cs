@@ -12,17 +12,18 @@ public class ListReceptionistAppointmentsHandler
         AppointmentDbContext dbContext)
     {
 
-        var timeZoneId = Appointments_Resourses.Clinics_TimeZone ?? "UTC";
-        var clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        // var timeZoneId = Appointments_Resourses.Clinics_TimeZone ?? "UTC";
+        // var clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
-        var targetDate = request.Date ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, clinicTimeZone));
+        // var targetDate = request.Date ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, clinicTimeZone));
 
-        var localStart = targetDate.ToDateTime(TimeOnly.MinValue);
-        var localEnd = localStart.AddDays(1);
+        // var localStart = targetDate.ToDateTime(TimeOnly.MinValue);
+        // var localEnd = localStart.AddDays(1);
 
-        var utcStart = TimeZoneInfo.ConvertTimeToUtc(localStart, clinicTimeZone);
-        var utcEnd = TimeZoneInfo.ConvertTimeToUtc(localEnd, clinicTimeZone);
+        // var utcStart = TimeZoneInfo.ConvertTimeToUtc(localStart, clinicTimeZone);
+        // var utcEnd = TimeZoneInfo.ConvertTimeToUtc(localEnd, clinicTimeZone);
 
+        // TODO: фильтрация
         // var query = dbContext.AppointmentViews.AsNoTracking();
 
         // if (request.Date.HasValue)

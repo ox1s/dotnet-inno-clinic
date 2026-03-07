@@ -9,5 +9,4 @@ public record CreateInfo(DateTimeOffset CreatedAt, Guid CreatedBy)
     {
         return new CreateInfo(createdAt, createdBy);
     }
-
 }

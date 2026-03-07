@@ -20,7 +20,6 @@ public class CreateWorkerAccountCommandHandler(
     IAccountsRepository accountsRepository,
     IEmailVerificationLinkFactory linkFactory,
     IDateTimeProvider dateTimeProvider,
-    IOptions<EmailSettings> emailSettingsOptions,
     IRabbitMqService rabbitMqService)
     : IRequestHandler<CreateWorkerAccountCommand, ErrorOr<CreateWorkerAccountResult>>
 {

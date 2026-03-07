@@ -51,6 +51,7 @@ public class CreatePatientAppointmentHandler
         var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
         var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
 
+        // TODO:
         // var checkServiceStatusRequest = new CheckStatus(request.ServiceId);
         // var checkServiceStatusResult = await CheckServiceStatus(
         //     request: checkServiceStatusRequest,

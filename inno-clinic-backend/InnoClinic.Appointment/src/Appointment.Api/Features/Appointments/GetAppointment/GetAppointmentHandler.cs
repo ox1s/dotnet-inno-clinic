@@ -6,7 +6,6 @@ namespace Appointment.Api.Features.Appointments.GetAppointment;
 
 public static class GetAppointmentHandler
 {
-
     public static async Task<Results<Ok<GetAppointmentResponse>, NotFound>> HandleAsync(
         Guid id,
         IAppointmentRepository appointmentRepository)

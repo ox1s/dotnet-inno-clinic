@@ -43,8 +43,8 @@
         <Project Path="InnoClinic.Profile/src/Profile.Infrastructure/Profile.Infrastructure.csproj" />
     </Folder>
     <Folder Name="/InnoClinic.Profile/tests/">
-        <Project Path="/InnoClinic.Profile/tests/Profile.Feautures.UnitTests/Profile.Feautures.UnitTests.csproj" />
-        <Project Path="/InnoClinic.Profile/tests/Profile.Infrastracture.UnitTests/Profile.Infrastracture.UnitTests.csproj" />
+        <Project Path="InnoClinic.Profile/tests/Profile.Features.UnitTests/Profile.Features.UnitTests.csproj" />
+        <Project Path="InnoClinic.Profile/tests/Profile.Infrastracture.UnitTests/Profile.Infrastracture.UnitTests.csproj" />
     </Folder>
     <Folder Name="/InnoClinic.Shared/">
         <Project Path="InnoClinic.Shared/InnoClinic.Shared.csproj" />

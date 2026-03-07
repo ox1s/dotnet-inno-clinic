@@ -34,6 +34,7 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
         CancellationToken cancellationToken = default)
     {
         return await Task.FromResult(false);
+        // TODO: фильтрация
         // return await _dbContext.AppointmentViews
         //     .AnyAsync(a =>
         //         a.DoctorId == doctorId &&
