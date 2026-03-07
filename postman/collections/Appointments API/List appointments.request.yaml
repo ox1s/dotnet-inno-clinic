@@ -1,4 +1,5 @@
 $kind: http-request
-url: https://{{appointment-host}}/receptionist/appointments/
+name: List appointments
+url: https://{{gateway-host}}/appointment/receptionist/appointments/
 method: GET
-order: 6000
+order: 7000

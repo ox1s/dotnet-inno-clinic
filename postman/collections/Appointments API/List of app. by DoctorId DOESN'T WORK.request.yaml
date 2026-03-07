@@ -1,0 +1,7 @@
+$kind: http-request
+name: List of app. by DoctorId DOESN'T WORK
+url: https://{{gateway-host}}/appointment/receptionist/appointments/?{{doctorId}}
+method: GET
+queryParams:
+  "{{doctorId}}": ""
+order: 4000

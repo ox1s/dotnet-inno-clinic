@@ -1,8 +1,0 @@
-$kind: http-request
-url: "{{identityBaseUrl}}:/Authentication/accounts/{{accountId}}/refresh-tokens#"
-method: DELETE
-pathVariables:
-  - key: accountId
-    value: "{{accountId}}"
-    description: The account ID whose refresh tokens should be revoked
-order: 1000

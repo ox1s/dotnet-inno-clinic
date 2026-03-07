@@ -1,5 +1,6 @@
 $kind: http-request
-url: https://{{identity-host}}/authentication/accounts/{{userId}}/refresh-tokens
+name: Delete Refresh Tokens
+url: https://{{gateway-host}}/identity/authentication/accounts/{{userId}}/refresh-tokens
 method: DELETE
 auth:
   type: bearer

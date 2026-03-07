@@ -1,5 +1,6 @@
 $kind: http-request
-url: https://{{appointment-host}}/appointments/{{appointmentId}}
+name: Update Apointment
+url: https://{{gateway-host}}/appointment/appointments/{{appointmentId}}
 method: PUT
 body:
   type: json
@@ -16,4 +17,4 @@ auth:
   type: bearer
   credentials:
     token: "{{accessToken}}"
-order: 5000
+order: 6000

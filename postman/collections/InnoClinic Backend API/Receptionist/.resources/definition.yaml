@@ -1,6 +1,0 @@
-$kind: collection
-description: |-
-  Receptionist-specific endpoints for appointment management.
-
-  Requires Receptionist role authentication.
-order: 5000

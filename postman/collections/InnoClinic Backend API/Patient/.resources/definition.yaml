@@ -1,6 +1,0 @@
-$kind: collection
-description: |-
-  Patient-specific endpoints for appointment management.
-
-  Requires Patient role authentication.
-order: 3000

@@ -60,7 +60,6 @@ nunit-*.xml
 
 inno-clinic-backend/**/*Features/**/*.png
 inno-clinic-backend/**/*Features/**/*.md
-postman/
-.postman/
+
 docker-compose-artifactis/
 .venv

@@ -1,12 +1,12 @@
 $kind: http-request
-name: Create Appointment
+name: Create Appointment DOESN'T WORK
 url: https://{{gateway-host}}/appointment/patient/appointments
 method: POST
 body:
   type: json
   content: |
     {
-      "doctorId": "{{$guid}}",
+      "doctorId": "{{doctorId}}",
       "serviceId": "{{serviceId}}",
       "officeId": "{{officeId}}",
       "startDateTime": "{{currentTime}}",
@@ -14,7 +14,8 @@ body:
     }
 auth:
   credentials:
-    token: "{{accessToken}}"
+    - key: token
+      value: "{{accessToken}}"
   type: bearer
 scripts:
   - type: afterResponse
@@ -44,4 +45,4 @@ scripts:
       pm.variables.set("timePlus2Hours", moment().utc().add(2,
       'hours').format("YYYY-MM-DDTHH:mm:ss+02:00"));
     language: text/javascript
-order: 1621
+order: 2000

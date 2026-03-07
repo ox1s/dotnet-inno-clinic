@@ -1,6 +1,0 @@
-$kind: http-request
-url: https://{{appointment-host}}/receptionist/appointments/?{{doctorId}}
-method: GET
-queryParams:
-  "{{doctorId}}": null
-order: 3000
