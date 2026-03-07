@@ -7,7 +7,8 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq")
                     .WithManagementPlugin();
 
 var mongo = builder.AddMongoDB("mongo")
-                .WithMongoExpress();
+                .WithMongoExpress()
+                .WithLifetime(ContainerLifetime.Persistent);
 
 var mongodb = mongo.AddDatabase("notifications-db");
 

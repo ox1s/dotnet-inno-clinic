@@ -1,20 +1,16 @@
+using InnoClinic.Shared.DTOs;
+
 using Microsoft.Extensions.Logging;
+
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 using Profile.Infrastructure.Database.Repositories;
 
-using MongoDB.Driver;
-
-using Wolverine;
-
 using Quartz;
 
-using Telegram.Bot;
-using Telegram.Bot.Types.ReplyMarkups;
-
-using InnoClinic.Shared.DTOs;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using System.Buffers.Text;
+using Wolverine;
 
 namespace Profile.Infrastructure.Services;
 
@@ -48,8 +44,9 @@ public class EmailReminderJob(
                 await bus.PublishAsync(new SendDailyPollCommand
                 (
                     docId,
-                    DateTime.Today,
-                    $"Отметьте статус. Привяжите Telegram для быстрой отметки: {link}"
+                    DateTime.Now,
+                    $"Отметьте статус. Привяжите Telegram для быстрой отметки:",
+                    link
                 ));
                 logger.LogInformation("Email sent to rabbitmq for {AccountId} for the first time", docId);
             }
@@ -59,8 +56,9 @@ public class EmailReminderJob(
                 await bus.PublishAsync(new SendDailyPollCommand
                 (
                     docId,
-                    DateTime.Today,
-                    $"Зайдите в Telegram, чтобы отметить статус: https://t.me/inno_clinic_bot"
+                    DateTime.Now,
+                    $"Зайдите в Telegram, чтобы отметить статус:",
+                    "https://t.me/inno_clinic_bot"
                 ));
                 logger.LogInformation("Email sent to rabbitmq for {AccountId}", docId);
             }

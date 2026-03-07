@@ -1,8 +1,8 @@
 using System.Text.Json;
 
-using Serilog;
-
 using InnoClinic.Notification;
+
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var host = builder.Host;

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 
 using Profile.Domain.Entities.Doctors;
-using Profile.Infrastructure.Database.Repositories;
 using Profile.Infrastructure.Database;
+using Profile.Infrastructure.Database.Repositories;
 
 namespace Profile.Features.Doctors.EditDoctorProfile;
 

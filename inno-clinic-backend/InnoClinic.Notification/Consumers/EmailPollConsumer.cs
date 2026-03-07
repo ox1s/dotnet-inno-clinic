@@ -72,10 +72,10 @@ public class SendDailyPollCommandConsumer(
 
                 if (command != null)
                 {
-                    logger.LogInformation("Received request to send email to: {AccountId}", command.AccountId);
+                    logger.LogInformation("Received request to send daily poll email: {Commmand}", command);
                     var account = await _accountsCollection.Find(x => x.Id == command.AccountId).FirstOrDefaultAsync();
-                    logger.LogInformation("Received request to send email to: {Email}", account.Email);
-                    await SendEmailAsync(command.AccountId, account.Email, command.Message);
+                    logger.LogInformation("This email exist in mongoDb, so email will be sent to: {Person} with {Id}", account.Email, account.Id);
+                    await SendEmailAsync(command.AccountId, account.Email, command.Message, command.TelegramLink);
                 }
 
                 await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
@@ -98,18 +98,20 @@ public class SendDailyPollCommandConsumer(
 
     private async Task SendEmailAsync(
         Guid accountId,
-        string email, string message)
+        string email,
+        string message,
+        string link)
     {
-        logger.LogInformation("Begin sending email to: {AccountId}", accountId);
+        logger.LogInformation("Begin sending email to: {Email} with {AccountId}", email, accountId);
 
         await emailSender.SendEmailAsync(
             email,
             _emailSettings.FromEmail,
             "Daily Poll",
-            string.Format(_emailSettings.WelcomeBodyTemplate, message)
+            message + string.Format(_emailSettings.PollBodyTemplate, link)
         );
 
-        logger.LogInformation("Email sent to: {AccountId}", accountId);
+        logger.LogInformation("------------------------------------------------------");
     }
 
     public override void Dispose()

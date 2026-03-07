@@ -20,7 +20,7 @@ public class DoctorRepository : Repository<Doctor>
         return await DbContext
             .Set<Doctor>()
             .AsNoTracking()
-            .Select(d => d.Id)
+            .Select(d => d.AccountId)
             .ToListAsync(cancellationToken);
     }
 }

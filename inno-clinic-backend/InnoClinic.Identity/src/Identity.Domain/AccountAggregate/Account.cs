@@ -13,7 +13,7 @@ public class Account : AggregateRoot
     public PhoneNumber? PhoneNumber { get; private set; }
     public Guid? PhotoId { get; private set; }
     public CreateInfo CreatedInfo { get; private set; } = null!;
-    public UpdateInfo? UpdatedInfo { get; private set; }
+    public UpdateInfo? UpdatedInfo { get; }
     private readonly string _passwordHash = null!;
     private Account(
         Email email,

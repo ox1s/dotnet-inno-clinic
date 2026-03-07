@@ -9,4 +9,5 @@ public class EmailSettings
 
     public string WelcomeSubject { get; set; } = string.Empty;
     public string WelcomeBodyTemplate { get; set; } = string.Empty;
+    public string PollBodyTemplate { get; set; } = string.Empty;
 }
