@@ -1,11 +1,12 @@
 $kind: http-request
-url: https://{{clinicmanagement-host}}/specializations
+name: Create specialization
+url: https://{{gateway-host}}/clinic-management/specializations
 method: POST
 body:
   type: json
   content: |-
     {
-        "specializationName" : "Specialization 1",
+        "specializationName" : "Specialization 2",
         "isActive" : true
     }
 auth:
@@ -21,9 +22,7 @@ scripts:
 
       pm.test("Category Id saved", function () {
           var jsonData = pm.response.json();
-          pm.expect(jsonData).to.have.property('id');
-          
-          var specializationId = jsonData.id;
+          var specializationId = jsonData;
 
           pm.environment.set("specializationId", specializationId);
       });

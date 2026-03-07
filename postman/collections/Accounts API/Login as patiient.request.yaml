@@ -6,7 +6,7 @@ body:
   type: json
   content: |-
     {
-        "email": "{{patient-email}}",
+        "email": "patient5@test.com",
         "password": "{{password}}"
     }
 scripts:

@@ -1,35 +1,38 @@
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var mailpit = builder.AddMailPit("mailpit");
-
-var rabbitmq = builder.AddRabbitMQ("rabbitmq")
-                    .WithManagementPlugin();
-
+// config -----------------------------------------------------
 var botApiKey = builder.Configuration["BotSettings:ApiKey"];
 var telegramToken = builder.Configuration["BotSettings:BotToken"];
-
-var mongo = builder.AddMongoDB("mongo")
-                .WithMongoExpress()
-                .WithLifetime(ContainerLifetime.Persistent);
-
+// ------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+// services ---------------------------------------------------
+var mailpit = builder.AddMailPit("mailpit");
+var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
+// ------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+// databases --------------------------------------------------
+var mongo = builder.AddMongoDB("mongo").WithMongoExpress().WithLifetime(ContainerLifetime.Persistent);
 var mongodb = mongo.AddDatabase("notifications-db");
-
-var notificationsApi = builder.AddProject<Projects.InnoClinic_Notification>("notifications-api")
-                .WaitFor(rabbitmq)
-                .WithReference(rabbitmq)
-                .WaitFor(mongodb)
-                .WithReference(mongodb)
-                .WaitFor(mailpit)
-                .WithReference(mailpit);
 
 var postgres = builder.AddPostgres("postgres")
     .WithHostPort(5435)
     .WithPgAdmin()
     .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
-
 var sharedDatabase = postgres.AddDatabase("innoclinic-database");
+// ------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+// projects ---------------------------------------------------
+var notificationsApi = builder.AddProject<Projects.InnoClinic_Notification>("notifications-api")
+    .WaitFor(rabbitmq)
+    .WithReference(rabbitmq)
+
+    .WaitFor(mongodb)
+    .WithReference(mongodb)
+
+    .WaitFor(mailpit)
+    .WithReference(mailpit);
 
 var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
@@ -79,8 +82,16 @@ var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
     .WithEnvironment("AppUrl", "https://localhost:7777")
     .WithEnvironment("WebAppUrl", "http://localhost:7778");
 
-
-var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
+builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
+    .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)
+    .WithEnvironment("API_KEY", botApiKey)
+    .WithEnvironment("BACKEND_API_URL", profileApi.GetEndpoint("https"))
+    .WaitFor(profileApi)
+    .WaitFor(notificationsApi);
+// ------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+// gateway ----------------------------------------------------
+builder.AddProject<Projects.Gateway_Api>("gateway")
     .WithReference(identityApi)
     .WithReference(appointmentApi)
     .WithReference(clinicManagementApi)
@@ -94,12 +105,5 @@ var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
     .WaitFor(notificationsApi)
 
     .WithExternalHttpEndpoints();
-
-
-var telegramBot = builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
-    .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)
-    .WithEnvironment("API_KEY", botApiKey)
-    .WithEnvironment("BACKEND_API_URL", profileApi.GetEndpoint("https"))
-    .WaitFor(profileApi);
 
 await builder.Build().RunAsync();

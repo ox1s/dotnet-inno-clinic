@@ -1,11 +1,12 @@
 $kind: http-request
-url: https://{{clinicmanagement-host}}/service-categories
+name: Create category
+url: https://{{gateway-host}}/clinic-management/service-categories
 method: POST
 body:
   type: json
   content: |-
     {
-        "categoryName" : "Category 1",
+        "categoryName" : "Category 123",
         "timeSlotSize" : 1
     }
 auth:
@@ -16,14 +17,12 @@ scripts:
   - type: afterResponse
     code: |-
       pm.test("Create category successful", function () {
-          pm.response.to.have.status(200);
+          pm.response.to.have.status(201);
       });
 
       pm.test("Category Id saved", function () {
           var jsonData = pm.response.json();
-          pm.expect(jsonData).to.have.property('id');
-          
-          var categoryId = jsonData.id;
+          var categoryId = jsonData;
 
           pm.environment.set("categoryId", categoryId);
       });
