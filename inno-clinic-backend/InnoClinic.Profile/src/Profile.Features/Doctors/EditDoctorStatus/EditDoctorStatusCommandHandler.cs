@@ -6,7 +6,7 @@ using Profile.Infrastructure.Database.Repositories;
 
 namespace Profile.Features.Doctors.EditDoctorStatus;
 
-public class EditDoctorStatusCommandHandler
+public static class EditDoctorStatusCommandHandler
 {
     public static async Task Handle(
         HttpContext httpContext,

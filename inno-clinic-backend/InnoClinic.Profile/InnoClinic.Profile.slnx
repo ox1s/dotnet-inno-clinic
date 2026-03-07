@@ -6,6 +6,7 @@
     <Project Path="src/Profile.Infrastructure/Profile.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Profile.UnitTests.Features/Profile.UnitTests.Features.csproj" />
+    <Project Path="tests/Profile.Feautures.UnitTests/Profile.Feautures.UnitTests.csproj" />
+    <Project Path="tests/Profile.Infrastracture.UnitTests/Profile.Infrastracture.UnitTests.csproj" />
   </Folder>
 </Solution>

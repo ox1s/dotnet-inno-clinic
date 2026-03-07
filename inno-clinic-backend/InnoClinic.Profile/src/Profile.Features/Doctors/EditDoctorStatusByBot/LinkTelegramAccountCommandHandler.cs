@@ -7,9 +7,9 @@ using Wolverine;
 
 namespace Profile.Features.Doctors.EditDoctorStatusByBot;
 
-public class LinkTelegramAccountCommandHandler
+public static class LinkTelegramAccountCommandHandler
 {
-    public static async Task Handle(
+    public static async Task HandleAsync(
         LinkTelegramAccountCommand command,
         IMessageBus bus)
     {

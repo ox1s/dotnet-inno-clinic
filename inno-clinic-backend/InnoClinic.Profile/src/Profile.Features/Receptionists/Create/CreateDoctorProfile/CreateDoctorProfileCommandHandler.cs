@@ -8,7 +8,7 @@ using Wolverine;
 
 namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
 
-public class CreateDoctorProfileCommandHandler
+public static class CreateDoctorProfileCommandHandler
 {
     public static async Task Handle(
         CreateDoctorProfileCommand command,
@@ -37,7 +37,6 @@ public class CreateDoctorProfileCommandHandler
         dbContext.Set<Doctor>().Add(doctor);
         await dbContext.SaveChangesAsync();
         // TODO: Doctor repository
-
 
         await bus.PublishAsync(new DoctorCreated(command.Email, doctor.AccountId));
     }
