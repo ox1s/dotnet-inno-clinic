@@ -13,7 +13,7 @@ using Throw;
 
 namespace Appointment.Api.Features.Appointments.UpdateAppointment;
 
-public class UpdateAppointmentHandler
+public static class UpdateAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(Guid id,
         UpdateAppointmentRequest request,

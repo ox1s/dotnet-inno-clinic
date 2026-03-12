@@ -1,4 +1,4 @@
-﻿using ClinicManagement.Api.Database;
+﻿using ClinicManagement.Api.Data;
 
 using Microsoft.EntityFrameworkCore;
 

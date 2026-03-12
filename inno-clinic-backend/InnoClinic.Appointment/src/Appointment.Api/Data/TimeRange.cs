@@ -14,6 +14,7 @@ public record TimeRange
         Start = start.Throw().IfGreaterThanOrEqualTo(end);
         End = end;
     }
+    private TimeRange() { } // EF Core
 
     public static Result<TimeRange> Create(DateTimeOffset start, DateTimeOffset end)
     {
@@ -29,6 +30,4 @@ public record TimeRange
         return Result<TimeRange>.Success(new TimeRange(start, end));
     }
     public TimeSpan LengthInTime => End - Start;
-    private TimeRange() { }
-
 }

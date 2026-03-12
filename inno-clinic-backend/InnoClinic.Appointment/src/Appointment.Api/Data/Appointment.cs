@@ -10,7 +10,6 @@ public class Appointment
     public Guid OfficeId { get; private set; }
     public TimeRange Duration { get; private set; } = null!;
     public bool IsApproved { get; set; }
-
     private Appointment(
         Guid patientId,
         Guid doctorId,
@@ -27,6 +26,7 @@ public class Appointment
         Duration = duration;
         IsApproved = false;
     }
+    private Appointment() { } // EF Core
     public static Appointment Create(
         Guid patientId,
         Guid doctorId,
@@ -72,6 +72,4 @@ public class Appointment
     {
         IsApproved = true;
     }
-
-    private Appointment() { }
 }

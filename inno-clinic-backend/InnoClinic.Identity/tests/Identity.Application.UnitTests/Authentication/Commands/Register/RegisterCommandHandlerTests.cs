@@ -29,14 +29,6 @@ public class RegisterCommandHandlerTests
 
     public RegisterCommandHandlerTests()
     {
-        var emailSettings = new EmailSettings
-        {
-            FromEmail = "test@innoclinic.com",
-            FromName = "InnoClinic Test",
-            WelcomeSubject = "Welcome!",
-            WelcomeBodyTemplate = "Link: {0}"
-        };
-
         _jwtTokenGenerator = Substitute.For<IJwtTokenGenerator>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
@@ -44,8 +36,6 @@ public class RegisterCommandHandlerTests
         _rabbitMqService = Substitute.For<IRabbitMqService>();
         _linkFactory = Substitute.For<IEmailVerificationLinkFactory>();
         _dateTimeProvider = Substitute.For<IDateTimeProvider>();
-
-        var options = Options.Create(emailSettings);
 
         _handler = new RegisterCommandHandler(
             _jwtTokenGenerator,

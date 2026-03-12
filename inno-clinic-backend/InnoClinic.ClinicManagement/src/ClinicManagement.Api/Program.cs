@@ -1,12 +1,12 @@
 using System.Text;
 
-using ClinicManagement.Api.Database;
+using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
-using ClinicManagement.Api.ServiceCategories;
-using ClinicManagement.Api.Services;
-using ClinicManagement.Api.Specializations;
+using ClinicManagement.Api.Features.ServiceCategories;
+using ClinicManagement.Api.Features.Services;
+using ClinicManagement.Api.Features.Specializations;
 
 using FluentValidation;
 

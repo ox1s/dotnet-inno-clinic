@@ -5,7 +5,7 @@ using InnoClinic.Shared.DTOs;
 
 namespace Appointment.Api.Features.Receptionist.ApproveAppointment;
 
-public class ApproveAppointmentHandler
+public static class ApproveAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(
         Guid id,
