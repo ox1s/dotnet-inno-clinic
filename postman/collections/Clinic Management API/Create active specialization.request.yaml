@@ -1,18 +1,18 @@
 $kind: http-request
-name: Create specialization
+name: Create active specialization
 url: https://{{gateway-host}}/clinic-management/specializations
 method: POST
 body:
   type: json
   content: |-
     {
-        "specializationName" : "Specialization 2",
+        "specializationName" : "Specialization {{speciterator}}",
         "isActive" : true
     }
 auth:
-  type: bearer
   credentials:
     token: "{{accessToken}}"
+  type: bearer
 scripts:
   - type: afterResponse
     code: |-
@@ -23,7 +23,8 @@ scripts:
       pm.test("Category Id saved", function () {
           var jsonData = pm.response.json();
           var specializationId = jsonData;
-
+          var iterator = pm.environment.get("speciterator");
+          pm.environment.set("speciterator", iterator + 1);
           pm.environment.set("specializationId", specializationId);
       });
     language: text/javascript

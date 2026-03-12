@@ -12,12 +12,20 @@ method: POST
 body:
   type: json
   content: |-
+    // {
+    // 	"serviceName": "Service 123",
+    //     "price": 19,
+    //     "currency": "BYN",
+    //     "categoryId": "{{categoryId}}",
+    //     "specializationId": "{{specializationId}}",
+    //     "isActive": {{$randomBoolean}}
+    // }
     {
     	"serviceName": "Service 123",
         "price": 19,
         "currency": "BYN",
-        "categoryId": "{{categoryId}}",
-        "specializationId": "{{specializationId}}",
+        "categoryId": "019ce2a8-f402-7887-a80b-68a075c95372",
+        "specializationId": "019ce2a9-c6b3-7ff1-8ee1-ef31a47b86d6",
         "isActive": {{$randomBoolean}}
     }
 auth:

@@ -18,9 +18,9 @@ body:
 
     \  \"email\": \"doctor1@innoclinic.com\",\r
 
-    \  \"specializationId\": \"{{$guid}}\",\r
+    \  \"specializationId\": \"{{specializationId}}\",\r
 
-    \  \"officeId\": \"{{$guid}}\",\r
+    \  \"officeId\": \"{{officeId}}\",\r
 
     \  \"careerStartYear\": 2000,\r
 

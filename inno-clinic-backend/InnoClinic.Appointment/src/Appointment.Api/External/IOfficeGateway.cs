@@ -1,6 +1,8 @@
+using Appointment.Api.Common;
+
 namespace Appointment.Api.External;
 
 public interface IOfficeGateway
 {
-    Task<bool> IsOfficeActiveAsync(Guid officeId, CancellationToken cancellationToken = default);
+    Task<Result<bool>> IsOfficeActiveAsync(Guid officeId, CancellationToken cancellationToken = default);
 }

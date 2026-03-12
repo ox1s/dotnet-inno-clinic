@@ -1,0 +1,587 @@
+{
+  "version": 1,
+  "name": "Create valid appointment",
+  "description": "",
+  "flow": {
+    "description": "",
+    "nodes": {
+      "1ZeMpEZc": {
+        "type": "ev/endpoint@3",
+        "pos": {
+          "x": 0,
+          "y": 0
+        },
+        "config": {
+          "inputs": [],
+          "data": "",
+          "language": "json",
+          "allowAnyType": false
+        },
+        "ui": {
+          "data": {
+            "triggerType": "ev/endpoint@3"
+          },
+          "namedInputsExpanded": true
+        }
+      },
+      "H5EH7fRk": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 352,
+          "y": -8
+        },
+        "config": {
+          "element": {
+            "id": "1F9e701FE4fC4D9e7da8bD3D",
+            "collection": "E5fD77DFC7BB9f19B090F681",
+            "inExtensibleCollection": true,
+            "name": "Login as receptionist",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "ed_AraTu",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "--qN1kaz",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "password"
+            },
+            {
+              "id": "Fk9XDuzA",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "receptionist-email"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "i2rj5iNZ": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 888,
+          "y": 32
+        },
+        "config": {
+          "element": {
+            "id": "e2252Fe88b32BaC68FDED3b2",
+            "collection": "91A2E5E85dF1e22cb8fab127",
+            "inExtensibleCollection": true,
+            "name": "Create category",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "atWjz86j",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "accessToken"
+            },
+            {
+              "id": "I16_BUZf",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "uV7UgiO2",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "catiterator"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "TLXaE2px": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 1424,
+          "y": -24
+        },
+        "config": {
+          "element": {
+            "id": "5A5bCAD87c7A2cFD15eC9C05",
+            "collection": "91A2E5E85dF1e22cb8fab127",
+            "inExtensibleCollection": true,
+            "name": "Create active specialization",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "1j8AYUt1",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "accessToken"
+            },
+            {
+              "id": "lYHW9j15",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "FVaW8kPp",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "speciterator"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "redcwsIc": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 2040,
+          "y": -64
+        },
+        "config": {
+          "element": {
+            "id": "2AA7FaBf171DFcdf097bB1b8",
+            "collection": "91A2E5E85dF1e22cb8fab127",
+            "inExtensibleCollection": true,
+            "name": "Create active service",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "sVIPqpCS",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "O5dUz40g",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "categoryId"
+            },
+            {
+              "id": "kDpR1kML",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "specializationId"
+            },
+            {
+              "id": "Qrv9UTgf",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "iterator"
+            },
+            {
+              "id": "0_7nf70v",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "accessToken"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "B3IPagSm": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 2592,
+          "y": -56
+        },
+        "config": {
+          "element": {
+            "id": "84f3aEC4eE22f2f7644729E7",
+            "collection": "91A2E5E85dF1e22cb8fab127",
+            "inExtensibleCollection": true,
+            "name": "Create active office",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "up1SO3x6",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "mqk_lIdo",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "$randomUrl"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "bc45yJho": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 3304,
+          "y": -224
+        },
+        "config": {
+          "element": {
+            "id": "Baf7C2Cc795bC0F5B2beD2cb",
+            "collection": "E5fD77DFC7BB9f19B090F681",
+            "inExtensibleCollection": true,
+            "name": "Register as patient",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "q_fHOOCm",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "9ExJON66",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "patient-email"
+            },
+            {
+              "id": "sl5_16PF",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "password"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "KPyrHeJg": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 3960,
+          "y": 32
+        },
+        "config": {
+          "element": {
+            "id": "BD5Ecd42A5B5E7C6236a378A",
+            "collection": "E5fD77DFC7BB9f19B090F681",
+            "inExtensibleCollection": true,
+            "name": "Login as patiient",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "PmoWpmtV",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "UWGtoSmZ",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "patient-email"
+            },
+            {
+              "id": "KVO64dUk",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "password"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "5aehRfvt": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 4632,
+          "y": 72
+        },
+        "config": {
+          "element": {
+            "id": "dB0D5bDd7448Ae5dFAA722Ea",
+            "collection": "7BdA582261b0db23570B9DeF",
+            "inExtensibleCollection": true,
+            "name": "Create Appointment",
+            "method": "POST"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "mMpntPSd",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "accessToken"
+            },
+            {
+              "id": "caAOvUbe",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            },
+            {
+              "id": "tN2QvFyX",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "doctorId"
+            },
+            {
+              "id": "8Vsncjgo",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "serviceId"
+            },
+            {
+              "id": "MLd1Csu0",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "officeId"
+            },
+            {
+              "id": "8rYvRZ5C",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "currentTime"
+            },
+            {
+              "id": "Cypw8Bof",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "timePlus2Hours"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": true,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
+      },
+      "4BjL8Mjc": {
+        "type": "output/viewer@1",
+        "pos": {
+          "x": 5152,
+          "y": 104
+        },
+        "size": {
+          "width": 328,
+          "height": 232
+        },
+        "config": {},
+        "ui": {
+          "data": {
+            "displayType": "auto"
+          }
+        }
+      }
+    },
+    "connections": {
+      "lFcG7Cbn": {
+        "source": "1ZeMpEZc",
+        "target": "H5EH7fRk",
+        "sourcePort": "data",
+        "targetPort": "AI"
+      },
+      "GUWU9-dR": {
+        "source": "H5EH7fRk",
+        "target": "i2rj5iNZ",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "IfrYw_B0": {
+        "source": "i2rj5iNZ",
+        "target": "TLXaE2px",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "daMHX4pE": {
+        "source": "TLXaE2px",
+        "target": "redcwsIc",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "QtZ43tEq": {
+        "source": "redcwsIc",
+        "target": "B3IPagSm",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "ufwFNH5C": {
+        "source": "B3IPagSm",
+        "target": "bc45yJho",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "Q0WhCQJT": {
+        "source": "KPyrHeJg",
+        "target": "5aehRfvt",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "oISrjBcY": {
+        "source": "5aehRfvt",
+        "target": "4BjL8Mjc",
+        "sourcePort": "success",
+        "targetPort": "data"
+      }
+    },
+    "annotations": {},
+    "groups": {},
+    "webhook": {
+      "payloadContent": "body-only",
+      "responseType": "default"
+    },
+    "forms": {},
+    "modules": {},
+    "io": {},
+    "ports": {},
+    "meta": {},
+    "scenes": {},
+    "scenarios": {
+      "4YJ-K6Vf": {
+        "name": "Request Trigger",
+        "type": "scenario@2",
+        "createdOn": 1773323542841,
+        "updatedOn": 1773323542841,
+        "data": {
+          "reqHeaders": {
+            "id": "reqHeaders",
+            "key": "headers",
+            "value": "{}",
+            "type": {
+              "properties": {}
+            }
+          },
+          "reqParams": {
+            "id": "reqParams",
+            "key": "params",
+            "value": "{}",
+            "type": {
+              "properties": {}
+            }
+          },
+          "reqBody": {
+            "id": "reqBody",
+            "key": "body",
+            "value": "{\n\t\"message\": \"Welcome to Flows!\"\n}",
+            "type": {
+              "properties": {}
+            }
+          }
+        }
+      },
+      "jj97LdQF": {
+        "name": "Start Trigger",
+        "type": "scenario@2",
+        "createdOn": 1773323547236,
+        "updatedOn": 1773323547236,
+        "data": {
+          "sNOARZVu": {
+            "id": "sNOARZVu",
+            "key": "Input 1",
+            "value": "",
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "config": {
+      "definitions": {},
+      "constants": {}
+    }
+  },
+  "lockbox": {},
+  "info": {
+    "_postman_id": "82eef0a3-28b7-464d-81f5-b33a309d690b"
+  },
+  "_postman_exported_at": "2026-03-12T15:56:20.020Z",
+  "_postman_exported_using": "Postman/Local Mode"
+}

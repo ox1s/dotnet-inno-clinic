@@ -63,3 +63,4 @@ inno-clinic-backend/**/*Features/**/*.md
 
 docker-compose-artifactis/
 .venv
+.vs/

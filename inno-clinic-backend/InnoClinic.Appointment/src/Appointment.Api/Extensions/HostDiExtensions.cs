@@ -17,9 +17,9 @@ public static class HostDiExtensions
 
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
-        services.AddScoped<IProfileGateway, FakeProfileGateway>();
-        services.AddScoped<IServiceGateway, FakeServiceGateway>();
-        services.AddScoped<IOfficeGateway, FakeOfficeGateway>();
+        services.AddScoped<IProfileGateway, ProfileGateway>();
+        services.AddScoped<IServiceGateway, ServiceGateway>();
+        services.AddScoped<IOfficeGateway, OfficeGateway>();
 
         services
             .AddEfCore(configuration, environment);

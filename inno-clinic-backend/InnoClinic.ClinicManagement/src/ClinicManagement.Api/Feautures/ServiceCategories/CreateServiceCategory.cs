@@ -12,9 +12,8 @@ public class CreateServiceCategory(
         string CategoryName,
         int TimeSlotSize);
 
-    public async Task<Guid> Handle(CreateServiceCategory.Request request)
+    public async Task<Guid> Handle(Request request)
     {
-
         var category = ServiceCategory.Create(
             request.CategoryName,
             request.TimeSlotSize);
@@ -28,7 +27,7 @@ public class CreateServiceCategory(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("service-categories", async (CreateServiceCategory.Request request, CreateServiceCategory useCase) =>
+            app.MapPost("service-categories", async (Request request, CreateServiceCategory useCase) =>
                 {
                     Guid categoryId = await useCase.Handle(request);
                     return Results.Created($"/service-categories/{categoryId}", categoryId);

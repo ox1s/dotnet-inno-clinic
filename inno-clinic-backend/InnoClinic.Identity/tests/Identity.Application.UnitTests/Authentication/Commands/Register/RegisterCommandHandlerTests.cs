@@ -2,14 +2,11 @@ using FluentAssertions;
 
 using Identity.Application.Authentication.Commands.Register;
 using Identity.Application.Common.Interfaces;
-using Identity.Application.Common.Settings;
 using Identity.Domain.AccountAggregate;
 using Identity.Domain.Common.Interfaces;
 
 using InnoClinic.Shared;
 using InnoClinic.Shared.DTOs;
-
-using Microsoft.Extensions.Options;
 
 using NSubstitute;
 

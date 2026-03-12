@@ -6,7 +6,7 @@ body:
   type: json
   content: |
     {
-      "doctorId": "{{$guid}}",
+      "doctorId": "{{doctorId}}",
       "serviceId": "{{serviceId}}",
       "officeId": "{{officeId}}",
       "startDateTime": "{{currentTime}}",
@@ -44,4 +44,4 @@ scripts:
       pm.variables.set("timePlus2Hours", moment().utc().add(2,
       'hours').format("YYYY-MM-DDTHH:mm:ss+02:00"));
     language: text/javascript
-order: 1621
+order: 1000

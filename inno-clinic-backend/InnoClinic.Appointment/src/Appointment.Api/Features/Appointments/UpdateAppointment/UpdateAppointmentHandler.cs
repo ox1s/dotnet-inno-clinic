@@ -7,8 +7,6 @@ using Appointment.Api.External;
 
 using FluentValidation;
 
-using Microsoft.EntityFrameworkCore;
-
 using Throw;
 
 namespace Appointment.Api.Features.Appointments.UpdateAppointment;
@@ -45,15 +43,15 @@ public static class UpdateAppointmentHandler
         if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
             return TypedResults.BadRequest(Errors.OverlappingAppointment);
 
-        var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
-        var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
-        var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
+        var serviceActive = await serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActive = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var doctorActiveResult = await profileGateway.IsDoctorActiveAsync(request.DoctorId);
 
-        if (!doctorActiveResult.Result)
+        if (!doctorActiveResult.Succeeded)
             return Results.BadRequest(Errors.DoctorIsNotActive);
-        if (!serviceActive.Result)
+        if (!serviceActive.Succeeded)
             return Results.BadRequest(Errors.ServiceIsNotActive);
-        if (!officeActive.Result)
+        if (!officeActive.Succeeded)
             return Results.BadRequest(Errors.OfficeIsNotActive);
 
         appointment.Update(

@@ -6,8 +6,8 @@ body:
   type: json
   content: |-
     {
-        "categoryName" : "Category 123",
-        "timeSlotSize" : 1
+        "categoryName": "Category {{catiterator}}",
+        "timeSlotSize": 1
     }
 auth:
   type: bearer
@@ -23,8 +23,19 @@ scripts:
       pm.test("Category Id saved", function () {
           var jsonData = pm.response.json();
           var categoryId = jsonData;
+          var iterator = pm.environment.get("catiterator");
 
+          console.log("Создали категорию с id", categoryId);
+
+          console.log("А итератор", iterator);
+
+          pm.environment.set("catiterator", iterator + 1);
+
+          let number = 1;
+          console.log("env: iterator = ", pm.environment.get("catiterator"));
+          console.log("Дошли");
           pm.environment.set("categoryId", categoryId);
+          console.log("Дошли2");
       });
     language: text/javascript
 order: 5000

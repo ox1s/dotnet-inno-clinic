@@ -23,14 +23,16 @@ public class ProfileService(IHttpClientFactory httpClientFactory) : IProfileServ
 
             if (response is null)
             {
-                return Error.Failure("Failed to retrieve profile data");
+                return Error.NotFound("Profile not found");
             }
 
             return ErrorOrFactory.From((Role: response.Role, Status: response.Status));
         }
         catch
         {
-            return Error.Failure("Failed to retrieve profile data");
+            return Error.Failure(
+                "ProfileService.Error",
+                "Failed to retrieve profile data");
         }
     }
 }

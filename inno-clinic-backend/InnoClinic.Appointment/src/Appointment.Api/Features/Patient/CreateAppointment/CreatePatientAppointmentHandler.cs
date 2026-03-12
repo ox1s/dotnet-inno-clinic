@@ -10,7 +10,7 @@ using FluentValidation;
 using Throw;
 namespace Appointment.Api.Features.Patient.CreateAppointment;
 
-public class CreatePatientAppointmentHandler
+public static class CreatePatientAppointmentHandler
 {
     public static async Task<IResult> HandleAsync(
         CreatePatientAppointmentRequest request,
@@ -45,9 +45,9 @@ public class CreatePatientAppointmentHandler
         if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
             return Results.BadRequest(Errors.OverlappingAppointment);
 
-        var serviceActive = serviceGateway.IsServiceActiveAsync(request.ServiceId);
-        var officeActive = officeGateway.IsOfficeActiveAsync(request.OfficeId);
-        var doctorActiveResult = profileGateway.IsDoctorActiveAsync(request.DoctorId);
+        var serviceActive = await serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActive = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var doctorActiveResult = await profileGateway.IsDoctorActiveAsync(request.DoctorId);
 
         // TODO:
         // var checkServiceStatusRequest = new CheckStatus(request.ServiceId);
@@ -68,11 +68,11 @@ public class CreatePatientAppointmentHandler
         //     httpClientFactory: httpClienFactory,
         //     logger: logger);
 
-        if (!doctorActiveResult.Result)
+        if (!doctorActiveResult.Succeeded)
             return Results.BadRequest(Errors.DoctorIsNotActive);
-        if (!serviceActive.Result)
+        if (!serviceActive.Succeeded)
             return Results.BadRequest(Errors.ServiceIsNotActive);
-        if (!officeActive.Result)
+        if (!officeActive.Succeeded)
             return Results.BadRequest(Errors.OfficeIsNotActive);
 
         var appointment = Data.Appointment.Create(

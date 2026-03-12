@@ -11,4 +11,6 @@ public static class Permissions
     // US-44 View service’s info & US-5 View services (Patient)
     public const string ServicesRead = "services:read"; // Receptionist, Patient
 
+    // offices
+    public const string OfficesManipulate = "offices:manipulate";
 }

@@ -12,7 +12,8 @@ public static class RolePermissionMapping
                 Permissions.ServicesManipulate,
                 Permissions.SpecializationsManipulate,
                 Permissions.ServicesRead,
-                Permissions.SpecializationsRead
+                Permissions.SpecializationsRead,
+                Permissions.OfficesManipulate
             }
         },
         {
