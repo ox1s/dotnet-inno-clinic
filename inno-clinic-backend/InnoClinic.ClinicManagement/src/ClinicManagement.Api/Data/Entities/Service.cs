@@ -15,7 +15,7 @@ public class Service
     public Price Price { get; set; }
     public Guid SpecializationId { get; set; }
     public bool IsActive { get; set; }
-
+    private Service() { } // EF Core
     public static Service Create(
         Guid categoryId,
         string serviceName,
@@ -52,6 +52,4 @@ public class Service
         SpecializationId = specializationId;
         IsActive = isActive;
     }
-
-    private Service() { }
 }

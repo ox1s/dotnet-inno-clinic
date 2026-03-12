@@ -1,4 +1,4 @@
-using ClinicManagement.Api.Offices;
+using ClinicManagement.Api.Data.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,5 +1,5 @@
 using ClinicManagement.Api.Data;
-using ClinicManagement.Api.Offices;
+using ClinicManagement.Api.Data.Entities;
 
 namespace ClinicManagement.Api.Features.Offices;
 

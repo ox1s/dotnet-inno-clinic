@@ -1,6 +1,4 @@
-using ClinicManagement.Api.Data.Entities;
-
-namespace ClinicManagement.Api.Offices;
+namespace ClinicManagement.Api.Data.Entities;
 
 
 public class Office
@@ -16,7 +14,7 @@ public class Office
     public Photo Photo { get; set; }
     public string RegistryPhoneNumber { get; set; } = null!;
     public bool IsActive { get; set; }
-
+    private Office() { } // EF Core
     public static Office Create(
         string address,
         Photo photo,
@@ -32,7 +30,6 @@ public class Office
             IsActive = isActive
         };
     }
-
     public void Update(string address, string registryPhoneNumber, Photo photo, bool isActive)
     {
         Address = address;
@@ -40,6 +37,4 @@ public class Office
         Photo = photo;
         IsActive = isActive;
     }
-    private Office() { }
-
 }

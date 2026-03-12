@@ -1,6 +1,5 @@
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Data.Entities;
-using ClinicManagement.Api.Offices;
 
 using FluentValidation;
 
