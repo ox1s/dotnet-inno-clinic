@@ -17,7 +17,7 @@ public class CreateSpecialization(
         Guid Id,
         string Name);
 
-    public async Task<Guid> Handle(Request request)
+    public async Task<Response> Handle(Request request)
     {
         var existingSpecialization = await context.Specializations
             .FirstOrDefaultAsync(s =>
@@ -37,7 +37,7 @@ public class CreateSpecialization(
         context.Specializations.Add(specialization);
         await context.SaveChangesAsync();
 
-        return specialization.Id;
+        return new Response(specialization.Id, specialization.SpecializationName);
     }
 
     internal sealed class Endpoint : IEndpoint
@@ -46,8 +46,8 @@ public class CreateSpecialization(
         {
             app.MapPost("specializations", async (Request request, CreateSpecialization useCase) =>
                 {
-                    Guid specializationId = await useCase.Handle(request);
-                    return Results.Ok(new Response(specializationId, request.SpecializationName));
+                    var response = await useCase.Handle(request);
+                    return Results.Ok(new Response(response.Id, request.SpecializationName));
                 })
                 .WithTags(SpecializationEndpoints.Tag)
                 .RequirePermission(Permissions.SpecializationsManipulate);

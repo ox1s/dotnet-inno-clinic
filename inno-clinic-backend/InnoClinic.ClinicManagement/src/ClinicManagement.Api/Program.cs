@@ -7,6 +7,7 @@ using ClinicManagement.Api.Extensions;
 using ClinicManagement.Api.Features.Offices;
 using ClinicManagement.Api.Features.Services;
 using ClinicManagement.Api.Features.Specializations;
+using ClinicManagement.Api.Feautures.Categories;
 
 using FluentValidation;
 
@@ -85,8 +86,14 @@ builder.Services.AddScoped<CreateService>();
 builder.Services.AddScoped<UpdateService>();
 builder.Services.AddScoped<ListServices>();
 builder.Services.AddScoped<GetService>();
+
+builder.Services.AddScoped<ListCategories>();
+
 builder.Services.AddScoped<CreateSpecialization>();
+
 builder.Services.AddScoped<CreateOffice>();
+builder.Services.AddScoped<DeleteOffice>();
+builder.Services.AddScoped<UpdateOffice>();
 
 builder.Services.AddEndpoints();
 
@@ -105,13 +112,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapEndpoints();
-app.MapEndpoint<CreateService.Endpoint>();
-app.MapEndpoint<ListServices.Endpoint>();
-app.MapEndpoint<GetService.Endpoint>();
-app.MapEndpoint<UpdateService.Endpoint>();
-app.MapEndpoint<CreateSpecialization.Endpoint>();
-app.MapEndpoint<CreateOffice.Endpoint>();
+app.MapEndpoints();
 
 app.UseExceptionHandler();
 await app.RunAsync();

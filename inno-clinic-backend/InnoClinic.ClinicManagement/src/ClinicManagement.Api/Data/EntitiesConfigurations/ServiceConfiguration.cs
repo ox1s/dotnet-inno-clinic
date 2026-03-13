@@ -24,12 +24,12 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
         });
 
-        builder.HasOne<ServiceCategory>()
+        builder.HasOne(service => service.Category)
             .WithMany()
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<Specialization>()
+        builder.HasOne(service => service.Specialization)
             .WithMany()
             .HasForeignKey(x => x.SpecializationId)
             .OnDelete(DeleteBehavior.Restrict);

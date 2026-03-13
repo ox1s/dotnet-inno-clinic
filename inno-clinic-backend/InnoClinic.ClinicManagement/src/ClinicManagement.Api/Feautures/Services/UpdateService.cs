@@ -5,8 +5,6 @@ using ClinicManagement.Api.Endpoints;
 
 using FluentValidation;
 
-using InnoClinic.Shared;
-
 namespace ClinicManagement.Api.Features.Services;
 
 internal sealed class UpdateService(

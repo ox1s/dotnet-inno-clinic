@@ -16,8 +16,9 @@ internal sealed class CreateOffice(
         string PhotoUrl,
         string RegistryPhoneNumber,
         bool IsActive);
+    public sealed record Response(Guid Id);
 
-    public async Task<Guid> Handle(Request request)
+    public async Task<Response> Handle(Request request)
     {
         await validator.ValidateAndThrowAsync(request);
 
@@ -33,7 +34,7 @@ internal sealed class CreateOffice(
         context.Offices.Add(office);
         await context.SaveChangesAsync();
 
-        return office.Id;
+        return new Response(office.Id);
     }
     internal sealed class Endpoint : IEndpoint
     {
@@ -41,8 +42,8 @@ internal sealed class CreateOffice(
         {
             app.MapPost("offices", async (Request request, CreateOffice useCase) =>
             {
-                Guid officeId = await useCase.Handle(request);
-                return Results.Created($"/offices/{officeId}", officeId);
+                var response = await useCase.Handle(request);
+                return Results.Created($"/offices/{response.Id}", response);
             })
             .WithTags(OfficeEndpoints.Tag)
             .RequirePermission(Permissions.OfficesManipulate);

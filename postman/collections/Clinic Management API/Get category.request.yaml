@@ -1,0 +1,27 @@
+$kind: http-request
+name: Get category
+url: https://{{gateway-host}}/clinic-management/categories/
+method: GET
+scripts:
+  - type: beforeRequest
+    code: "pm.test(\"Create service successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Category Id saved\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    \r
+
+      \    var categoryId = jsonData[0].Id;\r
+
+      \    pm.environment.set(\"categoryId\", categoryId);\r
+
+      });"
+    language: text/javascript
+order: 4036216910462471

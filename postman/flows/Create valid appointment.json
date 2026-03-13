@@ -72,54 +72,6 @@
           "namedInputsExpanded": true
         }
       },
-      "i2rj5iNZ": {
-        "type": "task/http-request@1",
-        "pos": {
-          "x": 888,
-          "y": 32
-        },
-        "config": {
-          "element": {
-            "id": "e2252Fe88b32BaC68FDED3b2",
-            "collection": "91A2E5E85dF1e22cb8fab127",
-            "inExtensibleCollection": true,
-            "name": "Create category",
-            "method": "POST"
-          },
-          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
-          "parseBody": "auto",
-          "requestVariables": [
-            {
-              "id": "atWjz86j",
-              "type": null,
-              "kind": null,
-              "value": null,
-              "key": "accessToken"
-            },
-            {
-              "id": "I16_BUZf",
-              "type": null,
-              "kind": null,
-              "value": null,
-              "key": "gateway-host"
-            },
-            {
-              "id": "uV7UgiO2",
-              "type": null,
-              "kind": null,
-              "value": null,
-              "key": "catiterator"
-            }
-          ],
-          "scriptsModifyEnvVars": true,
-          "trackGlobalEnvironment": false,
-          "requestVariables__expanded": true
-        },
-        "ui": {
-          "data": {},
-          "namedInputsExpanded": true
-        }
-      },
       "TLXaE2px": {
         "type": "task/http-request@1",
         "pos": {
@@ -468,18 +420,6 @@
         "sourcePort": "data",
         "targetPort": "AI"
       },
-      "GUWU9-dR": {
-        "source": "H5EH7fRk",
-        "target": "i2rj5iNZ",
-        "sourcePort": "success",
-        "targetPort": "AI"
-      },
-      "IfrYw_B0": {
-        "source": "i2rj5iNZ",
-        "target": "TLXaE2px",
-        "sourcePort": "success",
-        "targetPort": "AI"
-      },
       "daMHX4pE": {
         "source": "TLXaE2px",
         "target": "redcwsIc",
@@ -582,6 +522,6 @@
   "info": {
     "_postman_id": "82eef0a3-28b7-464d-81f5-b33a309d690b"
   },
-  "_postman_exported_at": "2026-03-12T15:56:20.020Z",
+  "_postman_exported_at": "2026-03-13T13:06:39.833Z",
   "_postman_exported_using": "Postman/Local Mode"
 }

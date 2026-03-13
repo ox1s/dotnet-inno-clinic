@@ -1,5 +1,7 @@
 using Appointment.Api.Endpoints;
 
+using InnoClinic.Shared;
+
 namespace Appointment.Api.Features.Appointments.CancelAppointment;
 
 public class CancelAppointmentEndpoint
@@ -9,7 +11,8 @@ public class CancelAppointmentEndpoint
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapDelete("appointments/{id}", CancelAppointmentHandler.HandleAsync)
-                .WithTags("Appointments");
+                .WithTags("Appointments")
+                .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
         }
     }
 }

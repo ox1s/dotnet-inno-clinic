@@ -18,17 +18,6 @@
         {
           "local": {
             "collectionId": "91A2E5E85dF1e22cb8fab127",
-            "requestId": "e2252Fe88b32BaC68FDED3b2",
-            "filePath": ""
-          },
-          "cloud": {
-            "collectionId": null,
-            "requestId": null
-          }
-        },
-        {
-          "local": {
-            "collectionId": "91A2E5E85dF1e22cb8fab127",
             "requestId": "5A5bCAD87c7A2cFD15eC9C05",
             "filePath": ""
           },

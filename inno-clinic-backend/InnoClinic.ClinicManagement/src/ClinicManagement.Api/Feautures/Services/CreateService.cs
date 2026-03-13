@@ -3,6 +3,8 @@ using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Data.Entities;
 using ClinicManagement.Api.Endpoints;
 
+using Microsoft.EntityFrameworkCore;
+
 using FluentValidation;
 
 namespace ClinicManagement.Api.Features.Services;
@@ -19,7 +21,16 @@ internal sealed class CreateService(
         Guid SpecializationId,
         bool IsActive);
 
-    public async Task<Guid> Handle(Request request)
+    public sealed record Response(
+        Guid Id,
+        string Name,
+        decimal Price,
+        string Currency,
+        Guid CategoryId,
+        Guid SpecializationId
+    );
+
+    public async Task<Response> Handle(Request request)
     {
         await validator.ValidateAndThrowAsync(request);
 
@@ -27,9 +38,15 @@ internal sealed class CreateService(
         var price = new Price(request.Price, currency);
 
         if (price is null || currency is null)
-        {
             throw new ValidationException("The price is invalid");
-        }
+
+        var isCategoryExist = await context.ServiceCategories.AnyAsync(c => c.Id == request.CategoryId);
+        if (!isCategoryExist)
+            throw new ValidationException("The category is invalid");
+
+        var isSpecializationExist = await context.Specializations.AnyAsync(s => s.Id == request.SpecializationId);
+        if (!isSpecializationExist)
+            throw new ValidationException("The specialization is invalid"); // Но это впринципе невозможно, так как страница создания сервиса на странице специализации
 
         var service = Service.Create(
             request.CategoryId,
@@ -41,7 +58,14 @@ internal sealed class CreateService(
         context.Services.Add(service);
         await context.SaveChangesAsync();
 
-        return service.Id;
+        return new Response(
+            service.Id,
+            service.ServiceName,
+            service.Price.Amount,
+            service.Price.Currency.Code,
+            service.CategoryId,
+            service.SpecializationId
+        );
     }
 
     internal sealed class Endpoint : IEndpoint
@@ -50,8 +74,10 @@ internal sealed class CreateService(
         {
             app.MapPost("services", async (Request request, CreateService useCase) =>
             {
-                Guid serviceId = await useCase.Handle(request);
-                return Results.Created($"/services/{serviceId}", serviceId);
+                var response = await useCase.Handle(request);
+                return Results.Created(
+                    $"/services/{response.Id}",
+                    response);
             })
             .WithTags(ServiceEndpoints.Tag)
             .RequirePermission(Permissions.SpecializationsManipulate);

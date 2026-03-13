@@ -2,7 +2,7 @@ using Appointment.Api.Data;
 
 namespace Appointment.Api.Features.Receptionist.ListAppointments;
 
-public class ListReceptionistAppointmentsHandler
+public static class ListReceptionistAppointmentsHandler
 {
     public static async Task<IResult> Handle(
         [AsParameters] ListReceptionistAppointmentsRequest request,
