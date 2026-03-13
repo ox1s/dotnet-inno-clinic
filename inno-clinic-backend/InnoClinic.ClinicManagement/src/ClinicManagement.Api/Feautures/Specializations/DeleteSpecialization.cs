@@ -28,7 +28,7 @@ namespace ClinicManagement.Api.Feautures.Specializations
         {
             public void MapEndpoint(IEndpointRouteBuilder app)
             {
-                app.MapDelete("specializations/{guid:id}", async (Guid id, DeleteSpecialization useCase) =>
+                app.MapDelete("specializations/{id:guid}", async (Guid id, DeleteSpecialization useCase) =>
                 {
                     var response = await useCase.Handle(id);
                     return response ? Results.Ok(response)

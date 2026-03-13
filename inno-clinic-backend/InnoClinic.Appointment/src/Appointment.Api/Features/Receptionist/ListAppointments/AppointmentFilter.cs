@@ -7,12 +7,16 @@ public class AppointmentFilter
     public Guid? PatientId { get; set; }
     public Guid? ServiceId { get; set; }
     public Guid? OfficeId { get; set; }
+
     public DateOnly? Date { get; set; }
     public DateOnly? DateStart { get; set; }
     public DateOnly? DateEnd { get; set; }
+
     public bool? IsApproved { get; set; }
+
     public int Page { get; set; }
     public int PageSize { get; set; }
+
     public SortOptions SortBy { get; set; }
     public SortDirection SortDirection { get; set; }
 
@@ -35,14 +39,18 @@ public class AppointmentFilter
         PatientId = patientId;
         ServiceId = serviceId;
         OfficeId = officeId;
+
         Date = date;
         DateStart = dateStart;
         DateEnd = dateEnd;
+
         IsApproved = isApproved;
+
         SortBy = sortBy;
         SortDirection = sortDirection;
-        Page = page;
-        PageSize = pageSize;
+
+        Page = Math.Max(page, 1);
+        PageSize = Math.Clamp(pageSize, 1, 100);
     }
 
 }

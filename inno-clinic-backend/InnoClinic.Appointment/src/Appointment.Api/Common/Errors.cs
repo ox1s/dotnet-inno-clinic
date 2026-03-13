@@ -18,4 +18,5 @@ public static class Errors
         new("OfficeIsNotActive", "The office is not active.");
     public static Error TimeRangeAlreadyExists =>
         new("TimeRangeAlreadyExists", "A time range already exists for this time.");
+    public static Error DoctorNotFound => new("DoctorNotFound", "The doctor was not found.");
 }

@@ -24,6 +24,7 @@ public class AppointmentView
     public Guid PatientId { get; set; }
     public string PatientFirstName { get; set; } = string.Empty;
     public string PatientLastName { get; set; } = string.Empty;
+    public string PatientMiddleName { get; set; } = string.Empty;
     public string PatientPhone { get; set; } = string.Empty;
 
 

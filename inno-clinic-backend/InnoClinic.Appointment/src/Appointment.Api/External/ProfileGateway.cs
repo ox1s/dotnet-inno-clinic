@@ -1,10 +1,54 @@
 using Appointment.Api.Common;
 
+using InnoClinic.Shared.DTOs;
+
 namespace Appointment.Api.External;
 
 public class ProfileGateway(IHttpClientFactory httpClientFactory)
     : IProfileGateway
 {
+    public async Task<Result<DoctorDto>> GetDoctorAsync(Guid doctorId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<DoctorDto>(
+                $"http://profile-api/doctors/{doctorId}",
+                cancellationToken);
+
+            return Result<DoctorDto>.Success(response);
+        }
+        catch (HttpRequestException)
+        {
+            return Errors.DoctorNotFound;
+        }
+        catch (Exception)
+        {
+            return new Error("ProfileGateway.Error", "Unexpected error contactng Profile Service");
+        }
+    }
+
+    public async Task<Result<PatientDto>> GetPatientAsync(Guid patientId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<PatientDto>(
+                $"http://profile-api/patients/{patientId}",
+                cancellationToken);
+
+            return Result<PatientDto>.Success(response);
+        }
+        catch (HttpRequestException)
+        {
+            return Errors.DoctorNotFound;
+        }
+        catch (Exception)
+        {
+            return new Error("ProfileGateway.Error", "Unexpected error contactng Profile Service");
+        }
+    }
+
     public async Task<Result<bool>> IsDoctorActiveAsync(
         Guid doctorId,
         CancellationToken cancellationToken = default)
@@ -13,7 +57,7 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
         {
             var httpClient = httpClientFactory.CreateClient();
             var response = await httpClient.GetFromJsonAsync<bool>(
-                $"http://profile-api/profiles/{doctorId}/active",
+                $"http://profile-api/{doctorId}/active",
                 cancellationToken);
 
             return Result<bool>.Success(response);

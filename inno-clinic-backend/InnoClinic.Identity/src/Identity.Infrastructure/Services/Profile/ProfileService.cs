@@ -18,7 +18,7 @@ public class ProfileService(IHttpClientFactory httpClientFactory) : IProfileServ
         {
             var httpClient = httpClientFactory.CreateClient();
             var response = await httpClient.GetFromJsonAsync<ProfileDataDto>(
-                $"http://profile-api/profiles/{accountId}",
+                $"http://profile-api/{accountId}",
                 cancellationToken);
 
             if (response is null)

@@ -1,3 +1,5 @@
+using Appointment.Api.Features.Receptionist.ListAppointments;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Appointment.Api.Data;
@@ -15,12 +17,15 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
 
     public async Task DeleteAsync(Appointment appointment, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Appointments.Where(a => a.Id == appointment.Id).ExecuteDeleteAsync(cancellationToken);
+        await _dbContext.Appointments
+            .Where(a => a.Id == appointment.Id)
+            .ExecuteDeleteAsync(cancellationToken);
     }
 
     public async Task<Appointment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Appointments.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        return await _dbContext.Appointments
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
     }
 
     public async Task UpdateAsync(Appointment appointment, CancellationToken cancellationToken = default)
@@ -28,79 +33,95 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
         _dbContext.Appointments.Update(appointment);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
     public async Task<bool> IsOverlappingAsync(
         Guid doctorId,
         TimeRange duration,
         CancellationToken cancellationToken = default)
     {
-        return await Task.FromResult(false);
-        // TODO: фильтрация
-        // return await _dbContext.AppointmentViews
-        //     .AnyAsync(a =>
-        //         a.DoctorId == doctorId &&
-        //         a.DurationStart < duration.End &&
-        //         a.DurationEnd > duration.Start
-        //         // TODO: && a.IsApproved
-        //         ,
-        //         cancellationToken);
+        return await _dbContext.AppointmentViews
+            .AnyAsync(a =>
+                a.DoctorId == doctorId &&
+                a.DurationStart < duration.End &&
+                a.DurationEnd > duration.Start &&
+                a.IsApproved,
+                cancellationToken);
     }
-    // private IQueryable<Appointment> BuildQuery()
-    // {
-    // private IQueryable<AppointmentViews> BuildQuery(AppointmentFilter filter)
-    // {
-    // var query = _dbContext.Appointments.AsNoTracking();
-    // var query = _dbContext.AppointmentViews.AsNoTracking();
-    //
-    // if (filter.DoctorId.HasValue)
-    //     query = query.Where(a =>
-    //         a.DoctorId == filter.DoctorId.Value);
-    //
-    // if (filter.PatientId.HasValue)
-    //     query = query.Where(a =>
-    //         a.PatientId == filter.PatientId.Value);
-    //
-    // if (filter.ServiceId.HasValue)
-    //     query = query.Where(a =>
-    //         a.ServiceId == filter.ServiceId.Value);
-    //
-    // if (filter.OfficeId.HasValue)
-    //     query = query.Where(a =>
-    //         a.OfficeId == filter.OfficeId.Value);
-    //
-    // if (filter.Date.HasValue)
-    //     query = query.Where(a =>
-    //         a.LocalDate == filter.Date.Value);
-    //
-    // if (filter.DateStart.HasValue)
-    //     query = query.Where(a =>
-    //         a.LocalDate >= filter.DateStart.Value);
-    //
-    // if (filter.DateEnd.HasValue)
-    //     query = query.Where(a =>
-    //         a.LocalDate <= filter.DateEnd.Value);
-    //
-    // if (filter.IsApproved.HasValue)
-    //     query = query.Where(a =>
-    //         a.IsApproved == filter.IsApproved.Value);
 
-    //     return query;
-    // }
-    // public async Task<int> CountAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
-    // {
-    //     var query = BuildQuery(filter);
+    private IQueryable<AppointmentView> BuildQuery(AppointmentFilter filter)
+    {
+        var query = _dbContext.AppointmentViews.AsNoTracking();
 
-    //     return await query.CountAsync(cancellationToken);
-    // }
-    // public async Task<List<Appointment>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
-    // {
-    //     // public async Task<List<AppointmentViews>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
-    //     // {
-    //     var query = BuildQuery(filter);
+        if (filter.DoctorId.HasValue)
+            query = query.Where(a => a.DoctorId == filter.DoctorId.Value);
 
-    //     query = query
-    //         .Skip((filter.Page - 1) * filter.PageSize)
-    //         .Take(filter.PageSize);
+        if (filter.PatientId.HasValue)
+            query = query.Where(a => a.PatientId == filter.PatientId.Value);
 
-    //     return await query.ToListAsync(cancellationToken);
-    // }
+        if (filter.ServiceId.HasValue)
+            query = query.Where(a => a.ServiceId == filter.ServiceId.Value);
+
+        if (filter.OfficeId.HasValue)
+            query = query.Where(a => a.OfficeId == filter.OfficeId.Value);
+
+        if (filter.Date.HasValue)
+            query = query.Where(a => a.LocalDate == filter.Date.Value);
+
+        if (filter.DateStart.HasValue)
+            query = query.Where(a => a.LocalDate >= filter.DateStart.Value);
+
+        if (filter.DateEnd.HasValue)
+            query = query.Where(a => a.LocalDate <= filter.DateEnd.Value);
+
+        if (filter.IsApproved.HasValue)
+            query = query.Where(a => a.IsApproved == filter.IsApproved.Value);
+
+        return query;
+    }
+
+    public async Task<int> CountAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
+    {
+        var query = BuildQuery(filter);
+        return await query.CountAsync(cancellationToken);
+    }
+
+    public async Task<List<AppointmentView>> SearchAsync(AppointmentFilter filter, CancellationToken cancellationToken = default)
+    {
+        var query = BuildQuery(filter);
+        query = ApplySorting(query, filter)
+            .Skip((filter.Page - 1) * filter.PageSize)
+            .Take(filter.PageSize);
+
+        return await query.ToListAsync(cancellationToken);
+    }
+    private static IQueryable<AppointmentView> ApplySorting(
+        IQueryable<AppointmentView> query,
+        AppointmentFilter filter)
+    {
+        return (filter.SortBy, filter.SortDirection) switch
+        {
+            (SortOptions.ServiceName, SortDirection.Desc) =>
+                query.OrderByDescending(x => x.ServiceName),
+
+            (SortOptions.ServiceName, SortDirection.Asc) =>
+                query.OrderBy(x => x.ServiceName),
+
+            (SortOptions.DoctorName, SortDirection.Desc) =>
+                query.OrderByDescending(x => x.DoctorLastName)
+                     .ThenByDescending(x => x.DoctorFirstName),
+
+            (SortOptions.DoctorName, SortDirection.Asc) =>
+                query.OrderBy(x => x.DoctorLastName)
+                     .ThenBy(x => x.DoctorFirstName),
+
+            (SortOptions.Date, SortDirection.Desc) =>
+                query.OrderByDescending(x => x.DurationStart),
+
+            _ =>
+                query.OrderBy(x => x.DurationStart)
+                    .ThenBy(x => x.DoctorLastName)
+                    .ThenBy(x => x.DoctorFirstName)
+                    .ThenBy(x => x.ServiceName),
+        };
+    }
 }

@@ -6,73 +6,86 @@ public static class ListReceptionistAppointmentsHandler
 {
     public static async Task<IResult> Handle(
         [AsParameters] ListReceptionistAppointmentsRequest request,
-        IAppointmentRepository appointmentRepository,
-        AppointmentDbContext dbContext)
+        IAppointmentRepository repository,
+        CancellationToken cancellationToken)
     {
+        var timeZoneId = Appointments_Resourses.Clinics_TimeZone ?? "UTC";
 
-        // var timeZoneId = Appointments_Resourses.Clinics_TimeZone ?? "UTC";
-        // var clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        TimeZoneInfo clinicTimeZone;
+        try
+        {
+            clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        }
+        catch
+        {
+            clinicTimeZone = TimeZoneInfo.Utc;
+        }
 
-        // var targetDate = request.Date ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, clinicTimeZone));
+        var targetDate = request.Date ?? DateOnly.FromDateTime(
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, clinicTimeZone));
 
-        // var localStart = targetDate.ToDateTime(TimeOnly.MinValue);
-        // var localEnd = localStart.AddDays(1);
+        var sortBy = SortOptions.Date;
+        if (!string.IsNullOrWhiteSpace(request.SortBy))
+        {
+            Enum.TryParse(request.SortBy, ignoreCase: true, out sortBy);
+        }
 
-        // var utcStart = TimeZoneInfo.ConvertTimeToUtc(localStart, clinicTimeZone);
-        // var utcEnd = TimeZoneInfo.ConvertTimeToUtc(localEnd, clinicTimeZone);
+        var sortDirection = SortDirection.Asc;
+        if (!string.IsNullOrWhiteSpace(request.SortDirection))
+        {
+            Enum.TryParse(request.SortDirection, ignoreCase: true, out sortDirection);
+        }
 
-        // TODO: фильтрация
-        // var query = dbContext.AppointmentViews.AsNoTracking();
+        var filter = new AppointmentFilter(
+            page: request.Page,
+            pageSize: request.PageSize,
+            doctorId: request.DoctorId,
+            patientId: null,
+            serviceId: request.ServiceId,
+            officeId: request.OfficeId,
+            date: targetDate,
+            dateStart: null,
+            dateEnd: null,
+            isApproved: request.IsApproved,
+            sortBy: sortBy,
+            sortDirection: sortDirection
+        );
 
-        // if (request.Date.HasValue)
-        // {
-        //     query = query.Where(x => x.DurationStart >= utcStart && x.DurationStart < utcEnd);
-        // }
+        var totalCount = await repository.CountAsync(filter, cancellationToken);
+        var appointments = await repository.SearchAsync(filter, cancellationToken);
 
-        // if (request.DoctorId.HasValue)
-        //     query = query.Where(x => x.DoctorId == request.DoctorId);
+        var response = appointments.Select(x => new ListReceptionistAppointmentsResponse(
+            Id: x.AppointmentId,
+            TimeSlot: FormatTime(x.DurationStart, x.DurationEnd, clinicTimeZone),
+            DoctorFullName: FormatFullName(x.DoctorFirstName, x.DoctorLastName, x.DoctorMiddleName),
+            PatientFullName: FormatFullName(x.PatientFirstName, x.PatientLastName, x.PatientMiddleName),
+            PatientPhoneNumber: x.PatientPhone ?? "N/A",
+            ServiceName: x.ServiceName,
+            IsApproved: x.IsApproved,
+            TotalCount: totalCount
+        ));
 
-        // if (request.ServiceId.HasValue)
-        //     query = query.Where(x => x.ServiceId == request.ServiceId);
+        return TypedResults.Ok(response);
+    }
 
-        // if (request.OfficeId.HasValue)
-        //     query = query.Where(x => x.OfficeId == request.OfficeId);
+    private static string FormatTime(
+        DateTimeOffset start,
+        DateTimeOffset end,
+        TimeZoneInfo tz)
+    {
+        var localStart = TimeZoneInfo.ConvertTime(start, tz);
+        var localEnd = TimeZoneInfo.ConvertTime(end, tz);
 
-        // if (request.IsApproved.HasValue)
-        //     query = query.Where(x => x.IsApproved == request.IsApproved.Value);
+        return $"{localStart:HH:mm} - {localEnd:HH:mm}";
+    }
 
-        // query = request.SortBy switch
-        // {
-        //     "DoctorName" => request.SortDirection == "Desc"
-        //         ? query.OrderByDescending(x => x.DoctorLastName).ThenByDescending(x => x.DoctorFirstName)
-        //         : query.OrderBy(x => x.DoctorLastName).ThenBy(x => x.DoctorFirstName),
-
-        //     "ServiceName" => request.SortDirection == "Desc"
-        //         ? query.OrderByDescending(x => x.ServiceName)
-        //         : query.OrderBy(x => x.ServiceName),
-
-        //     _ => query.OrderBy(x => x.DurationStart)
-        // };
-
-        // var totalCount = await query.CountAsync();
-
-        // var items = await query
-        //     .Skip((request.Page - 1) * request.PageSize)
-        //     .Take(request.PageSize)
-        //     .ToListAsync();
-
-        // var response = items.Select(x => new ListReceptionistAppointmentsResponse(
-        //             Id: a.Id,
-        //             TimeSlot: FormatTime(x.DurationStart, clinicTimeZone),
-        //             DoctorFullName: FormatFullName(doc?.FirstName, doc?.LastName, doc?.MiddleName),
-        //             PatientFullName: FormatFullName(pat?.FirstName, pat?.LastName, pat?.MiddleName),
-        //             PatientPhoneNumber: pat?.PhoneNumber ?? "N/A",
-        //             ServiceName: srv?.Name ?? "Unknown",
-        //             IsApproved: a.IsApproved,
-        //             TotalCount: totalCount
-        //         )
-        // );
-
-        return TypedResults.Ok(/*response*/);
+    private static string FormatFullName(
+        string? firstName,
+        string? lastName,
+        string? middleName)
+    {
+        return string.Join(" ",
+            new[] { lastName, firstName, middleName }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
     }
 }

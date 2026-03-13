@@ -40,8 +40,8 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("TelegramStatusJob-trigger")
-        .WithCronSchedule("0 * * ? * *")
-    //.WithCronSchedule("0 0 16 ? * MON-FRI")
+        // .WithCronSchedule("0 * * ? * *")
+        .WithCronSchedule("0 0 16 ? * MON-FRI")
     );
 });
 
@@ -103,7 +103,7 @@ app.MapPost("/bot/accounts/link-telegram", async (LinkTelegramAccountCommand com
     await bus.InvokeAsync(command))
         .RequireAuthorization("BotPolicy");
 
-app.MapGet("/profiles/{accountId:guid}", async (
+app.MapGet("/{accountId:guid}", async (
     Guid accountId,
     ProfileDbContext dbContext,
     CancellationToken cancellationToken) =>
@@ -128,6 +128,19 @@ app.MapGet("/profiles/{accountId:guid}", async (
 
     return Results.NotFound();
 });
+app.MapGet("/doctors/{id:guid}", async (Guid id, ProfileDbContext dbContext) =>
+    {
+        var doctor = await dbContext.Set<Doctor>().FindAsync(id);
+        if (doctor is null) return Results.NotFound();
+        return Results.Ok(new DoctorDto(doctor.Id, doctor.FirstName.Value, doctor.LastName.Value, doctor.MiddleName.Value, doctor.Status.Value == Statuses.AtWork));
+    });
+
+app.MapGet("/patients/{id:guid}", async (Guid id, ProfileDbContext dbContext) =>
+    {
+        var patient = await dbContext.Set<Patient>().FindAsync(id);
+        if (patient is null) return Results.NotFound();
+        return Results.Ok(new PatientDto(patient.Id, patient.FirstName.Value, patient.LastName.Value, patient.MiddleName.Value));
+    });
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -135,6 +148,5 @@ app.UseAuthorization();
 app.MapDefaultEndpoints();
 
 await app.RunAsync();
-
 
 public partial class Program { }
