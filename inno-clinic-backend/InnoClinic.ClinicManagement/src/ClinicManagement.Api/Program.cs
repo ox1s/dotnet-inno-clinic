@@ -114,6 +114,4 @@ app.MapEndpoint<CreateSpecialization.Endpoint>();
 app.MapEndpoint<CreateOffice.Endpoint>();
 
 app.UseExceptionHandler();
-app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-
 await app.RunAsync();

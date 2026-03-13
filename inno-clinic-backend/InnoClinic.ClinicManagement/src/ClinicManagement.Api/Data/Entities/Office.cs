@@ -11,10 +11,9 @@ public class Office
 
     public Guid Id { get; set; }
     public string Address { get; set; } = null!;
-    public Photo Photo { get; set; }
+    public Photo Photo { get; set; } = null!;
     public string RegistryPhoneNumber { get; set; } = null!;
     public bool IsActive { get; set; }
-    private Office() { } // EF Core
     public static Office Create(
         string address,
         Photo photo,
@@ -37,4 +36,5 @@ public class Office
         Photo = photo;
         IsActive = isActive;
     }
+    private Office() { } // EF Core
 }

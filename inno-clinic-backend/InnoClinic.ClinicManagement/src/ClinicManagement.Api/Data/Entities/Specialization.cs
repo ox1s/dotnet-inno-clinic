@@ -9,6 +9,7 @@ public class Specialization
     public Guid Id { get; set; }
     public string SpecializationName { get; set; } = null!;
     public bool IsActive { get; set; }
+
     public static Specialization Create(string specializationName, bool isActive)
     {
         return new Specialization
@@ -17,4 +18,5 @@ public class Specialization
             IsActive = isActive,
         };
     }
+    private Specialization() { } // EF Core
 }

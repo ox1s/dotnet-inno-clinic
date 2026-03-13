@@ -16,7 +16,8 @@ internal sealed class GlobalExceptionHandler(
 
         httpContext.Response.StatusCode = exception switch
         {
-            ApplicationException => StatusCodes.Status400BadRequest,
+            ConflictException => StatusCodes.Status409Conflict,
+            NotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
         };
 

@@ -1,3 +1,4 @@
+using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Data.Entities;
 using ClinicManagement.Api.Endpoints;
@@ -54,7 +55,7 @@ internal sealed class UpdateService(
                 return success ? Results.NoContent() : Results.NotFound();
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
+            .RequirePermission(Permissions.SpecializationsManipulate);
         }
     }
 }

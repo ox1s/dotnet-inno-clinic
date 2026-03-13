@@ -1,3 +1,4 @@
+using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
 
@@ -5,35 +6,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagement.Api.Features.Services;
 
-internal sealed class GetService(AppDbContext context)
+internal sealed partial class GetService(AppDbContext context)
 {
     public sealed record Response(
         Guid Id,
         string ServiceName,
         decimal Price,
         string Currency,
-        Guid CategoryId,
-        string CategoryName,
+        CategoryDTO Category,
         bool IsActive);
 
     public async Task<Response?> Handle(Guid id)
     {
-        var service = await context.Services
+        return await context.Services
             .AsNoTracking()
+            .Where(s => s.Id == id)
             .Select(s => new Response(
                 s.Id,
                 s.ServiceName,
                 s.Price.Amount,
                 s.Price.Currency.Code,
-                s.CategoryId,
-                context.ServiceCategories
-                    .Where(c => c.Id == s.CategoryId)
-                    .Select(c => c.Name)
-                    .FirstOrDefault() ?? string.Empty,
+                new CategoryDTO(
+                    s.Category.Id,
+                    s.Category.Name),
                 s.IsActive))
-            .FirstOrDefaultAsync(s => s.Id == id);
-
-        return service;
+            .FirstOrDefaultAsync();
     }
 
     internal sealed class Endpoint : IEndpoint
@@ -46,7 +43,7 @@ internal sealed class GetService(AppDbContext context)
                 return response is not null ? Results.Ok(response) : Results.NotFound();
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequireAuthorization();
+            .RequirePermission(Permissions.SpecializationsRead);
         }
     }
 }

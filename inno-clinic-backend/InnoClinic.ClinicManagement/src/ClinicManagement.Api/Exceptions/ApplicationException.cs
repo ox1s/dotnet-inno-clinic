@@ -1,8 +1,8 @@
 ﻿namespace ClinicManagement.Api.Exceptions;
 
-public sealed class ApplicationException : Exception
+public abstract class ApplicationException : Exception
 {
-    public ApplicationException(string message)
+    protected ApplicationException(string message)
         : base(message)
     {
     }

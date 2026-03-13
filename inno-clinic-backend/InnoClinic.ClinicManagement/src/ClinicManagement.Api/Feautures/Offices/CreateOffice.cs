@@ -21,7 +21,8 @@ internal sealed class CreateOffice(
     {
         await validator.ValidateAndThrowAsync(request);
 
-        var photo = new Photo(request.PhotoUrl) ?? throw new ApplicationException("The photo is invalid");
+        var photo = new Photo(request.PhotoUrl) ??
+            throw new ValidationException("The photo is invalid");
 
         var office = Office.Create(
             request.Address,

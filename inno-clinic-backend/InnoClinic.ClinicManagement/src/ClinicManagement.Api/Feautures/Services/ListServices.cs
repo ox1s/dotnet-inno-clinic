@@ -4,6 +4,8 @@ using ClinicManagement.Api.Endpoints;
 
 using Microsoft.EntityFrameworkCore;
 
+using static ClinicManagement.Api.Features.Services.GetService;
+
 namespace ClinicManagement.Api.Features.Services;
 
 internal sealed class ListServices(AppDbContext context)
@@ -13,8 +15,7 @@ internal sealed class ListServices(AppDbContext context)
         string ServiceName,
         decimal Price,
         string Currency,
-        Guid CategoryId,
-        string CategoryName,
+        CategoryDTO Category,
         Guid SpecializationId,
         bool IsActive);
 
@@ -38,11 +39,10 @@ internal sealed class ListServices(AppDbContext context)
                 s.ServiceName,
                 s.Price.Amount,
                 s.Price.Currency.Code,
-                s.CategoryId,
-                context.ServiceCategories
-                    .Where(c => c.Id == s.CategoryId)
-                    .Select(c => c.Name)
-                    .FirstOrDefault() ?? string.Empty,
+                new CategoryDTO(
+                    s.Category.Id,
+                    s.Category.Name
+                ),
                 s.SpecializationId,
                 s.IsActive))
             .ToListAsync();
@@ -58,7 +58,7 @@ internal sealed class ListServices(AppDbContext context)
                 return Results.Ok(response);
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequirePermission(Permissions.ServicesRead);
+            .RequirePermission(Permissions.SpecializationsRead);
         }
     }
 }

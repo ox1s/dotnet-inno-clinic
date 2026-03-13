@@ -28,7 +28,7 @@ internal sealed class CreateService(
 
         if (price is null || currency is null)
         {
-            throw new ApplicationException("The price is invalid");
+            throw new ValidationException("The price is invalid");
         }
 
         var service = Service.Create(
@@ -37,6 +37,7 @@ internal sealed class CreateService(
             price,
             request.SpecializationId,
             request.IsActive);
+
         context.Services.Add(service);
         await context.SaveChangesAsync();
 
@@ -53,7 +54,7 @@ internal sealed class CreateService(
                 return Results.Created($"/services/{serviceId}", serviceId);
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequirePermission(Permissions.ServicesManipulate);
+            .RequirePermission(Permissions.SpecializationsManipulate);
         }
     }
 }

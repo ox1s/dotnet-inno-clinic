@@ -1,27 +1,23 @@
+using System.Collections.Immutable;
+
 using InnoClinic.Shared;
 
 namespace ClinicManagement.Api.Authorization;
 
 public static class RolePermissionMapping
 {
-    public static readonly Dictionary<string, HashSet<string>> Map = new()
-    {
+    public static readonly ImmutableDictionary<string, ImmutableHashSet<string>> Map =
+        new Dictionary<string, ImmutableHashSet<string>>
         {
-            Roles.Receptionist, new HashSet<string>
             {
-                Permissions.ServicesManipulate,
-                Permissions.SpecializationsManipulate,
-                Permissions.ServicesRead,
-                Permissions.SpecializationsRead,
-                Permissions.OfficesManipulate
-            }
-        },
-        {
-            Roles.Patient, new HashSet<string>
+                Roles.Receptionist, ImmutableHashSet.Create(
+                    Permissions.SpecializationsManipulate,
+                    Permissions.SpecializationsRead,
+                    Permissions.OfficesManipulate)
+            },
             {
-                Permissions.ServicesRead,
-                Permissions.SpecializationsRead
+                Roles.Patient, ImmutableHashSet.Create(
+                    Permissions.SpecializationsRead)
             }
-        }
-    };
+        }.ToImmutableDictionary();
 }
