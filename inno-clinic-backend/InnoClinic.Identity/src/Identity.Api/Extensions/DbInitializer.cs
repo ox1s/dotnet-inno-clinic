@@ -9,9 +9,6 @@ namespace Identity.Api.Extensions;
 
 public static class DbInitializer
 {
-    private const string DefaultReceptionistEmail = "receptionist@innoclinic.com";
-    private const string DefaultReceptionistPassword = "RecepT1!";
-    private const string DefaultReceptionistAccountId = "817dfc4f-f275-484d-a47e-f461f54f02e4";
 
     public static async Task InitializeAsync(this WebApplication app, CancellationToken cancellationToken = default)
     {
@@ -28,11 +25,18 @@ public static class DbInitializer
         await dbContext.Database.MigrateAsync(cancellationToken);
 
         var receptionistEmail =
-            configuration["DbInitializer:Receptionist:Email"] ?? DefaultReceptionistEmail;
+            configuration["DbInitializer:Receptionist:Email"];
         var receptionistPassword =
-            configuration["DbInitializer:Receptionist:Password"] ?? DefaultReceptionistPassword;
+            configuration["DbInitializer:Receptionist:Password"];
         var receptionistAccountIdRaw =
-            configuration["DbInitializer:Receptionist:AccountId"] ?? DefaultReceptionistAccountId;
+            configuration["DbInitializer:Receptionist:AccountId"];
+
+        if (string.IsNullOrWhiteSpace(receptionistEmail) || string.IsNullOrWhiteSpace(receptionistPassword) || string.IsNullOrWhiteSpace(receptionistAccountIdRaw))
+        {
+            logger.LogInformation(
+                "Identity seed skipped: receptionist email, password or account id is not configured");
+            return;
+        }
 
         var emailResult = Email.Create(receptionistEmail);
         if (emailResult.IsError)

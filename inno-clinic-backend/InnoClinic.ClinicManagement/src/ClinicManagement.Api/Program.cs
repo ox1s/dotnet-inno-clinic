@@ -5,7 +5,6 @@ using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
 using ClinicManagement.Api.Features.Offices;
-using ClinicManagement.Api.Features.ServiceCategories;
 using ClinicManagement.Api.Features.Services;
 using ClinicManagement.Api.Features.Specializations;
 
@@ -86,13 +85,14 @@ builder.Services.AddScoped<CreateService>();
 builder.Services.AddScoped<UpdateService>();
 builder.Services.AddScoped<ListServices>();
 builder.Services.AddScoped<GetService>();
-builder.Services.AddScoped<CreateServiceCategory>();
 builder.Services.AddScoped<CreateSpecialization>();
 builder.Services.AddScoped<CreateOffice>();
 
 builder.Services.AddEndpoints();
 
 var app = builder.Build();
+
+await app.InitializeAsync();
 
 if (app.Environment.IsDevelopment())
 {
@@ -110,7 +110,6 @@ app.MapEndpoint<CreateService.Endpoint>();
 app.MapEndpoint<ListServices.Endpoint>();
 app.MapEndpoint<GetService.Endpoint>();
 app.MapEndpoint<UpdateService.Endpoint>();
-app.MapEndpoint<CreateServiceCategory.Endpoint>();
 app.MapEndpoint<CreateSpecialization.Endpoint>();
 app.MapEndpoint<CreateOffice.Endpoint>();
 

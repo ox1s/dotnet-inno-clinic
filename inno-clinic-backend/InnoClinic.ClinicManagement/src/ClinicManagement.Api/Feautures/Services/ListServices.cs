@@ -1,3 +1,4 @@
+using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
 
@@ -57,7 +58,7 @@ internal sealed class ListServices(AppDbContext context)
                 return Results.Ok(response);
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequireAuthorization();
+            .RequirePermission(Permissions.ServicesRead);
         }
     }
 }
