@@ -4,8 +4,6 @@ using ClinicManagement.Api.Endpoints;
 
 using Microsoft.EntityFrameworkCore;
 
-using static ClinicManagement.Api.Features.Services.GetService;
-
 namespace ClinicManagement.Api.Features.Services;
 
 internal sealed class ListServices(AppDbContext context)
@@ -15,9 +13,9 @@ internal sealed class ListServices(AppDbContext context)
         string ServiceName,
         decimal Price,
         string Currency,
-        CategoryDTO Category,
-        Guid SpecializationId,
-        bool IsActive);
+        CategoryDto Category,
+        bool IsActive,
+        Guid? SpecializationId);
 
     public async Task<IEnumerable<Response>> Handle(bool? isActive, Guid? specializationId)
     {
@@ -39,12 +37,12 @@ internal sealed class ListServices(AppDbContext context)
                 s.ServiceName,
                 s.Price.Amount,
                 s.Price.Currency.Code,
-                new CategoryDTO(
+                new CategoryDto(
                     s.Category.Id,
                     s.Category.Name
                 ),
-                s.SpecializationId,
-                s.IsActive))
+                s.IsActive,
+                s.SpecializationId))
             .ToListAsync();
     }
 

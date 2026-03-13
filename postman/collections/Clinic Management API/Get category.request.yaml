@@ -2,9 +2,13 @@ $kind: http-request
 name: Get category
 url: https://{{gateway-host}}/clinic-management/categories/
 method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
-  - type: beforeRequest
-    code: "pm.test(\"Create service successful\", function () {\r
+  - type: afterResponse
+    code: "pm.test(\"get category successful\", function () {\r
 
       \    pm.response.to.have.status(200);\r
 
@@ -16,9 +20,11 @@ scripts:
 
       \    var jsonData = pm.response.json();\r
 
-      \    \r
+      \ \r
 
-      \    var categoryId = jsonData[0].Id;\r
+      \    console.info(\"Привет\");\r
+
+      \    var categoryId = jsonData[0].id;\r
 
       \    pm.environment.set(\"categoryId\", categoryId);\r
 

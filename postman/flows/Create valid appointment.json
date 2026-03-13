@@ -411,6 +411,47 @@
             "displayType": "auto"
           }
         }
+      },
+      "m4569cUi": {
+        "type": "task/http-request@1",
+        "pos": {
+          "x": 976,
+          "y": 48
+        },
+        "config": {
+          "element": {
+            "id": "cA2c90aeD7249697c5b2F4c8",
+            "collection": "91A2E5E85dF1e22cb8fab127",
+            "inExtensibleCollection": true,
+            "name": "Get category",
+            "method": "GET"
+          },
+          "environment": "71596e7e-234b-5c9d-9c0d-af0d2b3ad48f",
+          "parseBody": "auto",
+          "requestVariables": [
+            {
+              "id": "KmZowIT3",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "accessToken"
+            },
+            {
+              "id": "mnJB8ORl",
+              "type": null,
+              "kind": null,
+              "value": null,
+              "key": "gateway-host"
+            }
+          ],
+          "scriptsModifyEnvVars": true,
+          "trackGlobalEnvironment": false,
+          "requestVariables__expanded": true
+        },
+        "ui": {
+          "data": {},
+          "namedInputsExpanded": true
+        }
       }
     },
     "connections": {
@@ -449,6 +490,18 @@
         "target": "4BjL8Mjc",
         "sourcePort": "success",
         "targetPort": "data"
+      },
+      "FI8Qj0pY": {
+        "source": "H5EH7fRk",
+        "target": "m4569cUi",
+        "sourcePort": "success",
+        "targetPort": "AI"
+      },
+      "2XLcCIAI": {
+        "source": "m4569cUi",
+        "target": "TLXaE2px",
+        "sourcePort": "success",
+        "targetPort": "AI"
       }
     },
     "annotations": {},
@@ -522,6 +575,6 @@
   "info": {
     "_postman_id": "82eef0a3-28b7-464d-81f5-b33a309d690b"
   },
-  "_postman_exported_at": "2026-03-13T13:06:39.833Z",
+  "_postman_exported_at": "2026-03-13T13:53:03.982Z",
   "_postman_exported_using": "Postman/Local Mode"
 }

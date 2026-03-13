@@ -1,3 +1,3 @@
 namespace ClinicManagement.Api.Features.Services;
 
-public sealed record CategoryDTO(Guid Id, string Name);
+public sealed record CategoryDto(Guid Id, string Name);

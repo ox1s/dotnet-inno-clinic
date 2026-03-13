@@ -11,21 +11,12 @@ url: https://{{gateway-host}}/clinic-management/services
 method: POST
 body:
   type: json
-  content: |-
-    // {
-    // 	"serviceName": "Service 123",
-    //     "price": 19,
-    //     "currency": "BYN",
-    //     "categoryId": "{{categoryId}}",
-    //     "specializationId": "{{specializationId}}",
-    //     "isActive": {{$randomBoolean}}
-    // }
+  content: |
     {
     	"serviceName": "Service 123",
         "price": 19,
         "currency": "BYN",
-        "categoryId": "019ce2a8-f402-7887-a80b-68a075c95372",
-        "specializationId": "019ce2a9-c6b3-7ff1-8ee1-ef31a47b86d6",
+        "categoryId": "{{categoryId}}",
         "isActive": {{$randomBoolean}}
     }
 auth:
@@ -42,7 +33,7 @@ scripts:
       pm.test("Service Id saved", function () {
           var jsonData = pm.response.json();
           
-          var serviceId = jsonData;
+          var serviceId = jsonData.id;
 
           pm.environment.set("serviceId", serviceId);
       });

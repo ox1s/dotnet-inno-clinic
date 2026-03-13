@@ -13,7 +13,7 @@ internal sealed partial class GetService(AppDbContext context)
         string ServiceName,
         decimal Price,
         string Currency,
-        CategoryDTO Category,
+        CategoryDto Category,
         bool IsActive);
 
     public async Task<Response?> Handle(Guid id)
@@ -26,7 +26,7 @@ internal sealed partial class GetService(AppDbContext context)
                 s.ServiceName,
                 s.Price.Amount,
                 s.Price.Currency.Code,
-                new CategoryDTO(
+                new CategoryDto(
                     s.Category.Id,
                     s.Category.Name),
                 s.IsActive))

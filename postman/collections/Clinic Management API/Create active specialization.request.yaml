@@ -22,7 +22,7 @@ scripts:
 
       pm.test("Category Id saved", function () {
           var jsonData = pm.response.json();
-          var specializationId = jsonData;
+          var specializationId = jsonData.id;
           var iterator = pm.environment.get("speciterator");
           pm.environment.set("speciterator", iterator + 1);
           pm.environment.set("specializationId", specializationId);

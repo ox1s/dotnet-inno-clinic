@@ -18,8 +18,8 @@ internal sealed class CreateService(
         decimal Price,
         string Currency,
         Guid CategoryId,
-        Guid SpecializationId,
-        bool IsActive);
+        bool IsActive,
+        Guid? SpecializationId);
 
     public sealed record Response(
         Guid Id,
@@ -27,7 +27,7 @@ internal sealed class CreateService(
         decimal Price,
         string Currency,
         Guid CategoryId,
-        Guid SpecializationId
+        Guid? SpecializationId
     );
 
     public async Task<Response> Handle(Request request)
@@ -44,16 +44,13 @@ internal sealed class CreateService(
         if (!isCategoryExist)
             throw new ValidationException("The category is invalid");
 
-        var isSpecializationExist = await context.Specializations.AnyAsync(s => s.Id == request.SpecializationId);
-        if (!isSpecializationExist)
-            throw new ValidationException("The specialization is invalid"); // Но это впринципе невозможно, так как страница создания сервиса на странице специализации
-
         var service = Service.Create(
             request.CategoryId,
             request.ServiceName,
             price,
-            request.SpecializationId,
-            request.IsActive);
+            request.IsActive,
+            request?.SpecializationId
+            );
 
         context.Services.Add(service);
         await context.SaveChangesAsync();

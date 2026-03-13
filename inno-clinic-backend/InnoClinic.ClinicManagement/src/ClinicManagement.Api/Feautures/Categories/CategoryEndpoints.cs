@@ -1,6 +1,6 @@
 namespace ClinicManagement.Api.Feautures.Categories;
 
-public class CategoryEndpoints
+public static class CategoryEndpoints
 {
     public const string Tag = "Categories";
 }

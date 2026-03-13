@@ -21,20 +21,16 @@
     </Folder>
     <Folder Name="/Solution Items/">
         <File Path="compose.yaml" />
+        <File Path="Directory.Packages.props" />
     </Folder>
-    <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
 
     <Folder Name="/InnoClinic.Appointment/" />
     <Folder Name="/InnoClinic.Appointment/src/">
         <Project Path="InnoClinic.Appointment/src/Appointment.Api/Appointment.Api.csproj" />
     </Folder>
-    <Project Path="InnoClinic.IntegrationTests/InnoClinic.IntegrationTests.csproj" />
     <Folder Name="/InnoClinic.Appointment/tests/">
         <Project Path="InnoClinic.Appointment/tests/Appointment.Api.UnitTests/Appointment.Api.UnitTests.csproj" />
     </Folder>
-    <Project Path="InnoClinic.Notification/InnoClinic.Notification.csproj" />
-
-    <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
     <Folder Name="/InnoClinic.Profile/" />
     <Folder Name="/InnoClinic.Profile/src/">
         <Project Path="InnoClinic.Profile/src/Profile.Api/Profile.Api.csproj" />
@@ -49,4 +45,8 @@
     <Folder Name="/InnoClinic.Shared/">
         <Project Path="InnoClinic.Shared/InnoClinic.Shared.csproj" />
     </Folder>
+    <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
+    <Project Path="InnoClinic.IntegrationTests/InnoClinic.IntegrationTests.csproj" />
+    <Project Path="InnoClinic.Notification/InnoClinic.Notification.csproj" />
+    <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
 </Solution>
