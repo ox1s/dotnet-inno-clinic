@@ -19,7 +19,7 @@ internal sealed class CreateService(
         string Currency,
         Guid CategoryId,
         bool IsActive,
-        Guid? SpecializationId);
+        Guid SpecializationId);
 
     public sealed record Response(
         Guid Id,
@@ -27,7 +27,7 @@ internal sealed class CreateService(
         decimal Price,
         string Currency,
         Guid CategoryId,
-        Guid? SpecializationId
+        Guid SpecializationId
     );
 
     public async Task<Response> Handle(Request request)
@@ -44,12 +44,16 @@ internal sealed class CreateService(
         if (!isCategoryExist)
             throw new ValidationException("The category is invalid");
 
+        var isSpecializationExist = await context.Specializations.AnyAsync(s => s.Id == request.SpecializationId);
+        if (!isSpecializationExist)
+            throw new ValidationException("The specialization is invalid");
+
         var service = Service.Create(
             request.CategoryId,
             request.ServiceName,
             price,
             request.IsActive,
-            request?.SpecializationId
+            request.SpecializationId
             );
 
         context.Services.Add(service);

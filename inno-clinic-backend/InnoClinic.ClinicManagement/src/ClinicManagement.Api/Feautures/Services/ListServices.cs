@@ -15,7 +15,7 @@ internal sealed class ListServices(AppDbContext context)
         string Currency,
         CategoryDto Category,
         bool IsActive,
-        Guid? SpecializationId);
+        Guid SpecializationId);
 
     public async Task<IEnumerable<Response>> Handle(bool? isActive, Guid? specializationId)
     {
@@ -50,7 +50,7 @@ internal sealed class ListServices(AppDbContext context)
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("services", async (bool? isActive, Guid? specializationId, ListServices useCase) =>
+            app.MapGet("services", async (bool? isActive, Guid specializationId, ListServices useCase) =>
             {
                 var response = await useCase.Handle(isActive, specializationId);
                 return Results.Ok(response);

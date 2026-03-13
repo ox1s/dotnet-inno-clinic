@@ -6,4 +6,5 @@ public static class Permissions
     public const string SpecializationsRead = "specializations:read"; // Receptionist, Patient
     // offices
     public const string OfficesManipulate = "offices:manipulate";
+    public const string SpecializationByCategoryRead = "specialization_by_category:read";
 }

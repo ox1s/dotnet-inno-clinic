@@ -17,7 +17,8 @@ public static class RolePermissionMapping
             },
             {
                 Roles.Patient, ImmutableHashSet.Create(
-                    Permissions.SpecializationsRead)
+                    Permissions.SpecializationsRead,
+                    Permissions.SpecializationByCategoryRead)
             }
         }.ToImmutableDictionary();
 }

@@ -15,8 +15,8 @@ public class Service
     public Price Price { get; set; } = null!;
     public bool IsActive { get; set; }
 
-    public Guid? SpecializationId { get; set; }
-    public Specialization? Specialization { get; set; }
+    public Guid SpecializationId { get; set; }
+    public Specialization Specialization { get; set; }
     public Guid CategoryId { get; set; }
     public ServiceCategory Category { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public class Service
         string serviceName,
         Price price,
         bool isActive,
-        Guid? specializationId,
+        Guid specializationId,
         Guid? id = null)
     {
         return new Service
