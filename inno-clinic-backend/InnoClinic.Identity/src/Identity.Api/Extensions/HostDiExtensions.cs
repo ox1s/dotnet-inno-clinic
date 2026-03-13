@@ -1,5 +1,3 @@
-using Identity.Api.Exceptions;
-
 using Microsoft.OpenApi;
 
 namespace Identity.Api.Extensions;
@@ -15,7 +13,6 @@ public static class HostDiExtensions
 
         services.AddAuth();
         services.AddProblemDetails();
-        services.AddExceptionHandler<GlobalExceptionHandler>();
 
         return services;
     }
