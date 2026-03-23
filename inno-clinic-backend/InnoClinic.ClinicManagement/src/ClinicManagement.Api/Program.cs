@@ -103,8 +103,6 @@ builder.Services.AddEndpoints();
 
 var app = builder.Build();
 
-await app.InitializeAsync();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,6 +110,8 @@ if (app.Environment.IsDevelopment())
 
     app.ApplyMigrations();
 }
+
+await app.InitializeAsync();
 
 app.UseAuthentication();
 app.UseAuthorization();
