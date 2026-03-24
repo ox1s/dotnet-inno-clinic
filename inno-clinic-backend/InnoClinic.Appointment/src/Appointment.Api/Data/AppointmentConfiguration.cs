@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,6 +33,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.IsApproved)
             .HasColumnName("is_approved");
 
-        builder.OwnsOne(a => a.Duration);
+        builder.ComplexProperty(e => e.Duration,
+            d =>
+            {
+                d.Property(e => e.Start).HasColumnName("duration_start");
+                d.Property(e => e.End).HasColumnName("duration_end");
+            });
     }
 }

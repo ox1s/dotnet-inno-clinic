@@ -6,7 +6,6 @@ namespace Profile.Infrastructure.Database.Configurations;
 
 public class AccountProfileConfiguration : IEntityTypeConfiguration<AccountProfile>
 {
-
     public void Configure(EntityTypeBuilder<AccountProfile> builder)
     {
         builder.UseTpcMappingStrategy();

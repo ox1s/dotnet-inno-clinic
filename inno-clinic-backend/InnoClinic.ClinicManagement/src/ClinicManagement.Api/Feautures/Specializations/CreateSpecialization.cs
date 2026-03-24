@@ -26,10 +26,6 @@ public class CreateSpecialization(
         if (existingSpecialization is not null)
             throw new ConflictException("Specialization already exists");
 
-        var isThereAnyServices = await context.Services.AnyAsync();
-        if (!isThereAnyServices)
-            throw new NotFoundException("Specialization can't be created when there are no services");
-
         var specialization = Specialization.Create(
             request.SpecializationName,
             request.IsActive);

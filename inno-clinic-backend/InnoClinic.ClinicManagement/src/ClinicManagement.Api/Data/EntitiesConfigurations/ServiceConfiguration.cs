@@ -7,6 +7,8 @@ namespace ClinicManagement.Api.Data.EntitiesConfigurations;
 
 public class ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
+    // TODO: Поменять на самоназванные колонки, чтобы не приходилось
+    // писать каждый раз кавычки
     public void Configure(EntityTypeBuilder<Service> builder)
     {
         builder.HasKey(x => x.Id);
