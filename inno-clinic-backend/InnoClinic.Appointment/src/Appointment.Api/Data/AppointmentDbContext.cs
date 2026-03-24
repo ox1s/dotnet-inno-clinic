@@ -36,10 +36,14 @@ public class AppointmentDbContext(
             eb.Property(v => v.PatientId).HasColumnName("patient_id");
             eb.Property(v => v.PatientFirstName).HasColumnName("patient_first_name");
             eb.Property(v => v.PatientLastName).HasColumnName("patient_last_name");
+            eb.Property(v => v.PatientMiddleName).HasColumnName("patient_middle_name");
             eb.Property(v => v.PatientPhone).HasColumnName("patient_phone");
 
             eb.Property(v => v.ServiceId).HasColumnName("service_id");
             eb.Property(v => v.ServiceName).HasColumnName("service_name");
+
+            eb.Property(v => v.OfficeId).HasColumnName("office_id");
+            eb.Property(v => v.OfficeAddress).HasColumnName("office_address");
         });
     }
 

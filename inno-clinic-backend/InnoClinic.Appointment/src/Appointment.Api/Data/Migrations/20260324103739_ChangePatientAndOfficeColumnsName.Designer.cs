@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Appointment.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Appointment.Api.Data.Migrations
 {
     [DbContext(typeof(AppointmentDbContext))]
-    partial class AppointmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324103739_ChangePatientAndOfficeColumnsName")]
+    partial class ChangePatientAndOfficeColumnsName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,14 +112,14 @@ namespace Appointment.Api.Data.Migrations
                         .HasColumnType("date")
                         .HasColumnName("local_date");
 
-                    b.Property<string>("OfficeAddress")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("office_address");
-
                     b.Property<Guid>("OfficeId")
                         .HasColumnType("uuid")
                         .HasColumnName("office_id");
+
+                    b.Property<string>("OfficeName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("office_name");
 
                     b.Property<string>("PatientFirstName")
                         .IsRequired()

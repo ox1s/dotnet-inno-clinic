@@ -8,6 +8,7 @@ using ClinicManagement.Api.Features.Offices;
 using ClinicManagement.Api.Features.Services;
 using ClinicManagement.Api.Features.Specializations;
 using ClinicManagement.Api.Feautures.Categories;
+using ClinicManagement.Api.Feautures.Offices;
 using ClinicManagement.Api.Feautures.Services;
 using ClinicManagement.Api.Feautures.Specializations;
 
@@ -87,6 +88,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<CreateService>();
 builder.Services.AddScoped<UpdateService>();
 builder.Services.AddScoped<ListServices>();
+builder.Services.AddScoped<CheckService>();
 builder.Services.AddScoped<GetService>();
 builder.Services.AddScoped<ListActiveServicesByCategory>();
 
@@ -98,6 +100,7 @@ builder.Services.AddScoped<DeleteSpecialization>();
 builder.Services.AddScoped<CreateOffice>();
 builder.Services.AddScoped<DeleteOffice>();
 builder.Services.AddScoped<UpdateOffice>();
+builder.Services.AddScoped<CheckOffice>();
 
 builder.Services.AddEndpoints();
 

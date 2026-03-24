@@ -11,7 +11,7 @@ public class ServiceGateway(IHttpClientFactory httpClientFactory)
         {
             var httpClient = httpClientFactory.CreateClient();
             var response = await httpClient.GetFromJsonAsync<bool>(
-                $"http://service-api/services/{serviceId}/active",
+                $"http://clinic-management-api/services/{serviceId}/active",
                 cancellationToken);
 
             return Result<bool>.Success(response);

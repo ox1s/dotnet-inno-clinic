@@ -32,5 +32,5 @@ public class AppointmentView
     public string ServiceName { get; set; } = string.Empty;
 
     public Guid OfficeId { get; set; }
-    public string OfficeName { get; set; } = string.Empty;
+    public string OfficeAddress { get; set; } = string.Empty;
 }

@@ -34,24 +34,6 @@ var notificationsApi = builder.AddProject<Projects.InnoClinic_Notification>("not
     .WaitFor(mailpit)
     .WithReference(mailpit);
 
-var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
-    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
-
-    .WaitFor(sharedDatabase)
-    .WithReference(sharedDatabase)
-
-    .WithEnvironment("AppUrl", "https://localhost:7779")
-    .WithEnvironment("WebAppUrl", "http://localhost:7780");
-
-var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("clinic-management-api")
-    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
-
-    .WaitFor(sharedDatabase)
-    .WithReference(sharedDatabase)
-
-    .WithEnvironment("AppUrl", "https://localhost:7113")
-    .WithEnvironment("WebAppUrl", "http://localhost:7114");
-
 var profileApi = builder.AddProject<Projects.Profile_Api>("profile-api")
     .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
 
@@ -81,6 +63,36 @@ var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api")
 
     .WithEnvironment("AppUrl", "https://localhost:7777")
     .WithEnvironment("WebAppUrl", "http://localhost:7778");
+
+var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("clinic-management-api")
+    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
+
+    .WaitFor(sharedDatabase)
+    .WithReference(sharedDatabase)
+
+    .WaitFor(profileApi)
+    .WithReference(profileApi)
+
+    .WithEnvironment("AppUrl", "https://localhost:7113")
+    .WithEnvironment("WebAppUrl", "http://localhost:7114");
+
+var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-api")
+    .WithEnvironment("ConnectionStrings__innoclinic-database", sharedDatabase)
+
+    .WaitFor(sharedDatabase)
+    .WithReference(sharedDatabase)
+
+    .WaitFor(clinicManagementApi)
+    .WithReference(clinicManagementApi)
+
+    .WaitFor(profileApi)
+    .WithReference(profileApi)
+
+    .WaitFor(identityApi)
+    .WithReference(identityApi)
+
+    .WithEnvironment("AppUrl", "https://localhost:7779")
+    .WithEnvironment("WebAppUrl", "http://localhost:7780");
 
 builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
     .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)

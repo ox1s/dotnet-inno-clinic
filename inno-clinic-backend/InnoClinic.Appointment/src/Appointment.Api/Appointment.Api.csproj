@@ -48,4 +48,7 @@
       <DependentUpon>Appointments_Resourses.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\InnoClinic.ServiceDefaults\InnoClinic.ServiceDefaults.csproj" />
+  </ItemGroup>
 </Project>

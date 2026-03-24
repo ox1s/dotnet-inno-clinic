@@ -49,25 +49,6 @@ public static class CreatePatientAppointmentHandler
         var officeActive = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
         var doctorActiveResult = await profileGateway.IsDoctorActiveAsync(request.DoctorId);
 
-        // TODO:
-        // var checkServiceStatusRequest = new CheckStatus(request.ServiceId);
-        // var checkServiceStatusResult = await CheckServiceStatus(
-        //     request: checkServiceStatusRequest,
-        //     httpClientFactory: httpClienFactory,
-        //     logger: logger);
-
-        // var checkOfficeStatusRequest = new CheckStatus(request.OfficeId);
-        // var checkOfficeStatusResult = await CheckOfficeStatus(
-        //     request: checkOfficeStatusRequest,
-        //     httpClientFactory: httpClienFactory,
-        //     logger: logger);
-
-        // var checkDoctorStatusRequest = new CheckStatus(request.DoctorId);
-        // var checkDoctorStatusResult = await CheckDoctorStatus(
-        //     request: checkDoctorStatusRequest,
-        //     httpClientFactory: httpClienFactory,
-        //     logger: logger);
-
         if (!doctorActiveResult.Succeeded)
             return Results.BadRequest(Errors.DoctorIsNotActive);
         if (!serviceActive.Succeeded)

@@ -13,6 +13,8 @@ var configuration = builder.Configuration;
 var environment = builder.Environment;
 var logging = builder.Logging;
 
+builder.AddServiceDefaults();
+
 services.AddEndpointsApiExplorer();
 services.AddHttpClient();
 

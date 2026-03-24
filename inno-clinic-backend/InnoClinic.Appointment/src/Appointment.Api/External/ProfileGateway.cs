@@ -1,5 +1,7 @@
 using Appointment.Api.Common;
 
+using System.Text.Json;
+
 using InnoClinic.Shared.DTOs;
 
 namespace Appointment.Api.External;
@@ -56,11 +58,12 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
         try
         {
             var httpClient = httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<bool>(
-                $"http://profile-api/{doctorId}/active",
+            var response = await httpClient.GetFromJsonAsync<DoctorDto>(
+                $"http://profile-api/doctors/{doctorId}/",
                 cancellationToken);
+            var isActive = response?.IsActive;
 
-            return Result<bool>.Success(response);
+            return Result<bool>.Success(isActive ?? false);
         }
         catch (HttpRequestException)
         {
