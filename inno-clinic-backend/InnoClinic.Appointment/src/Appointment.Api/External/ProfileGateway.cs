@@ -43,7 +43,7 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
         }
         catch (HttpRequestException)
         {
-            return Errors.DoctorNotFound;
+            return Errors.ProfileNotFound;
         }
         catch (Exception)
         {
@@ -68,6 +68,27 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
         catch (HttpRequestException)
         {
             return Errors.DoctorIsNotActive;
+        }
+        catch (Exception)
+        {
+            return new Error("ProfileGateway.Error", "Unexpected error contactng Profile Service");
+        }
+    }
+
+    public async Task<Result<bool>> IsProfileLinkedAsync(Guid patientId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<bool>(
+                $"http://profile-api/patients/{patientId}/is-linked",
+                cancellationToken);
+            
+            return Result<bool>.Success(response);
+        }
+        catch (HttpRequestException)
+        {
+            return Errors.ProfileNotFound;
         }
         catch (Exception)
         {

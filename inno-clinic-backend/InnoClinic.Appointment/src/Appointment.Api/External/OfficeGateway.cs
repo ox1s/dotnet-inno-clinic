@@ -2,17 +2,18 @@ using Appointment.Api.Common;
 
 namespace Appointment.Api.External;
 
-public class OfficeGateway(IHttpClientFactory httpClientFactory)
+public class OfficeGateway(IHttpClientFactory httpClientFactory, ILogger<OfficeGateway> logger)
 : IOfficeGateway
 {
     public async Task<Result<bool>> IsOfficeActiveAsync(Guid officeId, CancellationToken cancellationToken = default)
     {
         try
-
         {
+            logger.LogInformation("Checking if office {OfficeId} is active", officeId);
+
             var httpClient = httpClientFactory.CreateClient();
             var response = await httpClient.GetFromJsonAsync<bool>(
-                $"http://office-api/offices/{officeId}/active",
+                $"http://clinic-management-api/offices/{officeId}/active",
                 cancellationToken);
 
             return Result<bool>.Success(response);

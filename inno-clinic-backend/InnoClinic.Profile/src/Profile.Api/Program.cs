@@ -142,6 +142,13 @@ app.MapGet("/patients/{id:guid}", async (Guid id, ProfileDbContext dbContext) =>
         return Results.Ok(new PatientDto(patient.Id, patient.FirstName.Value, patient.LastName.Value, patient.MiddleName.Value));
     });
 
+app.MapGet("/patients/{id:guid}/is-linked", async (Guid id, ProfileDbContext dbContext) =>
+    {
+        var patient = await dbContext.Set<Patient>().FindAsync(id);
+        if (patient is null || patient.IsLinkedToAccount) return Results.NotFound();
+        return Results.Ok(true);
+    });
+
 app.UseAuthentication();
 app.UseAuthorization();
 

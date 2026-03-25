@@ -2,6 +2,8 @@ namespace Appointment.Api.Common;
 
 public static class Errors
 {
+    public static Error ProfileNotFound =>
+        new("ProfileNotFound", "Profile for this user not found");
     public static Error InvalidTimeRange =>
         new("InvalidTimeRange", "Start time must be before end time");
     public static Error OverlappingAppointment =>

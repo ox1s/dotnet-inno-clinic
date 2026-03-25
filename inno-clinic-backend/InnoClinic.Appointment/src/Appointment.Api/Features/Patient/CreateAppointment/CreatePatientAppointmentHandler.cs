@@ -45,16 +45,19 @@ public static class CreatePatientAppointmentHandler
         if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
             return Results.BadRequest(Errors.OverlappingAppointment);
 
-        var serviceActive = await serviceGateway.IsServiceActiveAsync(request.ServiceId);
-        var officeActive = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var serviceActiveResult = await serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActiveResult = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
         var doctorActiveResult = await profileGateway.IsDoctorActiveAsync(request.DoctorId);
+        var profileLinkedResult = await profileGateway.IsProfileLinkedAsync(patientId);
 
         if (!doctorActiveResult.Succeeded)
             return Results.BadRequest(Errors.DoctorIsNotActive);
-        if (!serviceActive.Succeeded)
+        if (!serviceActiveResult.Succeeded)
             return Results.BadRequest(Errors.ServiceIsNotActive);
-        if (!officeActive.Succeeded)
+        if (!officeActiveResult.Succeeded)
             return Results.BadRequest(Errors.OfficeIsNotActive);
+        if (!profileLinkedResult.Succeeded)
+            return Results.BadRequest(Errors.ProfileNotFound);
 
         var appointment = Data.Appointment.Create(
             patientId: patientId,
