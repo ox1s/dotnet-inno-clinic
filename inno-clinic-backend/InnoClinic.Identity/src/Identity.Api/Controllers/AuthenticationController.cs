@@ -16,11 +16,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.Api.Controllers;
 
 [Route("[controller]")]
-[AllowAnonymous]
 public class AuthenticationController(ISender mediator)
     : ApiController
 {
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
@@ -32,6 +32,7 @@ public class AuthenticationController(ISender mediator)
             Problem);
     }
 
+    [AllowAnonymous]
     [HttpGet("verify-email", Name = "VerifyEmailRoute")]
     public async Task<IActionResult> VerifyEmail([FromQuery] Guid accountId, [FromQuery] string token)
     {
@@ -42,6 +43,8 @@ public class AuthenticationController(ISender mediator)
             success => Ok("Email successfully verified!"),
             Problem);
     }
+
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
@@ -59,6 +62,8 @@ public class AuthenticationController(ISender mediator)
                 loginResult.RefreshToken)),
             Problem);
     }
+
+    [AllowAnonymous]
     [HttpPost("login-with-refresh-token")]
     public async Task<IActionResult> LoginWithRefreshToken(
         [FromBody] LoginWithRefreshTokenRequest request)
@@ -78,10 +83,20 @@ public class AuthenticationController(ISender mediator)
                 loginResult.RefreshToken)),
             Problem);
     }
+
     [HttpDelete("accounts/{id:guid}/refresh-tokens")]
     public async Task<IActionResult> RevokeRefreshTokens(
         Guid id)
     {
+        var requesterIdClaim = User.FindFirst("id")?.Value;
+        var isReceptionist = User.IsInRole(InnoClinic.Shared.Roles.Receptionist);
+
+        if (!isReceptionist
+            && (!Guid.TryParse(requesterIdClaim, out var requesterId) || requesterId != id))
+        {
+            return Forbid();
+        }
+
         var command = new RevokeRefreshTokensCommand(id);
         var result = await mediator.Send(command);
 

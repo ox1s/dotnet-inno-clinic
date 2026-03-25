@@ -23,8 +23,10 @@ public static class DependecyInjection
 
         services.AddSingleton<SoftDeleteInterceptor>();
 
-        services.AddDbContext<ProfileDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        services.AddDbContext<ProfileDbContext>((serviceProvider, options) =>
+            options
+                .UseNpgsql(connectionString)
+                .AddInterceptors(serviceProvider.GetRequiredService<SoftDeleteInterceptor>()));
 
         services.AddScoped<AccountRepository>();
         services.AddScoped<DoctorRepository>();

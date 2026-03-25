@@ -13,12 +13,14 @@ public static class RolePermissionMapping
                 Roles.Receptionist, ImmutableHashSet.Create(
                     Permissions.SpecializationsManipulate,
                     Permissions.SpecializationsRead,
-                    Permissions.OfficesManipulate)
+                    Permissions.OfficesManipulate,
+                    Permissions.OfficesRead)
             },
             {
                 Roles.Patient, ImmutableHashSet.Create(
                     Permissions.SpecializationsRead,
-                    Permissions.SpecializationByCategoryRead)
+                    Permissions.SpecializationByCategoryRead,
+                    Permissions.OfficesRead)
             }
         }.ToImmutableDictionary();
 }

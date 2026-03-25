@@ -36,23 +36,30 @@ public class LoginQueryHandler(
         var email = emailResult.Value;
 
         var account = await accountsRepository.GetByEmailAsync(email, cancellationToken);
-        var isPasswordValid = account!.IsCorrectPasswordHash(query.Password, passwordHasher);
         if (account == null)
             return AuthenticationErrors.InvalidCredentials;
 
+        var isPasswordValid = account.IsCorrectPasswordHash(query.Password, passwordHasher);
         if (!isPasswordValid)
         {
             logger.LogInformation("Incorrect password for login attempt for email {Email}", email);
             return AuthenticationErrors.InvalidCredentials;
         }
 
-        var (role, status) = (string.Empty, string.Empty);
+        // TODO: Если правильные кредишинлы, мы пускаем хотя бы как пациента, если ляжет Profile
+        // Если Profile недоступен, worker сможет залогиниться, но не получит своих приемуществ. Возможно надо 
+        // чтобы инфомация о профиле бралась с Identity API, а не с ProfileAPI
+        var (role, status) = (Roles.Patient, string.Empty);
         var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
-        if (profileResult.IsError) role = Roles.Patient; // Типо по дефолту возращаем пациента, даже если профиля няма. Все равно кредишаналы правильны
-        else
+        if (!profileResult.IsError)
+        {
             (role, status) = profileResult.Value;
+        }
 
-        if (role != Roles.Patient && status == "Inactive") return AccountErrors.AccountInactive;
+        if (!IsRoleAllowedForLogin(role, status))
+        {
+            return AccountErrors.AccountInactive;
+        }
 
         var refreshToken = new RefreshToken
         {
@@ -68,5 +75,40 @@ public class LoginQueryHandler(
         Log.Information("User {Email} logged in", email);
 
         return new LoginResult(jwtTokenGenerator.GenerateToken(account, role), refreshToken.Token);
+    }
+
+    private static bool IsRoleAllowedForLogin(string role, string status)
+    {
+        // Patients don't have a status gate for MVP.
+        if (string.Equals(role, Roles.Patient, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        // If Profile marks a worker as inactive, block login.
+        if (string.Equals(status, "Inactive", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        // Doctors are allowed only with known working statuses.
+        if (string.Equals(role, Roles.Doctor, StringComparison.OrdinalIgnoreCase))
+        {
+            return status is Statuses.AtWork
+                or Statuses.OnVacation
+                or Statuses.SickDay
+                or Statuses.SickLeave
+                or Statuses.SelfIsolation
+                or Statuses.LeaveWithoutPay;
+        }
+
+        // Receptionists: any non-inactive status is allowed (typically "Active").
+        if (string.Equals(role, Roles.Receptionist, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        // Unknown role: safer to reject.
+        return false;
     }
 }

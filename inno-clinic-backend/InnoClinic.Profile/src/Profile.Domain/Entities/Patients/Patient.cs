@@ -11,11 +11,12 @@ public class Patient : AccountProfile
         FirstName firstName,
         LastName lastName,
         MiddleName middleName,
+        bool isLinkedToAccount,
         DateOnly dateOfBirth,
         Guid accountId
     ) : base(firstName, lastName, middleName, accountId)
     {
-        IsLinkedToAccount = true;
+        IsLinkedToAccount = isLinkedToAccount;
         DateOfBirth = dateOfBirth;
     }
 
@@ -31,6 +32,7 @@ public class Patient : AccountProfile
             firstName,
             lastName,
             middleName,
+            isLinkedToAccount,
             dateOfBirth,
             accountId);
     }

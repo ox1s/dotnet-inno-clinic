@@ -58,6 +58,8 @@ public static class CreatePatientAppointmentHandler
             return Results.BadRequest(Errors.OfficeIsNotActive);
         if (!profileLinkedResult.Succeeded)
             return Results.BadRequest(Errors.ProfileNotFound);
+        if (!profileLinkedResult.Value)
+            return Results.BadRequest(Errors.ProfileNotLinked);
 
         var appointment = Data.Appointment.Create(
             patientId: patientId,

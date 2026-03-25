@@ -91,16 +91,24 @@ builder.Services.AddScoped<ListServices>();
 builder.Services.AddScoped<CheckService>();
 builder.Services.AddScoped<GetService>();
 builder.Services.AddScoped<ListActiveServicesByCategory>();
+builder.Services.AddScoped<ChangeServiceStatus>();
 
 builder.Services.AddScoped<ListCategories>();
 
 builder.Services.AddScoped<CreateSpecialization>();
 builder.Services.AddScoped<DeleteSpecialization>();
+builder.Services.AddScoped<ListSpecializations>();
+builder.Services.AddScoped<GetSpecialization>();
+builder.Services.AddScoped<UpdateSpecialization>();
+builder.Services.AddScoped<ChangeSpecializationStatus>();
 
 builder.Services.AddScoped<CreateOffice>();
 builder.Services.AddScoped<DeleteOffice>();
 builder.Services.AddScoped<UpdateOffice>();
 builder.Services.AddScoped<CheckOffice>();
+builder.Services.AddScoped<ListOffices>();
+builder.Services.AddScoped<GetOffice>();
+builder.Services.AddScoped<ChangeOfficeStatus>();
 
 builder.Services.AddEndpoints();
 

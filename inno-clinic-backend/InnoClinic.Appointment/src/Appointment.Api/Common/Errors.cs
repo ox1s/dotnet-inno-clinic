@@ -4,6 +4,8 @@ public static class Errors
 {
     public static Error ProfileNotFound =>
         new("ProfileNotFound", "Profile for this user not found");
+    public static Error ProfileNotLinked =>
+        new("ProfileNotLinked", "Profile is not linked to this account");
     public static Error InvalidTimeRange =>
         new("InvalidTimeRange", "Start time must be before end time");
     public static Error OverlappingAppointment =>

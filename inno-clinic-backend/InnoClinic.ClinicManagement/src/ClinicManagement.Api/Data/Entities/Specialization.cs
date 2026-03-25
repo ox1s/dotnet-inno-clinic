@@ -18,5 +18,16 @@ public class Specialization
             IsActive = isActive,
         };
     }
+
+    public void Update(string specializationName, bool isActive)
+    {
+        SpecializationName = specializationName;
+        IsActive = isActive;
+    }
+
+    public void ChangeStatus(bool isActive)
+    {
+        IsActive = isActive;
+    }
     private Specialization() { } // EF Core
 }
