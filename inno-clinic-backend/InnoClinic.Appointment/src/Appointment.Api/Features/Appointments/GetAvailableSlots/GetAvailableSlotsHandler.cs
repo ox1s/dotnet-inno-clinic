@@ -16,6 +16,8 @@ public static class GetAvailableSlotsHandler
         if (duration is null)
             return Results.BadRequest("Invalid Service");
 
+        var baseSlotStep = TimeSpan.FromMinutes(10);
+
         var workStartTime = TimeOnly
             .Parse(Appointments_Resourses.Work_StartTime, CultureInfo.InvariantCulture);
         var workEndTime = TimeOnly
@@ -29,6 +31,8 @@ public static class GetAvailableSlotsHandler
 
         var availableSlots = new List<DateTimeOffset>();
 
+        var now = DateTimeOffset.UtcNow.ToOffset(targetOffset);
+
         var currentSlotStart = dayStart;
         while (currentSlotStart.Add(duration.Value) <= dayEnd)
         {
@@ -41,11 +45,13 @@ public static class GetAvailableSlotsHandler
                 var slotRange = slotRangeResult.Value!;
 
                 if (!await appointmentRepository
-                        .IsOverlappingAsync(request.DoctorId, slotRange))
+                        .IsOverlappingAsync(request.DoctorId, slotRange)
+                    && currentSlotStart >= now)
+
                     availableSlots.Add(currentSlotStart);
             }
 
-            currentSlotStart = currentSlotEnd;
+            currentSlotStart = currentSlotStart.Add(baseSlotStep);
         }
 
         return Results.Ok(new GetAvailableSlotsResponse(availableSlots));

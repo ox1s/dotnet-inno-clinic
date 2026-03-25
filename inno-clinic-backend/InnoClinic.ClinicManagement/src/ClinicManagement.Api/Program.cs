@@ -92,6 +92,7 @@ builder.Services.AddScoped<CheckService>();
 builder.Services.AddScoped<GetService>();
 builder.Services.AddScoped<ListActiveServicesByCategory>();
 builder.Services.AddScoped<ChangeServiceStatus>();
+builder.Services.AddScoped<GetServiceDurationMinutes>();
 
 builder.Services.AddScoped<ListCategories>();
 

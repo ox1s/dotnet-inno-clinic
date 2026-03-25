@@ -26,8 +26,21 @@ public class ServiceGateway(IHttpClientFactory httpClientFactory)
         }
     }
 
-    public Task<TimeSpan?> GetServiceDurationAsync(Guid serviceId, CancellationToken cancellationToken = default)
+    public async Task<TimeSpan?> GetServiceDurationAsync(Guid serviceId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient();
+            var minutes = await httpClient.GetFromJsonAsync<int>(
+                $"http://clinic-management-api/services/{serviceId}/duration-minutes",
+                cancellationToken);
+
+            if (minutes <= 0) return null;
+            return TimeSpan.FromMinutes(minutes);
+        }
+        catch
+        {
+            return null;
+        }
     }
 }
