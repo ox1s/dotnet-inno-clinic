@@ -46,7 +46,7 @@ public class LoginQueryHandler(
             return AuthenticationErrors.InvalidCredentials;
         }
 
-        // TODO: Если правильные кредишинлы, мы пускаем хотя бы как пациента, если ляжет Profile
+        // ? Если правильные кредишинлы, мы пускаем хотя бы как пациента, если ляжет Profile
         // Если Profile недоступен, worker сможет залогиниться, но не получит своих приемуществ. Возможно надо 
         // чтобы инфомация о профиле бралась с Identity API, а не с ProfileAPI
         var (role, status) = (Roles.Patient, string.Empty);
@@ -79,19 +79,16 @@ public class LoginQueryHandler(
 
     private static bool IsRoleAllowedForLogin(string role, string status)
     {
-        // Patients don't have a status gate for MVP.
         if (string.Equals(role, Roles.Patient, StringComparison.OrdinalIgnoreCase))
         {
             return true;
         }
 
-        // If Profile marks a worker as inactive, block login.
         if (string.Equals(status, "Inactive", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
 
-        // Doctors are allowed only with known working statuses.
         if (string.Equals(role, Roles.Doctor, StringComparison.OrdinalIgnoreCase))
         {
             return status is Statuses.AtWork
@@ -102,13 +99,11 @@ public class LoginQueryHandler(
                 or Statuses.LeaveWithoutPay;
         }
 
-        // Receptionists: any non-inactive status is allowed (typically "Active").
         if (string.Equals(role, Roles.Receptionist, StringComparison.OrdinalIgnoreCase))
         {
             return true;
         }
 
-        // Unknown role: safer to reject.
         return false;
     }
 }
