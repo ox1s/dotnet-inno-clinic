@@ -7,11 +7,11 @@ import Home from "./pages/Home"
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <BrowserRouter>
-        <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
+        <div className="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">
           <Navbar />
-          <main className="pt-32 px-6 md:px-12 max-w-7xl mx-auto min-h-screen">
+          <main className="mx-auto min-h-screen max-w-6xl px-5 pt-24 md:px-10 md:pt-28">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/signin" element={<SignInPage />} />

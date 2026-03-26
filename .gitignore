@@ -63,4 +63,8 @@ inno-clinic-backend/**/*Features/**/*.md
 
 docker-compose-artifactis/
 .venv
-.vs/
+.vs
+
+inno-clinic-frontend/**/node_modules/
+
+inno-clinic-frontend/**/dist/
