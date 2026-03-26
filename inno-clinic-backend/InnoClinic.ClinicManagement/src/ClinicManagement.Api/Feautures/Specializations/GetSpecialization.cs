@@ -33,7 +33,7 @@ internal sealed class GetSpecialization(AppDbContext context)
                 return response is not null ? Results.Ok(response) : Results.NotFound();
             })
             .WithTags(SpecializationEndpoints.Tag)
-            .RequirePermission(Permissions.SpecializationsRead);
+            .AllowAnonymous();
         }
     }
 }

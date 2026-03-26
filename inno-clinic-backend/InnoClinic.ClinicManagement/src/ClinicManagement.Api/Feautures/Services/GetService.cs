@@ -43,7 +43,7 @@ internal sealed partial class GetService(AppDbContext context)
                 return response is not null ? Results.Ok(response) : Results.NotFound();
             })
             .WithTags(ServiceEndpoints.Tag)
-            .RequirePermission(Permissions.SpecializationsRead);
+            .AllowAnonymous();
         }
     }
 }

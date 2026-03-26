@@ -40,7 +40,7 @@ internal sealed class GetOffice(AppDbContext context)
                 return response is not null ? Results.Ok(response) : Results.NotFound();
             })
             .WithTags(OfficeEndpoints.Tag)
-            .RequirePermission(Permissions.OfficesRead);
+            .AllowAnonymous();
         }
     }
 }
