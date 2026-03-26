@@ -25,7 +25,6 @@ services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

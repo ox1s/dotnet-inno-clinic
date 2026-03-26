@@ -94,7 +94,7 @@ var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-a
     .WithEnvironment("AppUrl", "https://localhost:7779")
     .WithEnvironment("WebAppUrl", "http://localhost:7780");
 
-builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
+var bot = builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
     .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)
     .WithEnvironment("API_KEY", botApiKey)
     .WithEnvironment("BACKEND_API_URL", profileApi.GetEndpoint("https"))
@@ -103,7 +103,7 @@ builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
 // ------------------------------------------------------------
 ///////////////////////////////////////////////////////////////
 // gateway ----------------------------------------------------
-builder.AddProject<Projects.Gateway_Api>("gateway")
+var gateway = builder.AddProject<Projects.Gateway_Api>("gateway")
     .WithReference(identityApi)
     .WithReference(appointmentApi)
     .WithReference(clinicManagementApi)
@@ -117,5 +117,15 @@ builder.AddProject<Projects.Gateway_Api>("gateway")
     .WaitFor(notificationsApi)
 
     .WithExternalHttpEndpoints();
+
+// ------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+// frontend ---------------------------------------------------
+builder.AddViteApp("client-app", "../../inno-clinic-frontend")
+   .WithReference(gateway)
+   .WithEnvironment("VITE_API_BASE_URL", gateway.GetEndpoint("https"))
+   .WithViteConfig("./vite.config.js")
+
+   .WaitFor(gateway);
 
 await builder.Build().RunAsync();

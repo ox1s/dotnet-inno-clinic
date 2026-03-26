@@ -7,7 +7,6 @@ builder.Services
     .AddServiceDiscoveryDestinationResolver();
 
 var app = builder.Build();
-
 app.MapReverseProxy();
 
 await app.RunAsync();

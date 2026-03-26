@@ -2,6 +2,7 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
+import { useAuth } from "@/lib/auth-util"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -31,6 +32,8 @@ const services: { title: string; href: string; description: string }[] = [
 ]
 
 export function Navbar() {
+  const { isAuthenticated, logoutUser } = useAuth()
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="max-w-7xl mx-auto flex h-16 items-center px-6 md:px-12">
@@ -81,12 +84,20 @@ export function Navbar() {
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-4">
             <ModeToggle />
-            <Button variant="secondary" asChild>
-              <Link to="/signin">Sign In</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/signup">Sign Up</Link>
-            </Button>
+            {isAuthenticated ? (
+              <Button variant="secondary" type="button" onClick={logoutUser}>
+                Sign Out
+              </Button>
+            ) : (
+              <>
+                <Button variant="secondary" asChild>
+                  <Link to="/signin">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+              </>
+            )}
           </nav>
         </div>
       </div>
