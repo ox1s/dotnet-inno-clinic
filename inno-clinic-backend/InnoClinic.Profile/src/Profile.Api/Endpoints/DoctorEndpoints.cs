@@ -18,6 +18,10 @@ public sealed class DoctorEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
+         app.MapPost("/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
+                await bus.InvokeAsync(command))
+            .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
+
         app.MapPut("/doctors/status", async (EditDoctorStatusCommand command, IMessageBus bus) =>
                 await bus.InvokeAsync(command))
             .RequireAuthorization(policy => policy.RequireRole(Roles.Doctor));

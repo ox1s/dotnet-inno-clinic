@@ -19,10 +19,6 @@ public sealed class ReceptionistEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/receptionists/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
-                await bus.InvokeAsync(command))
-            .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
-
         app.MapGet("/receptionists", async (
                 string? q,
                 int? page,
@@ -65,8 +61,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
                 TotalCount: totalCount));
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
-        // ? Нормально ли практика такой писанины
-        app.MapPost("/receptionists/receptionists", async (
+        app.MapPost("/receptionists", async (
                 CreateReceptionistProfileRequest request,
                 ProfileDbContext dbContext,
                 CancellationToken ct) =>
@@ -98,8 +93,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
                 receptionist.OfficeId));
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
-        // ? И такой тоже
-        app.MapDelete("/receptionists/receptionists/{id:guid}", async (
+        app.MapDelete("/receptionists/{id:guid}", async (
                 Guid id,
                 ProfileDbContext dbContext,
                 CancellationToken ct) =>
