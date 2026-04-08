@@ -12,7 +12,9 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
 // ------------------------------------------------------------
 ///////////////////////////////////////////////////////////////
 // databases --------------------------------------------------
-var mongo = builder.AddMongoDB("mongo").WithMongoExpress().WithLifetime(ContainerLifetime.Persistent);
+var mongo = builder.AddMongoDB("mongo")
+    .WithLifetime(ContainerLifetime.Persistent);
+
 var mongodb = mongo.AddDatabase("notifications-db");
 
 var postgres = builder.AddPostgres("postgres")

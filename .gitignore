@@ -68,3 +68,5 @@ docker-compose-artifactis/
 inno-clinic-frontend/**/node_modules/
 
 inno-clinic-frontend/**/dist/
+
+*.lscache
