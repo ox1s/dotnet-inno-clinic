@@ -1,0 +1,18 @@
+@host = localhost:7777
+@id =2c3b574a-291d-40bf-bbc2-dea7669831c2
+@refreshToken = VnRLX4pyTncK5FcCH2yfJhKG5S2R2rQXjv/5UqD2MHY=
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdGllbnRAdGVzdC5jb20iLCJpZCI6IjJjM2I1NzRhLTI5MWQtNDBiZi1iYmMyLWRlYTc2Njk4MzFjMiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlBhdGllbnQiLCJleHAiOjE3NzA2NDcxNjEsImlzcyI6Iklubm9DbGluaWMiLCJhdWQiOiJJbm5vQ2xpbmljIn0.Mxyx9-TVQd5eKgMvpJCS5HGzcZ0cWuzmxsf3adKaqvE
+
+POST https://{{host}}/authentication/login-with-refresh-token
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+
+###
+DELETE https://{{host}}/authentication/accounts/{{id}}/refresh-tokens
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json

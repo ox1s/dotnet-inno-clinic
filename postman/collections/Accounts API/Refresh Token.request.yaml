@@ -1,0 +1,27 @@
+$kind: http-request
+name: Refresh Token
+url: https://{{gateway-host}}/identity/authentication/login-with-refresh-token
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "refreshToken": "{{refreshToken}}"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Token refresh successful", function () {
+          pm.response.to.have.status(200);
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.token).to.not.be.null;
+          
+          pm.environment.set("accessToken", jsonData.token);
+          pm.environment.set("refreshToken", jsonData.refreshToken);
+      });
+    language: text/javascript
+order: 5000

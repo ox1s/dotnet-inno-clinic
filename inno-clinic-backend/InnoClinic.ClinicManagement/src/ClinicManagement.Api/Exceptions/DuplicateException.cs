@@ -1,0 +1,9 @@
+namespace ClinicManagement.Api.Exceptions;
+
+public sealed class ConflictException : ApplicationException
+{
+    public ConflictException(string message)
+        : base(message)
+    {
+    }
+}

@@ -1,0 +1,75 @@
+
+using System.Security.Claims;
+
+using Appointment.Api.Common;
+using Appointment.Api.Data;
+using Appointment.Api.External;
+
+using FluentValidation;
+
+using Throw;
+
+namespace Appointment.Api.Features.Appointments.UpdateAppointment;
+
+public static class UpdateAppointmentHandler
+{
+    public static async Task<IResult> HandleAsync(Guid id,
+        UpdateAppointmentRequest request,
+        IAppointmentRepository appointmentRepository,
+        IValidator<UpdateAppointmentRequest> validator,
+        ClaimsPrincipal user,
+        IServiceGateway serviceGateway,
+        IOfficeGateway officeGateway,
+        IProfileGateway profileGateway)
+    {
+        var validationResult = await validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+            return TypedResults.BadRequest(new Error(
+                Code: "Validation",
+                Description: validationResult.ToString()));
+
+        var appointment = await appointmentRepository.GetByIdAsync(id);
+        if (appointment is null)
+            return TypedResults.NotFound();
+
+        var timeRangeResult = TimeRange.Create(
+            request.StartDateTime.ToUniversalTime(),
+            request.EndDateTime.ToUniversalTime());
+
+        timeRangeResult.ThrowIfNull();
+        if (!timeRangeResult.Succeeded)
+            return TypedResults.BadRequest(timeRangeResult.Error.Description);
+
+        if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
+            return TypedResults.BadRequest(Errors.OverlappingAppointment);
+
+        var serviceActive = await serviceGateway.IsServiceActiveAsync(request.ServiceId);
+        var officeActive = await officeGateway.IsOfficeActiveAsync(request.OfficeId);
+        var doctorActiveResult = await profileGateway.IsDoctorActiveAsync(request.DoctorId);
+
+        if (!doctorActiveResult.Succeeded)
+            return Results.BadRequest(Errors.DoctorIsNotActive);
+        if (!serviceActive.Succeeded)
+            return Results.BadRequest(Errors.ServiceIsNotActive);
+        if (!officeActive.Succeeded)
+            return Results.BadRequest(Errors.OfficeIsNotActive);
+
+        appointment.Update(
+            doctorId: request.DoctorId,
+            serviceId: request.ServiceId,
+            officeId: request.OfficeId,
+            duration: timeRangeResult.Value!);
+
+        await appointmentRepository.UpdateAsync(appointment);
+
+        return TypedResults.Ok(
+            new UpdateAppointmentResponse(
+                Id: appointment.Id,
+                PatientId: appointment.PatientId,
+                DoctorId: appointment.DoctorId,
+                ServiceId: appointment.ServiceId,
+                OfficeId: appointment.OfficeId,
+                StartDateTime: appointment.Duration.Start,
+                EndDateTime: appointment.Duration.End));
+    }
+}

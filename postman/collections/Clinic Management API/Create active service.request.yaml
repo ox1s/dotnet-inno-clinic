@@ -1,0 +1,52 @@
+$kind: http-request
+name: Create active service
+url: https://{{gateway-host}}/clinic-management/services
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \t\"serviceName\": \"Service {{iterator}}\",\r
+
+    \    \"price\": 19,\r
+
+    \    \"currency\": \"BYN\",\r
+
+    \    \"categoryId\": \"{{categoryId}}\",\r
+
+    \    \"specializationId\": \"{{specializationId}}\",\r
+
+    \    \"isActive\": true\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Create service successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Service Id saved\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    \r
+
+      \    var serviceId = jsonData;\r
+
+      \    var iterator = pm.environment.get(\"iterator\");\r
+
+      \    pm.environment.set(\"iterator\", iterator+1);\r
+
+      \    pm.environment.set(\"serviceId\", serviceId);\r
+
+      });"
+    language: text/javascript
+order: 518873258398908

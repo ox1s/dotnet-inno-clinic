@@ -23,6 +23,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+**\bin**
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
@@ -54,3 +56,15 @@ TestResult.xml
 nunit-*.xml
 
 .idea/
+.github/
+
+inno-clinic-backend/**/*Features/**/*.png
+inno-clinic-backend/**/*Features/**/*.md
+
+docker-compose-artifactis/
+.venv
+.vs
+
+inno-clinic-frontend/**/node_modules/
+
+inno-clinic-frontend/**/dist/

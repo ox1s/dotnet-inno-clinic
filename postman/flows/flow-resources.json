@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "flows": {
+    "82eef0a3-28b7-464d-81f5-b33a309d690b": {
+      "path": "P:/C#Learning/dotnet-inno-clinic/postman/flows/Create valid appointment.json",
+      "dependencies": [
+        {
+          "local": {
+            "collectionId": "E5fD77DFC7BB9f19B090F681",
+            "requestId": "1F9e701FE4fC4D9e7da8bD3D",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "91A2E5E85dF1e22cb8fab127",
+            "requestId": "5A5bCAD87c7A2cFD15eC9C05",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "91A2E5E85dF1e22cb8fab127",
+            "requestId": "84f3aEC4eE22f2f7644729E7",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "E5fD77DFC7BB9f19B090F681",
+            "requestId": "Baf7C2Cc795bC0F5B2beD2cb",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "E5fD77DFC7BB9f19B090F681",
+            "requestId": "BD5Ecd42A5B5E7C6236a378A",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "7BdA582261b0db23570B9DeF",
+            "requestId": "dB0D5bDd7448Ae5dFAA722Ea",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "91A2E5E85dF1e22cb8fab127",
+            "requestId": "2AA7FaBf171DFcdf097bB1b8",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        },
+        {
+          "local": {
+            "collectionId": "91A2E5E85dF1e22cb8fab127",
+            "requestId": "cA2c90aeD7249697c5b2F4c8",
+            "filePath": ""
+          },
+          "cloud": {
+            "collectionId": null,
+            "requestId": null
+          }
+        }
+      ]
+    }
+  }
+}

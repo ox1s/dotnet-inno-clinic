@@ -1,0 +1,40 @@
+$kind: http-request
+name: Create active office
+url: https://{{gateway-host}}/clinic-management/offices
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"address\" : \"ул. Советская 13\",\r
+
+    \    \"photoUrl\": \"{{$randomUrl}}\",\r
+
+    \    \"registryPhoneNumber\": \"+375294444444\",\r
+
+    \    \"isActive\": true \r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "pm.test(\"Create service successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"OfficeId Id saved\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    \r
+
+      \    var officeId = jsonData;\r
+
+      \    pm.environment.set(\"officeId\", officeId);\r
+
+      });"
+    language: text/javascript
+order: 3603388666441957

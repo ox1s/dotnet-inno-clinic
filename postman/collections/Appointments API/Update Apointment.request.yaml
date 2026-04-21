@@ -1,0 +1,20 @@
+$kind: http-request
+name: Update Apointment
+url: https://{{gateway-host}}/appointment/appointments/{{appointmentId}}
+method: PUT
+body:
+  type: json
+  content: |
+    {
+      "patientId": "{{patientId}}",
+      "doctorId": "{{doctorId}}",
+      "serviceId": "{{serviceId}}",
+      "officeId": "{{officeId}}",
+      "startDateTime": "{{startDateTime}}",
+      "endDateTime": "{{endDateTime}}"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+order: 6000

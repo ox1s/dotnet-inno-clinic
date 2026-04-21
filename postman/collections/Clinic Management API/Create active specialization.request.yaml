@@ -1,0 +1,31 @@
+$kind: http-request
+name: Create active specialization
+url: https://{{gateway-host}}/clinic-management/specializations
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "specializationName" : "Specialization {{speciterator}}",
+        "isActive" : true
+    }
+auth:
+  credentials:
+    token: "{{accessToken}}"
+  type: bearer
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Create category successful", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Category Id saved", function () {
+          var jsonData = pm.response.json();
+          var specializationId = jsonData.id;
+          var iterator = pm.environment.get("speciterator");
+          pm.environment.set("speciterator", iterator + 1);
+          pm.environment.set("specializationId", specializationId);
+      });
+    language: text/javascript
+order: 6000

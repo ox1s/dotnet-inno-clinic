@@ -1,0 +1,40 @@
+namespace ClinicManagement.Api.Data.Entities;
+
+
+public class Office
+{
+    // id (PK)
+    // address
+    // photo_id (FK)
+    // registry_phone_number
+    // isActive
+
+    public Guid Id { get; set; }
+    public string Address { get; set; } = null!;
+    public Photo Photo { get; set; } = null!;
+    public string RegistryPhoneNumber { get; set; } = null!;
+    public bool IsActive { get; set; }
+    public static Office Create(
+        string address,
+        Photo photo,
+        string registryPhoneNumber,
+        bool isActive)
+    {
+        return new Office
+        {
+            Id = Guid.NewGuid(),
+            Address = address,
+            Photo = photo,
+            RegistryPhoneNumber = registryPhoneNumber,
+            IsActive = isActive
+        };
+    }
+    public void Update(string address, string registryPhoneNumber, Photo photo, bool isActive)
+    {
+        Address = address;
+        RegistryPhoneNumber = registryPhoneNumber;
+        Photo = photo;
+        IsActive = isActive;
+    }
+    private Office() { } // EF Core
+}

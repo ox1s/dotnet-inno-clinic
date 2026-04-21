@@ -1,0 +1,34 @@
+$kind: http-request
+name: Create Doctor Profile
+url: https://{{gateway-host}}/profile/receptionists/doctors
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"accountId\": \"{{$guid}}\",\r
+
+    \  \"firstName\": \"Доктор 1\",\r
+
+    \  \"lastName\": \"Доктор 1\",\r
+
+    \  \"middleName\": \"Доктор 1\",\r
+
+    \  \"dateOfBirth\": \"1960-03-07\",\r
+
+    \  \"email\": \"doctor1@innoclinic.com\",\r
+
+    \  \"specializationId\": \"{{specializationId}}\",\r
+
+    \  \"officeId\": \"{{officeId}}\",\r
+
+    \  \"careerStartYear\": 2000,\r
+
+    \  \"status\": \"At work\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+order: 1000

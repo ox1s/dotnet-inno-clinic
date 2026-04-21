@@ -1,0 +1,41 @@
+$kind: http-request
+name: Create Service
+description: >-
+  This is a POST request, submitting data to an API via the request body. This
+  request submits JSON data, and the data is reflected in the response.
+
+
+  A successful POST request typically returns a `200 OK` or `201 Created`
+  response code.
+url: https://{{gateway-host}}/clinic-management/services
+method: POST
+body:
+  type: json
+  content: |
+    {
+    	"serviceName": "Service 123",
+        "price": 19,
+        "currency": "BYN",
+        "categoryId": "{{categoryId}}",
+        "isActive": {{$randomBoolean}}
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Create service successful", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Service Id saved", function () {
+          var jsonData = pm.response.json();
+          
+          var serviceId = jsonData.id;
+
+          pm.environment.set("serviceId", serviceId);
+      });
+    language: text/javascript
+order: 2000

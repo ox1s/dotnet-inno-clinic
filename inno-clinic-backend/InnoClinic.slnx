@@ -1,0 +1,52 @@
+<Solution>
+    <Folder Name="/InnoClinic.ClinicManagement/" />
+    <Folder Name="/InnoClinic.ClinicManagement/src/">
+        <Project Path="InnoClinic.ClinicManagement/src/ClinicManagement.Api/ClinicManagement.Api.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Gateway/">
+        <Project Path="InnoClinic.Gateway/Gateway.Api/Gateway.Api.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Identity/" />
+    <Folder Name="/InnoClinic.Identity/src/">
+        <Project Path="InnoClinic.Identity/src/Identity.Api/Identity.Api.csproj" />
+        <Project Path="InnoClinic.Identity/src/Identity.Application/Identity.Application.csproj" />
+        <Project Path="InnoClinic.Identity/src/Identity.Contracts/Identity.Contracts.csproj" />
+        <Project Path="InnoClinic.Identity/src/Identity.Domain/Identity.Domain.csproj" />
+        <Project Path="InnoClinic.Identity/src/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Identity/tests/">
+        <Project Path="InnoClinic.Identity/tests/Identity.Application.UnitTests/Identity.Application.UnitTests.csproj" />
+        <Project Path="InnoClinic.Identity/tests/Identity.Domain.UnitTests/Identity.Domain.UnitTests.csproj" />
+        <Project Path="InnoClinic.Identity/tests/Identity.TestCommon/Identity.TestCommon.csproj" />
+    </Folder>
+    <Folder Name="/Solution Items/">
+        <File Path="compose.yaml" />
+        <File Path="Directory.Packages.props" />
+    </Folder>
+
+    <Folder Name="/InnoClinic.Appointment/" />
+    <Folder Name="/InnoClinic.Appointment/src/">
+        <Project Path="InnoClinic.Appointment/src/Appointment.Api/Appointment.Api.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Appointment/tests/">
+        <Project Path="InnoClinic.Appointment/tests/Appointment.Api.UnitTests/Appointment.Api.UnitTests.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Profile/" />
+    <Folder Name="/InnoClinic.Profile/src/">
+        <Project Path="InnoClinic.Profile/src/Profile.Api/Profile.Api.csproj" />
+        <Project Path="InnoClinic.Profile/src/Profile.Domain/Profile.Domain.csproj" />
+        <Project Path="InnoClinic.Profile/src/Profile.Features/Profile.Features.csproj" />
+        <Project Path="InnoClinic.Profile/src/Profile.Infrastructure/Profile.Infrastructure.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Profile/tests/">
+        <Project Path="InnoClinic.Profile/tests/Profile.Features.UnitTests/Profile.Features.UnitTests.csproj" />
+        <Project Path="InnoClinic.Profile/tests/Profile.Infrastracture.UnitTests/Profile.Infrastracture.UnitTests.csproj" />
+    </Folder>
+    <Folder Name="/InnoClinic.Shared/">
+        <Project Path="InnoClinic.Shared/InnoClinic.Shared.csproj" />
+    </Folder>
+    <Project Path="InnoClinic.AppHost/InnoClinic.AppHost.csproj" />
+    <Project Path="InnoClinic.IntegrationTests/InnoClinic.IntegrationTests.csproj" />
+    <Project Path="InnoClinic.Notification/InnoClinic.Notification.csproj" />
+    <Project Path="InnoClinic.ServiceDefaults/InnoClinic.ServiceDefaults.csproj" />
+</Solution>

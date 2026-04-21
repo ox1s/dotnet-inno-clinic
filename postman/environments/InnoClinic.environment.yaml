@@ -1,0 +1,68 @@
+name: InnoClinic
+values:
+  - key: identity-host
+    value: ""
+    enabled: true
+  - key: clinicmanagement-host
+    value: ""
+    enabled: true
+  - key: appointment-host
+    value: ""
+    enabled: true
+  - key: accessToken
+    value: ""
+    enabled: true
+  - key: refreshToken
+    value: ""
+    enabled: true
+  - key: secretKey
+    value: ""
+    enabled: true
+  - key: userId
+    value: ""
+    enabled: true
+  - key: email
+    value: ""
+    enabled: true
+  - key: password
+    value: ""
+    enabled: true
+  - key: doctorId
+    value: ""
+    enabled: true
+  - key: patientId
+    value: ""
+    enabled: true
+  - key: officeId
+    value: ""
+    enabled: true
+  - key: serviceId
+    value: ""
+    enabled: true
+  - key: startDateTime
+    value: ""
+    enabled: true
+  - key: endDateTime
+    value: ""
+    enabled: true
+  - key: appointmentId
+    value: ""
+    enabled: true
+  - key: receptionist-email
+    value: ""
+    enabled: true
+  - key: categoryId
+    value: ""
+    enabled: true
+  - key: specializationId
+    value: ""
+    enabled: true
+  - key: patient-email
+    value: ""
+    enabled: true
+  - key: role-patient
+    value: ""
+    enabled: true
+  - key: gateway-host
+    value: "7137"
+    enabled: true

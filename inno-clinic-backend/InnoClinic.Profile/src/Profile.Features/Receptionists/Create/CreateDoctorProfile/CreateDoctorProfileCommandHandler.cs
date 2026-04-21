@@ -1,0 +1,43 @@
+using InnoClinic.Shared.DTOs;
+
+using Profile.Domain.Entities.AccountProfiles;
+using Profile.Domain.Entities.Doctors;
+using Profile.Infrastructure.Database;
+
+using Wolverine;
+
+namespace Profile.Features.Receptionists.Create.CreateDoctorProfile;
+
+public static class CreateDoctorProfileCommandHandler
+{
+    public static async Task Handle(
+        CreateDoctorProfileCommand command,
+        ProfileDbContext dbContext,
+        IMessageBus bus)
+    {
+        var firstName = FirstName.Create(command.FirstName);
+        var lastName = LastName.Create(command.LastName);
+        var middleName = MiddleName.Create(command.MiddleName);
+
+        var careerStartYear = CareerStartYear.From(command.CareerStartYear);
+        var status = Status.From(command.Status);
+
+        var doctor = Doctor.Create(
+            accountId: command.AccountId,
+            firstName: firstName,
+            lastName: lastName,
+            middleName: middleName,
+            dateOfBirth: command.DateOfBirth,
+            specializationId: command.SpecializationId,
+            officeId: command.OfficeId,
+            careerStartYear: careerStartYear,
+            status: status
+        );
+
+        dbContext.Set<Doctor>().Add(doctor);
+        await dbContext.SaveChangesAsync();
+        // TODO: Doctor repository
+
+        await bus.PublishAsync(new DoctorCreated(command.Email, doctor.AccountId));
+    }
+}

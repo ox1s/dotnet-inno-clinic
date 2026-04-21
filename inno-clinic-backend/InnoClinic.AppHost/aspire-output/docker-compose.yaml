@@ -1,0 +1,128 @@
+services:
+  inno-clinic-docker-dashboard:
+    image: "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest"
+    ports:
+      - "18888"
+    expose:
+      - "18889"
+      - "18890"
+    networks:
+      - "aspire"
+    restart: "always"
+  mailpit:
+    image: "docker.io/axllent/mailpit:v1.22.3"
+    expose:
+      - "1025"
+      - "8025"
+    networks:
+      - "aspire"
+  postgres:
+    image: "docker.io/library/postgres:17.6"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    expose:
+      - "5432"
+    volumes:
+      - type: "volume"
+        target: "/var/lib/postgresql/data"
+        source: "innoclinic.apphost-131e9eb271-postgres-data"
+        read_only: false
+    networks:
+      - "aspire"
+  identity-api:
+    image: "${IDENTITY_API_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${IDENTITY_API_PORT}"
+      ConnectionStrings__innoclinic-database: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=innoclinic-database"
+      ConnectionStrings__mailpit: "Endpoint=smtp://mailpit:1025"
+      MAILPIT_HOST: "mailpit"
+      MAILPIT_PORT: "1025"
+      MAILPIT_URI: "smtp://mailpit:1025"
+      INNOCLINIC_DATABASE_HOST: "postgres"
+      INNOCLINIC_DATABASE_PORT: "5432"
+      INNOCLINIC_DATABASE_USERNAME: "postgres"
+      INNOCLINIC_DATABASE_PASSWORD: "${POSTGRES_PASSWORD}"
+      INNOCLINIC_DATABASE_URI: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_JDBCCONNECTIONSTRING: "jdbc:postgresql://postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_DATABASENAME: "innoclinic-database"
+      AppUrl: "https://localhost:7777"
+      WebAppUrl: "http://localhost:7778"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://inno-clinic-docker-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "identity-api"
+    expose:
+      - "${IDENTITY_API_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  appointment-api:
+    image: "${APPOINTMENT_API_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${APPOINTMENT_API_PORT}"
+      ConnectionStrings__innoclinic-database: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=innoclinic-database"
+      INNOCLINIC_DATABASE_HOST: "postgres"
+      INNOCLINIC_DATABASE_PORT: "5432"
+      INNOCLINIC_DATABASE_USERNAME: "postgres"
+      INNOCLINIC_DATABASE_PASSWORD: "${POSTGRES_PASSWORD}"
+      INNOCLINIC_DATABASE_URI: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_JDBCCONNECTIONSTRING: "jdbc:postgresql://postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_DATABASENAME: "innoclinic-database"
+      AppUrl: "https://localhost:7779"
+      WebAppUrl: "http://localhost:7780"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://inno-clinic-docker-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "appointment-api"
+    expose:
+      - "${APPOINTMENT_API_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  clinic-management-api:
+    image: "${CLINIC_MANAGEMENT_API_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${CLINIC_MANAGEMENT_API_PORT}"
+      ConnectionStrings__innoclinic-database: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=innoclinic-database"
+      INNOCLINIC_DATABASE_HOST: "postgres"
+      INNOCLINIC_DATABASE_PORT: "5432"
+      INNOCLINIC_DATABASE_USERNAME: "postgres"
+      INNOCLINIC_DATABASE_PASSWORD: "${POSTGRES_PASSWORD}"
+      INNOCLINIC_DATABASE_URI: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_JDBCCONNECTIONSTRING: "jdbc:postgresql://postgres:5432/innoclinic-database"
+      INNOCLINIC_DATABASE_DATABASENAME: "innoclinic-database"
+      AppUrl: "https://localhost:7781"
+      WebAppUrl: "http://localhost:7782"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://inno-clinic-docker-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "clinic-management-api"
+    expose:
+      - "${CLINIC_MANAGEMENT_API_PORT}"
+    depends_on:
+      postgres:
+        condition: "service_started"
+    networks:
+      - "aspire"
+networks:
+  aspire:
+    driver: "bridge"
+volumes:
+  innoclinic.apphost-131e9eb271-postgres-data:
+    driver: "local"

@@ -1,0 +1,44 @@
+$kind: http-request
+name: Login as receptionist
+url: https://{{gateway-host}}/identity/authentication/login
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "email": "{{receptionist-email}}",
+        "password": "{{password}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Login successful", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Tokens are returned and saved", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('token');
+          pm.expect(jsonData).to.have.property('refreshToken');
+          
+          var accessToken = jsonData.token;
+          var refreshToken = jsonData.refreshToken;
+
+          try {
+              var base64Payload = accessToken.split('.')[1];
+              var payload = JSON.parse(atob(base64Payload));
+              
+              var decodedUserId = payload.id; 
+              
+              console.log("Decoded User ID:", decodedUserId);
+              pm.environment.set("userId", decodedUserId);
+              pm.environment.set("patientId", decodedUserId)
+          } catch (e) {
+              console.error("Error with encoding:", e);
+          }
+
+          pm.environment.set("accessToken", accessToken);
+          pm.environment.set("refreshToken", refreshToken);
+      });
+    language: text/javascript
+order: 4000

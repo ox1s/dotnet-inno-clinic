@@ -1,0 +1,48 @@
+$kind: http-request
+name: Create Appointment DOESN'T WORK
+url: https://{{gateway-host}}/appointment/patient/appointments
+method: POST
+body:
+  type: json
+  content: |
+    {
+      "doctorId": "{{doctorId}}",
+      "serviceId": "{{serviceId}}",
+      "officeId": "{{officeId}}",
+      "startDateTime": "{{currentTime}}",
+      "endDateTime": "{{timePlus2Hours}}"
+    }
+auth:
+  credentials:
+    - key: token
+      value: "{{accessToken}}"
+  type: bearer
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Create appointment successful", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Appointment Id saved", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('id');
+          
+          var appointmentId = jsonData.id;
+
+          pm.environment.set("appointmentId", appointmentId);
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: >
+      const moment = require('moment');
+
+
+      pm.variables.set("currentTime",
+      moment().utc().format("YYYY-MM-DDTHH:mm:ss+02:00"));
+
+
+      pm.variables.set("timePlus2Hours", moment().utc().add(2,
+      'hours').format("YYYY-MM-DDTHH:mm:ss+02:00"));
+    language: text/javascript
+order: 2000

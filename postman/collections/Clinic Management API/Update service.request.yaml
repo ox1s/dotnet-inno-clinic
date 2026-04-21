@@ -1,0 +1,36 @@
+$kind: http-request
+name: Update service
+url: https://{{gateway-host}}/clinic-management/services/{{serviceId}}
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\" : \"{{serviceId}}\",\r
+
+    \t\"serviceName\": \"Service 123\",\r
+
+    \    \"price\": 19,\r
+
+    \    \"currency\": \"BYN\",\r
+
+    \    \"categoryId\": \"{{categoryId}}\",\r
+
+    \    \"specializationId\": \"{{specializationId}}\",\r
+
+    \    \"isActive\": {{$randomBoolean}}\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Update service successful\", function () {\r
+
+      \    pm.response.to.have.status(204);\r
+
+      });"
+    language: text/javascript
+order: 4374317258569400

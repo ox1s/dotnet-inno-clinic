@@ -1,0 +1,31 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.2.0">
+  <ItemGroup>
+    <ProjectReference Include="..\InnoClinic.Appointment\src\Appointment.Api\Appointment.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Identity\src\Identity.Api\Identity.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.ClinicManagement\src\ClinicManagement.Api\ClinicManagement.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Profile\src\Profile.Api\Profile.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Gateway\Gateway.Api\Gateway.Api.csproj" />
+    <ProjectReference Include="..\InnoClinic.Notification\InnoClinic.Notification.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Docker" />
+    <PackageReference Include="Aspire.Hosting.JavaScript" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.Python" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
+    <PackageReference Include="SonarAnalyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>9399b61e-953c-4d38-bb58-38f6b6fba842</UserSecretsId>
+  </PropertyGroup>
+</Project>
