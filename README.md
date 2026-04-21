@@ -1,3 +1,4 @@
 # dotnet-inno-clinic
 
-Innowise Clinic ASP.NET Core Web API (Pre-Trainee Innowise assignment)
+Requirments.md <- technical specifications
+таски_todo.md <- to do
