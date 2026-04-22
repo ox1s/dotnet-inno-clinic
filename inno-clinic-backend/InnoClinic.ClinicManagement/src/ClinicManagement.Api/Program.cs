@@ -11,6 +11,7 @@ using ClinicManagement.Api.Feautures.Categories;
 using ClinicManagement.Api.Feautures.Offices;
 using ClinicManagement.Api.Feautures.Services;
 using ClinicManagement.Api.Feautures.Specializations;
+using ClinicManagement.Api.Extensions;
 
 using FluentValidation;
 
@@ -22,12 +23,8 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails(configure =>
-{
     configure.CustomizeProblemDetails = context =>
-    {
-        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
-    };
-});
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier));
 
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

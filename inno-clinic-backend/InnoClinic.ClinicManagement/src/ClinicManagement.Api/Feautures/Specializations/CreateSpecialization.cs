@@ -4,11 +4,17 @@ using ClinicManagement.Api.Data.Entities;
 using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 
+using ClinicManagement.Api.Features.Specializations;
+
+using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
-namespace ClinicManagement.Api.Features.Specializations;
+
+namespace ClinicManagement.Api.Feautures.Specializations;
 
 public class CreateSpecialization(
-    AppDbContext context)
+    AppDbContext context,
+    AbstractValidator<CreateSpecialization.Request> validator)
 {
     public sealed record Request(
         string SpecializationName,
@@ -17,11 +23,13 @@ public class CreateSpecialization(
         Guid Id,
         string Name);
 
-    public async Task<Response> Handle(Request request)
+    public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
         var existingSpecialization = await context.Specializations
             .FirstOrDefaultAsync(s =>
-                s.SpecializationName == request.SpecializationName);
+                s.SpecializationName == request.SpecializationName, cancellationToken: cancellationToken);
 
         if (existingSpecialization is not null)
             throw new ConflictException("Specialization already exists");
@@ -31,18 +39,26 @@ public class CreateSpecialization(
             request.IsActive);
 
         context.Specializations.Add(specialization);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
 
         return new Response(specialization.Id, specialization.SpecializationName);
+    }
+
+    internal sealed class Validator : AbstractValidator<Request>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.SpecializationName).NotEmpty().MaximumLength(200);
+        }
     }
 
     internal sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("specializations", async (Request request, CreateSpecialization useCase) =>
+            app.MapPost("specializations", async (Request request, CreateSpecialization useCase, CancellationToken cts) =>
                 {
-                    var response = await useCase.Handle(request);
+                    var response = await useCase.Handle(request, cts);
                     return Results.Ok(new Response(response.Id, request.SpecializationName));
                 })
                 .WithTags(SpecializationEndpoints.Tag)
