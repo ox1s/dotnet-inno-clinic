@@ -2,8 +2,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 // config -----------------------------------------------------
-var botApiKey = builder.Configuration["BotSettings:ApiKey"];
-var telegramToken = builder.Configuration["BotSettings:BotToken"];
+var botApiKey = builder.AddParameter("botApiKey", secret: true);
+var telegramToken = builder.AddParameter("telegramToken", secret: true);
 // ------------------------------------------------------------
 ///////////////////////////////////////////////////////////////
 // services ---------------------------------------------------
