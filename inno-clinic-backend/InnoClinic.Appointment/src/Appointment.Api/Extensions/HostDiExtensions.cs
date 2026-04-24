@@ -1,5 +1,6 @@
 using System.Text;
 
+using Appointment.Api.Common;
 using Appointment.Api.Data;
 using Appointment.Api.External;
 
@@ -14,6 +15,9 @@ public static class HostDiExtensions
     public static IServiceCollection AddWebHostInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddAuth(configuration);
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
