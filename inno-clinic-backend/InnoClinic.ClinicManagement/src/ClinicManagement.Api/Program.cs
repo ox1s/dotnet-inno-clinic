@@ -6,12 +6,10 @@ using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
 using ClinicManagement.Api.Features.Offices;
 using ClinicManagement.Api.Features.Services;
-using ClinicManagement.Api.Features.Specializations;
 using ClinicManagement.Api.Feautures.Categories;
 using ClinicManagement.Api.Feautures.Offices;
 using ClinicManagement.Api.Feautures.Services;
 using ClinicManagement.Api.Feautures.Specializations;
-using ClinicManagement.Api.Extensions;
 
 using FluentValidation;
 
@@ -46,7 +44,7 @@ builder.
             BearerFormat = "JWT"
         });
 
-        options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecuritySchemeReference("Bearer"),

@@ -1,8 +1,10 @@
-using Appointment.Api.Common;
-
 using System.Text.Json;
 
+using Appointment.Api.Common;
+
 using InnoClinic.Shared.DTOs;
+
+using Throw;
 
 namespace Appointment.Api.External;
 
@@ -17,6 +19,8 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
             var response = await httpClient.GetFromJsonAsync<DoctorDto>(
                 $"http://profile-api/doctors/{doctorId}",
                 cancellationToken);
+
+            response.ThrowIfNull();
 
             return Result<DoctorDto>.Success(response);
         }
@@ -38,6 +42,8 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
             var response = await httpClient.GetFromJsonAsync<PatientDto>(
                 $"http://profile-api/patients/{patientId}",
                 cancellationToken);
+
+            response.ThrowIfNull();
 
             return Result<PatientDto>.Success(response);
         }
@@ -83,7 +89,7 @@ public class ProfileGateway(IHttpClientFactory httpClientFactory)
             var response = await httpClient.GetFromJsonAsync<bool>(
                 $"http://profile-api/patients/{patientId}/is-linked",
                 cancellationToken);
-            
+
             return Result<bool>.Success(response);
         }
         catch (HttpRequestException)
