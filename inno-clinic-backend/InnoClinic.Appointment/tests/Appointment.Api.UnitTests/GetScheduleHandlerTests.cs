@@ -37,13 +37,12 @@ public class GetScheduleHandlerTests
 
         var mockRepository = new Mock<IAppointmentRepository>();
         var mockUserProvider = new Mock<ICurrentUserProvider>();
-        
+
         mockUserProvider.Setup(x => x.GetUserId()).Returns(doctorId);
 
         var appointments = new List<AppointmentView>
         {
-            new AppointmentView
-            {
+            new() {
                 AppointmentId = Guid.NewGuid(),
                 DurationStart = DateTimeOffset.UtcNow,
                 DurationEnd = DateTimeOffset.UtcNow.AddMinutes(30),
@@ -82,11 +81,11 @@ public class GetScheduleHandlerTests
         var doctorId = Guid.NewGuid();
         var mockRepository = new Mock<IAppointmentRepository>();
         var mockUserProvider = new Mock<ICurrentUserProvider>();
-        
+
         mockUserProvider.Setup(x => x.GetUserId()).Returns(doctorId);
         mockRepository
             .Setup(x => x.SearchAsync(It.IsAny<AppointmentFilter>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<AppointmentView>());
+            .ReturnsAsync([]);
 
         // Act
         await GetScheduleHandler.Handle(
