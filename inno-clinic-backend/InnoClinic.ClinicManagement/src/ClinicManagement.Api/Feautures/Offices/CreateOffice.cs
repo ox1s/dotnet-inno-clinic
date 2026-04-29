@@ -2,6 +2,7 @@ using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Data.Entities;
 using ClinicManagement.Api.Endpoints;
+using ClinicManagement.Api.Services;
 
 using FluentValidation;
 
@@ -9,11 +10,12 @@ namespace ClinicManagement.Api.Features.Offices;
 
 internal sealed class CreateOffice(
     AppDbContext context,
-    IValidator<CreateOffice.Request> validator)
+    FileUploader fileUploader,
+    AbstractValidator<CreateOffice.Request> validator)
 {
     public sealed record Request(
         string Address,
-        string PhotoUrl,
+        FileStream fileStream,
         string RegistryPhoneNumber,
         bool IsActive);
     public sealed record Response(Guid Id);
@@ -22,7 +24,11 @@ internal sealed class CreateOffice(
     {
         await validator.ValidateAndThrowAsync(request);
 
-        var photo = new Photo(request.PhotoUrl) ??
+        var photoName = $"{Guid.NewGuid()}.jpg";
+
+        await fileUploader.UploadFileAsync(photoName, request.fileStream, "image/jpg");
+
+        var photo = new Photo(photoName) ??
             throw new ValidationException("The photo is invalid");
 
         var office = Office.Create(
@@ -36,6 +42,20 @@ internal sealed class CreateOffice(
 
         return new Response(office.Id);
     }
+
+    internal sealed class Validator : AbstractValidator<Request>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Address).NotEmpty().MaximumLength(500);
+            RuleFor(x => x.RegistryPhoneNumber).NotEmpty().MaximumLength(50);
+            RuleFor(x => x.fileStream)
+                .NotNull()
+                .Must(fs => fs.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+                .WithMessage("Only .jpg files are allowed");
+        }
+    }
+
     internal sealed class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)

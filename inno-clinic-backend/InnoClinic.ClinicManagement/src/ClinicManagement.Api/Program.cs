@@ -10,6 +10,7 @@ using ClinicManagement.Api.Feautures.Categories;
 using ClinicManagement.Api.Feautures.Offices;
 using ClinicManagement.Api.Feautures.Services;
 using ClinicManagement.Api.Feautures.Specializations;
+using ClinicManagement.Api.Services;
 
 using FluentValidation;
 
@@ -106,7 +107,11 @@ builder.Services.AddScoped<ListOffices>();
 builder.Services.AddScoped<GetOffice>();
 builder.Services.AddScoped<ChangeOfficeStatus>();
 
+builder.Services.AddScoped<FileUploader>();
+
 builder.Services.AddEndpoints();
+
+builder.AddMinioClient("minio");
 
 var app = builder.Build();
 
