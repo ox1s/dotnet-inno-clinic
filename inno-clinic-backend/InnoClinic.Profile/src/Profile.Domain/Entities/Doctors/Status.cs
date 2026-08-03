@@ -6,23 +6,17 @@ public record Status(string Value)
 {
     public static Status From(string value)
     {
-        switch (value)
+        return value switch
         {
             // TODO: Убрать хардкод
-            case Statuses.AtWork:
-                return new Status("At work");
-            case Statuses.OnVacation:
-                return new Status("On vacation");
-            case Statuses.SickDay:
-                return new Status("Sick Day");
-            case Statuses.SickLeave:
-                return new Status("Sick Leave");
-            case Statuses.SelfIsolation:
-                return new Status("Self-Isolation");
-            case Statuses.LeaveWithoutPay:
-                return new Status("Leave without pay");
-            default:
-                throw new ArgumentException($"Invalid status value: {value}");
-        }
+            Statuses.AtWork => new Status("At work"),
+            Statuses.OnVacation => new Status("On vacation"),
+            Statuses.SickDay => new Status("Sick Day"),
+            Statuses.SickLeave => new Status("Sick Leave"),
+            Statuses.SelfIsolation => new Status("Self-Isolation"),
+            Statuses.LeaveWithoutPay => new Status("Leave without pay"),
+            _ => throw new ArgumentException($"Invalid status value: {value}"),
+        };
+
     }
 }

@@ -14,9 +14,9 @@ internal sealed class GetSpecialization(AppDbContext context)
         string Name,
         bool IsActive);
 
-    public async Task<Response?> Handle(Guid id, CancellationToken cancellationToken)
+    public Task<Response?> Handle(Guid id, CancellationToken cancellationToken)
     {
-        return await context.Specializations
+        return context.Specializations
             .AsNoTracking()
             .Where(s => s.Id == id)
             .Select(s => new Response(s.Id, s.SpecializationName, s.IsActive))

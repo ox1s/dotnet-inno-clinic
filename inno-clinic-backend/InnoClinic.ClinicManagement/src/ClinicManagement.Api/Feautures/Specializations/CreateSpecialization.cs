@@ -14,7 +14,7 @@ namespace ClinicManagement.Api.Feautures.Specializations;
 
 public class CreateSpecialization(
     AppDbContext context,
-    AbstractValidator<CreateSpecialization.Request> validator)
+    IValidator<CreateSpecialization.Request> validator)
 {
     public sealed record Request(
         string SpecializationName,

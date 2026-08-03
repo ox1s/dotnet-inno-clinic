@@ -51,6 +51,7 @@ public class LoginQueryHandler(
         // чтобы инфомация о профиле бралась с Identity API, а не с ProfileAPI
         var (role, status) = (Roles.Patient, string.Empty);
         var profileResult = await profileService.GetProfileDataAsync(account.Id, cancellationToken);
+        
         if (!profileResult.IsError)
         {
             (role, status) = profileResult.Value;

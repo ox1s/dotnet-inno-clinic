@@ -6,16 +6,18 @@ using ClinicManagement.Api.Services;
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace ClinicManagement.Api.Features.Offices;
 
 internal sealed class CreateOffice(
     AppDbContext context,
     FileUploader fileUploader,
-    AbstractValidator<CreateOffice.Request> validator)
+    IValidator<CreateOffice.Request> validator)
 {
     public sealed record Request(
         string Address,
-        FileStream fileStream,
+        IFormFile Photo,
         string RegistryPhoneNumber,
         bool IsActive);
     public sealed record Response(Guid Id);
@@ -24,9 +26,10 @@ internal sealed class CreateOffice(
     {
         await validator.ValidateAndThrowAsync(request);
 
-        var photoName = $"{Guid.NewGuid()}.jpg";
+        var photoName = $"{Guid.NewGuid()}.photo";
 
-        await fileUploader.UploadFileAsync(photoName, request.fileStream, "image/jpg");
+        using var stream = request.Photo.OpenReadStream();
+        await fileUploader.UploadFileAsync(photoName, stream, "image/jpeg");
 
         var photo = new Photo(photoName) ??
             throw new ValidationException("The photo is invalid");
@@ -49,10 +52,12 @@ internal sealed class CreateOffice(
         {
             RuleFor(x => x.Address).NotEmpty().MaximumLength(500);
             RuleFor(x => x.RegistryPhoneNumber).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.fileStream)
+            RuleFor(x => x.Photo)
                 .NotNull()
-                .Must(fs => fs.Name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-                .WithMessage("Only .jpg files are allowed");
+                .Must(file => file.ContentType == "image/jpeg" || file.ContentType == "image/jpg")
+                .WithMessage("Only JPEG images are allowed")
+                .Must(file => file.Length > 0 && file.Length <= 5 * 1024 * 1024)
+                .WithMessage("Photo size must be between 1 byte and 5 MB");
         }
     }
 
@@ -60,13 +65,19 @@ internal sealed class CreateOffice(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("offices", async (Request request, CreateOffice useCase) =>
+            app.MapPost("offices", async ([FromForm] string Address, 
+                                          [FromForm] IFormFile Photo,
+                                          [FromForm] string RegistryPhoneNumber,
+                                          [FromForm] bool IsActive,
+                                          CreateOffice useCase) =>
             {
+                var request = new Request(Address, Photo, RegistryPhoneNumber, IsActive);
                 var response = await useCase.Handle(request);
                 return Results.Created($"/offices/{response.Id}", response);
             })
             .WithTags(OfficeEndpoints.Tag)
-            .RequirePermission(Permissions.OfficesManipulate);
+            .RequirePermission(Permissions.OfficesManipulate)
+            .DisableAntiforgery();
         }
     }
 }

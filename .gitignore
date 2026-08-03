@@ -70,3 +70,5 @@ inno-clinic-frontend/**/node_modules/
 
 inno-clinic-frontend/**/dist/
 .env
+
+minio-data/
