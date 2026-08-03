@@ -85,12 +85,14 @@ public static class DependencyInjection
 
         private IServiceCollection AddServices(IConfiguration configuration)
         {
-            services.AddHttpClient();
+            services.AddHttpClient<IProfileService, ProfileService>(client =>
+            {
+                client.BaseAddress = new Uri("http://profile-api");
+            });
+            
             services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
             services.AddTransient<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
-
-            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddScoped<IRabbitMqService, RabbitMqService>();
 

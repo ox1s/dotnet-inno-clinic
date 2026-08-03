@@ -26,7 +26,7 @@ public sealed class PatientEndpoints : IEndpoint
                 patient.FirstName.Value,
                 patient.LastName.Value,
                 patient.MiddleName.Value));
-        });
+        }).RequireAuthorization();
 
         app.MapGet("/patients/{id:guid}/is-linked", async (Guid id, ProfileDbContext dbContext) =>
         {
@@ -36,7 +36,7 @@ public sealed class PatientEndpoints : IEndpoint
 
             if (patient is null) return Results.NotFound();
             return Results.Ok(patient.IsLinkedToAccount);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("/accounts/{accountId:guid}/patient/is-linked", async (Guid accountId, ProfileDbContext dbContext) =>
         {
@@ -46,7 +46,7 @@ public sealed class PatientEndpoints : IEndpoint
 
             if (patient is null) return Results.NotFound();
             return Results.Ok(patient.IsLinkedToAccount);
-        });
+        }).RequireAuthorization();
 
         app.MapGet("/patients", async (
                 string? q,
@@ -129,7 +129,7 @@ public sealed class PatientEndpoints : IEndpoint
             var patient = await dbContext.Set<Patient>().FindAsync([id], ct);
             if (patient is null || patient.IsDeleted) return Results.NotFound();
 
-            dbContext.Set<Patient>().Remove(patient);
+            patient.IsDeleted = true;
             await dbContext.CommitChangesAsync(ct);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));

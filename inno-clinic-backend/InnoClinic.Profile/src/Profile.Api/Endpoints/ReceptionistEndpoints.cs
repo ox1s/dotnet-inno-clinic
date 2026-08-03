@@ -19,7 +19,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/receptionists/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
+        app.MapPost("/doctors", async (CreateDoctorProfileCommand command, IMessageBus bus) =>
                 await bus.InvokeAsync(command))
             .RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
@@ -65,8 +65,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
                 TotalCount: totalCount));
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
-        // ? Нормально ли практика такой писанины
-        app.MapPost("/receptionists/receptionists", async (
+        app.MapPost("/receptionists", async (
                 CreateReceptionistProfileRequest request,
                 ProfileDbContext dbContext,
                 CancellationToken ct) =>
@@ -98,8 +97,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
                 receptionist.OfficeId));
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));
 
-        // ? И такой тоже
-        app.MapDelete("/receptionists/receptionists/{id:guid}", async (
+        app.MapDelete("/receptionists/{id:guid}", async (
                 Guid id,
                 ProfileDbContext dbContext,
                 CancellationToken ct) =>
@@ -107,7 +105,7 @@ public sealed class ReceptionistEndpoints : IEndpoint
             var receptionist = await dbContext.Set<Receptionist>().FindAsync([id], ct);
             if (receptionist is null || receptionist.IsDeleted) return Results.NotFound();
 
-            dbContext.Set<Receptionist>().Remove(receptionist);
+            receptionist.IsDeleted = true;
             await dbContext.CommitChangesAsync(ct);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.Receptionist));

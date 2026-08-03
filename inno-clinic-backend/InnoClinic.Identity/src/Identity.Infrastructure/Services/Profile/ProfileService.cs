@@ -8,7 +8,7 @@ using InnoClinic.Shared.DTOs;
 
 namespace Identity.Infrastructure.Services.Profile;
 
-public class ProfileService(IHttpClientFactory httpClientFactory) : IProfileService
+public class ProfileService(HttpClient httpClient) : IProfileService
 {
     public async Task<ErrorOr<(string Role, string Status)>> GetProfileDataAsync(
         Guid accountId,
@@ -16,9 +16,9 @@ public class ProfileService(IHttpClientFactory httpClientFactory) : IProfileServ
     {
         try
         {
-            var httpClient = httpClientFactory.CreateClient();
+            // ERROR: Profile data doesn't exist, error is throwing all of time...
             var response = await httpClient.GetFromJsonAsync<ProfileDataDto>(
-                $"http://profile-api/{accountId}",
+                $"{accountId}",
                 cancellationToken);
 
             if (response is null)

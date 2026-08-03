@@ -2,13 +2,29 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 // config -----------------------------------------------------
-var botApiKey = builder.Configuration["BotSettings:ApiKey"];
-var telegramToken = builder.Configuration["BotSettings:BotToken"];
+var botApiKey = builder.AddParameter("botApiKey", secret: true);
+var telegramToken = builder.AddParameter("telegramToken", secret: true);
 // ------------------------------------------------------------
 ///////////////////////////////////////////////////////////////
 // services ---------------------------------------------------
 var mailpit = builder.AddMailPit("mailpit");
 var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
+
+var blobs = builder.AddAzureStorage("storage")
+    .RunAsEmulator(azurite =>
+    {
+        azurite.WithLifetime(ContainerLifetime.Persistent);
+    })
+    .AddBlobs("blobs");
+
+var minio = builder.AddContainer("minio", "minio/minio")
+    .WithHttpEndpoint(port: 9000, targetPort: 9000, name: "api")
+    .WithHttpEndpoint(port: 9001, targetPort: 9001, name: "console")
+    .WithEnvironment("MINIO_ROOT_USER", "minioAdmin")
+    .WithEnvironment("MINIO_ROOT_PASSWORD", "minioAdmin")
+    .WithArgs("server", "/data", "--console-address", ":9001")
+    .WithBindMount("minio-data", "/data")
+    .WithLifetime(ContainerLifetime.Persistent);
 // ------------------------------------------------------------
 ///////////////////////////////////////////////////////////////
 // databases --------------------------------------------------
@@ -70,6 +86,11 @@ var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("cli
     .WaitFor(sharedDatabase)
     .WithReference(sharedDatabase)
 
+    .WaitFor(minio)
+    .WithEnvironment("ConnectionStrings__minio", "Endpoint=http://localhost:9000;AccessKey=minioAdmin;SecretKey=minioAdmin")
+    .WithReference(blobs)
+    .WaitFor(blobs)
+
     .WaitFor(profileApi)
     .WithReference(profileApi)
 
@@ -94,7 +115,7 @@ var appointmentApi = builder.AddProject<Projects.Appointment_Api>("appointment-a
     .WithEnvironment("AppUrl", "https://localhost:7779")
     .WithEnvironment("WebAppUrl", "http://localhost:7780");
 
-var bot = builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
+var _ = builder.AddPythonApp("telegram-bot", "../InnoClinic.TelegramBot", "bot.py")
     .WithEnvironment("TELEGRAM_BOT_TOKEN", telegramToken)
     .WithEnvironment("API_KEY", botApiKey)
     .WithEnvironment("BACKEND_API_URL", profileApi.GetEndpoint("https"))

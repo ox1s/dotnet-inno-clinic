@@ -11,34 +11,43 @@ namespace Appointment.Api.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE OR REPLACE VIEW appointment.appointments_view AS
-                SELECT
-                    a.appointment_id,
-                    CAST(a.""Duration_Start"" AS DATE) AS local_date,
-                    a.""Duration_Start"" AS duration_start,
-                    a.""Duration_End"" AS duration_end,
-                    a.is_approved,
+                DO $$
+                BEGIN
+                    IF EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_schema = 'clinic_management' 
+                        AND table_name = 'Services'
+                    ) THEN
+                        CREATE OR REPLACE VIEW appointment.appointments_view AS
+                        SELECT
+                            a.appointment_id,
+                            CAST(a.""Duration_Start"" AS DATE) AS local_date,
+                            a.""Duration_Start"" AS duration_start,
+                            a.""Duration_End"" AS duration_end,
+                            a.is_approved,
 
-                    a.doctor_id,
-                    d.first_name AS doctor_first_name,
-                    d.last_name AS doctor_last_name,
-                    d.middle_name AS doctor_middle_name,
+                            a.doctor_id,
+                            d.first_name AS doctor_first_name,
+                            d.last_name AS doctor_last_name,
+                            d.middle_name AS doctor_middle_name,
 
-                    a.patient_id,
-                    p.first_name AS patient_first_name,
-                    p.last_name AS patient_last_name,
+                            a.patient_id,
+                            p.first_name AS patient_first_name,
+                            p.last_name AS patient_last_name,
 
-                    acc.phone_number AS patient_phone,
+                            acc.phone_number AS patient_phone,
 
-                    a.service_id,
-                    s.""ServiceName"" AS service_name
+                            a.service_id,
+                            s.""ServiceName"" AS service_name
 
-                FROM appointment.appointments a
-                LEFT JOIN profile.doctors d ON a.doctor_id = d.account_profile_id
-                LEFT JOIN profile.patients p ON a.patient_id = p.account_profile_id
+                        FROM appointment.appointments a
+                        LEFT JOIN profile.doctors d ON a.doctor_id = d.account_profile_id
+                        LEFT JOIN profile.patients p ON a.patient_id = p.account_profile_id
 
-                LEFT JOIN identity.accounts acc ON p.account_id = acc.""Id""
-                LEFT JOIN clinic_management.""Services"" s ON a.service_id = s.""Id"";
+                        LEFT JOIN identity.accounts acc ON p.account_id = acc.""Id""
+                        LEFT JOIN clinic_management.""Services"" s ON a.service_id = s.""Id"";
+                    END IF;
+                END $$;
                 ");
         }
 

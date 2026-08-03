@@ -1,16 +1,16 @@
 using System.Text;
 
+using Azure.Storage.Blobs;
+
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
 using ClinicManagement.Api.Extensions;
+using ClinicManagement.Api.Features.Categories;
 using ClinicManagement.Api.Features.Offices;
 using ClinicManagement.Api.Features.Services;
 using ClinicManagement.Api.Features.Specializations;
-using ClinicManagement.Api.Feautures.Categories;
-using ClinicManagement.Api.Feautures.Offices;
-using ClinicManagement.Api.Feautures.Services;
-using ClinicManagement.Api.Feautures.Specializations;
+using ClinicManagement.Api.Services;
 
 using FluentValidation;
 
@@ -22,12 +22,8 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails(configure =>
-{
     configure.CustomizeProblemDetails = context =>
-    {
-        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
-    };
-});
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier));
 
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -49,7 +45,7 @@ builder.
             BearerFormat = "JWT"
         });
 
-        options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecuritySchemeReference("Bearer"),
@@ -109,9 +105,18 @@ builder.Services.AddScoped<UpdateOffice>();
 builder.Services.AddScoped<CheckOffice>();
 builder.Services.AddScoped<ListOffices>();
 builder.Services.AddScoped<GetOffice>();
+builder.Services.AddScoped<GetOfficePhoto>();
 builder.Services.AddScoped<ChangeOfficeStatus>();
 
+builder.Services.AddScoped<MinioBlobService>();
+
+builder.Services.AddSingleton<IBlobService, AzureBlobService>();
+builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("blobs")));
+
 builder.Services.AddEndpoints();
+
+builder.AddMinioClient("minio");
+builder.AddAzureBlobServiceClient(connectionName: "blobs");
 
 var app = builder.Build();
 

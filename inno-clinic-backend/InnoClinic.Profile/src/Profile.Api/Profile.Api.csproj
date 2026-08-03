@@ -7,7 +7,10 @@
   <ItemGroup>
     <PackageReference Include="Aspire.MongoDB.Driver" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.OpenApi" />
     <PackageReference Include="Quartz.Extensions.Hosting" />
+    <PackageReference Include="SharpCompress" />
+    <PackageReference Include="Snappier" />
     <PackageReference Include="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
