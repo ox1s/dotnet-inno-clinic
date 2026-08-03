@@ -9,13 +9,13 @@ using Minio.Exceptions;
 
 namespace ClinicManagement.Api.Services;
 
-public class MinioFileUploader(
+public class MinioBlobService(
     IMinioClient minioClient,
-    ILogger<MinioFileUploader> logger) : IFileUploader
+    ILogger<MinioBlobService> logger)
 {
     private const string _bucketName = "innoclinic-files";
 
-    public async Task EnsureBucketExistsAsync(CancellationToken cancellationToken = default)
+    public async Task GetOrCreateContainerAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -38,22 +38,27 @@ public class MinioFileUploader(
         }
     }
 
-    public async Task UploadFileAsync(string objectName, Stream data, string contentType)
+    public async Task<Guid> UploadAsync(Stream stream, string contentType,
+        CancellationToken cancellationToken = default)
     {
+        var fileId = Guid.NewGuid();
+
         try
         {
             var putArgs = new PutObjectArgs()
                 .WithBucket(_bucketName)
-                .WithObject(objectName)
-                .WithStreamData(data)
-                .WithObjectSize(data.Length)
+                .WithObject(fileId.ToString())
+                .WithStreamData(stream)
+                .WithObjectSize(stream.Length)
                 .WithContentType(contentType);
 
-            await minioClient.PutObjectAsync(putArgs).ConfigureAwait(false);
+            await minioClient.PutObjectAsync(putArgs, cancellationToken).ConfigureAwait(false);
+            
+            return fileId;
         }
         catch (MinioException e)
         {
-            logger.LogError(e, "File upload failed for object: {ObjectName}", objectName);
+            logger.LogError(e, "File upload failed for object: {ObjectName}", fileId);
             throw;
         }
     }

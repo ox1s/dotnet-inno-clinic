@@ -14,10 +14,10 @@ public static class DbInitializer
 
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var fileUploader = scope.ServiceProvider.GetRequiredService<MinioFileUploader>();
+        var fileUploader = scope.ServiceProvider.GetRequiredService<MinioBlobService>();
 
         // Initialize Minio bucket
-        await fileUploader.EnsureBucketExistsAsync(cancellationToken);
+        await fileUploader.GetOrCreateContainerAsync(cancellationToken);
 
         var configuredCategories = configuration
             .GetSection("CategoriesSettings:Categories")

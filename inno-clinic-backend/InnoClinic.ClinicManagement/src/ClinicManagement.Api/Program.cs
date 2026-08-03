@@ -108,7 +108,7 @@ builder.Services.AddScoped<GetOffice>();
 builder.Services.AddScoped<GetOfficePhoto>();
 builder.Services.AddScoped<ChangeOfficeStatus>();
 
-builder.Services.AddScoped<MinioFileUploader>();
+builder.Services.AddScoped<MinioBlobService>();
 
 builder.Services.AddSingleton<IBlobService, AzureBlobService>();
 builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("blobs")));
