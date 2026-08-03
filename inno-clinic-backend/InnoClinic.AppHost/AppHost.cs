@@ -10,6 +10,13 @@ var telegramToken = builder.AddParameter("telegramToken", secret: true);
 var mailpit = builder.AddMailPit("mailpit");
 var rabbitmq = builder.AddRabbitMQ("rabbitmq").WithManagementPlugin();
 
+var blobs = builder.AddAzureStorage("storage")
+    .RunAsEmulator(azurite =>
+    {
+        azurite.WithLifetime(ContainerLifetime.Persistent);
+    })
+    .AddBlobs("blobs");
+
 var minio = builder.AddContainer("minio", "minio/minio")
     .WithHttpEndpoint(port: 9000, targetPort: 9000, name: "api")
     .WithHttpEndpoint(port: 9001, targetPort: 9001, name: "console")
@@ -81,6 +88,8 @@ var clinicManagementApi = builder.AddProject<Projects.ClinicManagement_Api>("cli
 
     .WaitFor(minio)
     .WithEnvironment("ConnectionStrings__minio", "Endpoint=http://localhost:9000;AccessKey=minioAdmin;SecretKey=minioAdmin")
+    .WithReference(blobs)
+    .WaitFor(blobs)
 
     .WaitFor(profileApi)
     .WithReference(profileApi)

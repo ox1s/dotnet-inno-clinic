@@ -1,30 +1,29 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Offices;
 
 using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Offices;
+namespace ClinicManagement.Api.Features.Specializations;
 
-internal sealed class ChangeOfficeStatus(
+internal sealed class UpdateSpecialization(
     AppDbContext context,
-    IValidator<ChangeOfficeStatus.Request> validator)
+    IValidator<UpdateSpecialization.Request> validator)
 {
-    public sealed record Request(bool IsActive);
+    public sealed record Request(string Name, bool IsActive);
 
     public async Task<bool> Handle(Guid id, Request request, CancellationToken cancellationToken)
     {
         await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var office = await context.Offices
-            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+        var specialization = await context.Specializations
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
-        if (office is null) return false;
+        if (specialization is null) return false;
 
-        office.IsActive = request.IsActive;
+        specialization.Update(request.Name, request.IsActive);
         await context.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -33,7 +32,7 @@ internal sealed class ChangeOfficeStatus(
     {
         public Validator()
         {
-            RuleFor(x => x.IsActive).NotNull();
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
         }
     }
 
@@ -41,13 +40,13 @@ internal sealed class ChangeOfficeStatus(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPatch("offices/{id:guid}/status", async (Guid id, Request request, ChangeOfficeStatus useCase, CancellationToken ct) =>
+            app.MapPut("specializations/{id:guid}", async (Guid id, Request request, UpdateSpecialization useCase, CancellationToken ct) =>
             {
                 var updated = await useCase.Handle(id, request, ct);
                 return updated ? Results.NoContent() : Results.NotFound();
             })
-            .WithTags(OfficeEndpoints.Tag)
-            .RequirePermission(Permissions.OfficesManipulate);
+            .WithTags(SpecializationEndpoints.Tag)
+            .RequirePermission(Permissions.SpecializationsManipulate);
         }
     }
 }

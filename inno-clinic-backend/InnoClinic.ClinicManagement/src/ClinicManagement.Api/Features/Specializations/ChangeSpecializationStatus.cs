@@ -1,17 +1,16 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Services;
 
 using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Services;
+namespace ClinicManagement.Api.Features.Specializations;
 
-internal sealed class ChangeServiceStatus(
+internal sealed class ChangeSpecializationStatus(
     AppDbContext context,
-    IValidator<ChangeServiceStatus.Request> validator)
+    IValidator<ChangeSpecializationStatus.Request> validator)
 {
     public sealed record Request(bool IsActive);
 
@@ -19,12 +18,12 @@ internal sealed class ChangeServiceStatus(
     {
         await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var service = await context.Services
+        var specialization = await context.Specializations
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
-        if (service is null) return false;
+        if (specialization is null) return false;
 
-        service.ChangeStatus(request.IsActive);
+        specialization.ChangeStatus(request.IsActive);
         await context.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -41,12 +40,12 @@ internal sealed class ChangeServiceStatus(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPatch("services/{id:guid}/status", async (Guid id, Request request, ChangeServiceStatus useCase, CancellationToken ct) =>
+            app.MapPatch("specializations/{id:guid}/status", async (Guid id, Request request, ChangeSpecializationStatus useCase, CancellationToken ct) =>
             {
                 var updated = await useCase.Handle(id, request, ct);
                 return updated ? Results.NoContent() : Results.NotFound();
             })
-            .WithTags(ServiceEndpoints.Tag)
+            .WithTags(SpecializationEndpoints.Tag)
             .RequirePermission(Permissions.SpecializationsManipulate);
         }
     }

@@ -1,10 +1,9 @@
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Services;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Services;
+namespace ClinicManagement.Api.Features.Services;
 
 internal sealed class GetServiceDurationMinutes(AppDbContext context)
 {

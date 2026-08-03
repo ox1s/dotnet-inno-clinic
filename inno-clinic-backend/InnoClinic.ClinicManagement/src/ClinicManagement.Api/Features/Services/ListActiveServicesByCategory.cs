@@ -1,11 +1,10 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Services;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Services;
+namespace ClinicManagement.Api.Features.Services;
 
 public class ListActiveServicesByCategory(AppDbContext context)
 {

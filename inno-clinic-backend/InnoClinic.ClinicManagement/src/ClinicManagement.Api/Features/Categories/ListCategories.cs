@@ -4,7 +4,7 @@ using ClinicManagement.Api.Endpoints;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Categories;
+namespace ClinicManagement.Api.Features.Categories;
 
 internal sealed partial class ListCategories(AppDbContext dbContext)
 {

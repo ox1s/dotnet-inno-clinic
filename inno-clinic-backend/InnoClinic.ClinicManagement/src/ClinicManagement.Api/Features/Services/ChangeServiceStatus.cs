@@ -1,17 +1,16 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Specializations;
 
 using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Specializations;
+namespace ClinicManagement.Api.Features.Services;
 
-internal sealed class ChangeSpecializationStatus(
+internal sealed class ChangeServiceStatus(
     AppDbContext context,
-    IValidator<ChangeSpecializationStatus.Request> validator)
+    IValidator<ChangeServiceStatus.Request> validator)
 {
     public sealed record Request(bool IsActive);
 
@@ -19,12 +18,12 @@ internal sealed class ChangeSpecializationStatus(
     {
         await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var specialization = await context.Specializations
+        var service = await context.Services
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
 
-        if (specialization is null) return false;
+        if (service is null) return false;
 
-        specialization.ChangeStatus(request.IsActive);
+        service.ChangeStatus(request.IsActive);
         await context.SaveChangesAsync(cancellationToken);
         return true;
     }
@@ -41,12 +40,12 @@ internal sealed class ChangeSpecializationStatus(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPatch("specializations/{id:guid}/status", async (Guid id, Request request, ChangeSpecializationStatus useCase, CancellationToken ct) =>
+            app.MapPatch("services/{id:guid}/status", async (Guid id, Request request, ChangeServiceStatus useCase, CancellationToken ct) =>
             {
                 var updated = await useCase.Handle(id, request, ct);
                 return updated ? Results.NoContent() : Results.NotFound();
             })
-            .WithTags(SpecializationEndpoints.Tag)
+            .WithTags(ServiceEndpoints.Tag)
             .RequirePermission(Permissions.SpecializationsManipulate);
         }
     }

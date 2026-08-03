@@ -1,4 +1,4 @@
-namespace ClinicManagement.Api.Feautures.Categories;
+namespace ClinicManagement.Api.Features.Categories;
 
 public static class CategoryEndpoints
 {

@@ -1,31 +1,31 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Specializations;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Specializations;
+namespace ClinicManagement.Api.Features.Offices;
 
-internal sealed class ListSpecializations(AppDbContext context)
+internal sealed class ListOffices(AppDbContext context)
 {
     public sealed record Response(
         Guid Id,
-        string Name,
+        string Address,
+        string RegistryPhoneNumber,
         bool IsActive);
 
     public async Task<IReadOnlyList<Response>> Handle(bool? isActive, CancellationToken cancellationToken)
     {
-        var query = context.Specializations.AsNoTracking();
+        var query = context.Offices.AsNoTracking();
 
         if (isActive is not null)
         {
-            query = query.Where(s => s.IsActive == isActive);
+            query = query.Where(o => o.IsActive == isActive);
         }
 
         return await query
-            .OrderBy(s => s.SpecializationName)
-            .Select(s => new Response(s.Id, s.SpecializationName, s.IsActive))
+            .OrderBy(o => o.Address)
+            .Select(o => new Response(o.Id, o.Address, o.RegistryPhoneNumber, o.IsActive))
             .ToListAsync(cancellationToken);
     }
 
@@ -33,10 +33,10 @@ internal sealed class ListSpecializations(AppDbContext context)
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("specializations", async (bool? isActive, ListSpecializations useCase, CancellationToken ct) =>
+            app.MapGet("offices", async (bool? isActive, ListOffices useCase, CancellationToken ct) =>
                 Results.Ok(await useCase.Handle(isActive, ct)))
-            .WithTags(SpecializationEndpoints.Tag)
-            .RequirePermission(Permissions.SpecializationsRead);
+            .WithTags(OfficeEndpoints.Tag)
+            .RequirePermission(Permissions.OfficesRead);
         }
     }
 }

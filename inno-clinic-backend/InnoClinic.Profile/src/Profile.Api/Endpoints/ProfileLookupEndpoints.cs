@@ -55,6 +55,6 @@ public sealed class ProfileLookupEndpoints : IEndpoint
             }
 
             return Results.NotFound();
-        }).RequireAuthorization();
+        });
     }
 }

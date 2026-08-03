@@ -12,7 +12,7 @@ namespace ClinicManagement.Api.Features.Offices;
 
 internal sealed class CreateOffice(
     AppDbContext context,
-    FileUploader fileUploader,
+    IBlobService blobService,
     IValidator<CreateOffice.Request> validator)
 {
     public sealed record Request(
@@ -26,12 +26,11 @@ internal sealed class CreateOffice(
     {
         await validator.ValidateAndThrowAsync(request);
 
-        var photoName = $"{Guid.NewGuid()}.photo";
-
         using var stream = request.Photo.OpenReadStream();
-        await fileUploader.UploadFileAsync(photoName, stream, "image/jpeg");
 
-        var photo = new Photo(photoName) ??
+        var fileId = await blobService.UploadAsync(stream, request.Photo.ContentType);
+
+        var photo = new Photo(fileId.ToString()) ??
             throw new ValidationException("The photo is invalid");
 
         var office = Office.Create(
@@ -65,13 +64,13 @@ internal sealed class CreateOffice(
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("offices", async ([FromForm] string Address, 
-                                          [FromForm] IFormFile Photo,
-                                          [FromForm] string RegistryPhoneNumber,
-                                          [FromForm] bool IsActive,
+            app.MapPost("offices", async ([FromForm] string address,
+                                          [FromForm] IFormFile photo,
+                                          [FromForm] string registryPhoneNumber,
+                                          [FromForm] bool isActive,
                                           CreateOffice useCase) =>
             {
-                var request = new Request(Address, Photo, RegistryPhoneNumber, IsActive);
+                var request = new Request(address, photo, registryPhoneNumber, isActive);
                 var response = await useCase.Handle(request);
                 return Results.Created($"/offices/{response.Id}", response);
             })

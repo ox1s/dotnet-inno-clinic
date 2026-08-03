@@ -5,7 +5,7 @@ using ClinicManagement.Api.Exceptions;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Specializations
+namespace ClinicManagement.Api.Features.Specializations
 {
     public class DeleteSpecialization(AppDbContext context)
     {

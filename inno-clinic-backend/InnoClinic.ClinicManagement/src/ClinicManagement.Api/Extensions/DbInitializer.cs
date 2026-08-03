@@ -14,7 +14,7 @@ public static class DbInitializer
 
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var fileUploader = scope.ServiceProvider.GetRequiredService<FileUploader>();
+        var fileUploader = scope.ServiceProvider.GetRequiredService<MinioFileUploader>();
 
         // Initialize Minio bucket
         await fileUploader.EnsureBucketExistsAsync(cancellationToken);

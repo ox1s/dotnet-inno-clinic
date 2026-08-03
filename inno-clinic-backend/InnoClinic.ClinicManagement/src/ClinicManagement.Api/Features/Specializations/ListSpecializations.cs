@@ -1,32 +1,30 @@
 using ClinicManagement.Api.Authorization;
 using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Endpoints;
-using ClinicManagement.Api.Features.Offices;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace ClinicManagement.Api.Feautures.Offices;
+namespace ClinicManagement.Api.Features.Specializations;
 
-internal sealed class ListOffices(AppDbContext context)
+internal sealed class ListSpecializations(AppDbContext context)
 {
     public sealed record Response(
         Guid Id,
-        string Address,
-        string RegistryPhoneNumber,
+        string Name,
         bool IsActive);
 
     public async Task<IReadOnlyList<Response>> Handle(bool? isActive, CancellationToken cancellationToken)
     {
-        var query = context.Offices.AsNoTracking();
+        var query = context.Specializations.AsNoTracking();
 
         if (isActive is not null)
         {
-            query = query.Where(o => o.IsActive == isActive);
+            query = query.Where(s => s.IsActive == isActive);
         }
 
         return await query
-            .OrderBy(o => o.Address)
-            .Select(o => new Response(o.Id, o.Address, o.RegistryPhoneNumber, o.IsActive))
+            .OrderBy(s => s.SpecializationName)
+            .Select(s => new Response(s.Id, s.SpecializationName, s.IsActive))
             .ToListAsync(cancellationToken);
     }
 
@@ -34,10 +32,10 @@ internal sealed class ListOffices(AppDbContext context)
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("offices", async (bool? isActive, ListOffices useCase, CancellationToken ct) =>
+            app.MapGet("specializations", async (bool? isActive, ListSpecializations useCase, CancellationToken ct) =>
                 Results.Ok(await useCase.Handle(isActive, ct)))
-            .WithTags(OfficeEndpoints.Tag)
-            .RequirePermission(Permissions.OfficesRead);
+            .WithTags(SpecializationEndpoints.Tag)
+            .RequirePermission(Permissions.SpecializationsRead);
         }
     }
 }

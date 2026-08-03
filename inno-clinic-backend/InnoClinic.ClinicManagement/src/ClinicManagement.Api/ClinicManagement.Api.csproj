@@ -13,7 +13,9 @@
     <ProjectReference Include="..\..\..\InnoClinic.Shared\InnoClinic.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Aspire.Minio.Client"/>
+    <PackageReference Include="Aspire.Azure.Storage.Blobs" />
+    <PackageReference Include="CommunityToolkit.Aspire.Minio.Client" />
+    <PackageReference Include="Microsoft.OpenApi" />
     <PackageReference Include="Minio" />
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.AspNetCore" />
