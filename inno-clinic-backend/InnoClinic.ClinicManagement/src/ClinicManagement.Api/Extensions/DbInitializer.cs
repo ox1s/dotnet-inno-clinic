@@ -58,7 +58,7 @@ public static class DbInitializer
                 continue;
             }
 
-            existingCategory.TimeSlotSize = configuredCategory.TimeSlotSize;
+            existingCategory.Update(configuredCategory.Name, configuredCategory.TimeSlotSize);
             hasChanges = true;
         }
 

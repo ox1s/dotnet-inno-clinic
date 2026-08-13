@@ -14,8 +14,17 @@ public class ServiceCategory
     {
         return new ServiceCategory
         {
+            // Set explicitly, like Office and Service do, rather than relying on EF's
+            // client-side Guid generator.
+            Id = Guid.NewGuid(),
             Name = name,
             TimeSlotSize = timeSlotSize,
         };
+    }
+
+    public void Update(string name, int timeSlotSize)
+    {
+        Name = name;
+        TimeSlotSize = timeSlotSize;
     }
 }
