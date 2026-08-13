@@ -11,6 +11,8 @@ public class ReceptionistConfiguration : IEntityTypeConfiguration<Receptionist>
     {
         builder.ToTable("receptionists", "profile");
 
+        builder.HasIndex(r => r.OfficeId);
+
         builder.Property(r => r.OfficeId)
             .HasColumnName("office_id");
     }

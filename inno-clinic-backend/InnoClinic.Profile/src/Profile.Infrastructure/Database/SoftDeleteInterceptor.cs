@@ -8,15 +8,33 @@ namespace Profile.Infrastructure.Database;
 
 public class SoftDeleteInterceptor : SaveChangesInterceptor
 {
+    // Both the sync and async entry points must be covered. Overriding only the async one
+    // meant any call to the synchronous SaveChanges() hard-deleted the row, quietly
+    // defeating the soft-delete design and the !IsDeleted query filter that depends on it.
+    public override InterceptionResult<int> SavingChanges(
+        DbContextEventData eventData,
+        InterceptionResult<int> result)
+    {
+        ConvertDeletesToSoftDeletes(eventData);
+
+        return base.SavingChanges(eventData, result);
+    }
+
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
+        ConvertDeletesToSoftDeletes(eventData);
+
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+
+    private static void ConvertDeletesToSoftDeletes(DbContextEventData eventData)
+    {
         if (eventData.Context is null)
         {
-            return base.SavingChangesAsync(
-                eventData, result, cancellationToken);
+            return;
         }
 
         IEnumerable<EntityEntry<ISoftDeletable>> entries =
@@ -32,7 +50,5 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
             softDeletable.Entity.IsDeleted = true;
             softDeletable.Entity.DeletedOnUtc = DateTime.UtcNow;
         }
-
-        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 }

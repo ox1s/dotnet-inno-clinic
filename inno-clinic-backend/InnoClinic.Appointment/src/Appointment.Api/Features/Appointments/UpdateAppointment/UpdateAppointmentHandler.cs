@@ -40,7 +40,10 @@ public static class UpdateAppointmentHandler
         if (!timeRangeResult.Succeeded)
             return TypedResults.BadRequest(timeRangeResult.Error.Description);
 
-        if (await appointmentRepository.IsOverlappingAsync(request.DoctorId, timeRangeResult.Value!))
+        if (await appointmentRepository.IsOverlappingAsync(
+                request.DoctorId,
+                timeRangeResult.Value!,
+                excludeAppointmentId: id))
             return TypedResults.BadRequest(Errors.OverlappingAppointment);
 
         var serviceActive = await serviceGateway.IsServiceActiveAsync(request.ServiceId);

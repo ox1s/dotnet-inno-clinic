@@ -14,6 +14,11 @@ public class AccountProfileConfiguration : IEntityTypeConfiguration<AccountProfi
 
         builder.HasQueryFilter(a => !a.IsDeleted);
 
+        // account_id is the lookup key used by every "find my profile" path
+        // (GetEntityIdByAccountIdAsync, the Telegram bot, the appointments view join).
+        // Not unique: existing data may already contain duplicates per account.
+        builder.HasIndex(a => a.AccountId);
+
         builder.Property(a => a.Id)
             .HasColumnName("account_profile_id")
             .ValueGeneratedNever();

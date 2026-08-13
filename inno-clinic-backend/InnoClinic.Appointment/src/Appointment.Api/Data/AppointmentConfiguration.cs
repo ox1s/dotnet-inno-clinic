@@ -19,6 +19,11 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(a => a.PatientId)
             .HasColumnName("patient_id");
 
+        // The overlap check filters on doctor_id before narrowing by time range, and the
+        // schedule/history queries filter on patient_id. Neither had any index.
+        builder.HasIndex(a => a.DoctorId);
+        builder.HasIndex(a => a.PatientId);
+
         builder.Property(a => a.DoctorId)
             .HasColumnName("doctor_id");
 

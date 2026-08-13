@@ -54,15 +54,15 @@ public class Appointment
         Guid officeId,
         TimeRange duration)
     {
-        DoctorId = doctorId;
-        ServiceId = serviceId;
-        OfficeId = officeId;
-        Duration = duration;
-
+        // Validate before mutating: assigning first left the tracked entity holding an
+        // invalid Duration if the range turned out to be bad.
         var timeResult = TimeRange.Create(duration.Start, duration.End);
         if (!timeResult.Succeeded)
             throw new InvalidOperationException($"Invalid time range: {timeResult.Error.Code}");
 
+        DoctorId = doctorId;
+        ServiceId = serviceId;
+        OfficeId = officeId;
         Duration = timeResult.Value!;
 
         IsApproved = false;

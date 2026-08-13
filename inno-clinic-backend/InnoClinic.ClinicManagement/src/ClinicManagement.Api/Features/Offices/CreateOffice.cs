@@ -45,20 +45,10 @@ internal sealed class CreateOffice(
         return new Response(office.Id);
     }
 
-    internal sealed class Validator : AbstractValidator<Request>
-    {
-        public Validator()
-        {
-            RuleFor(x => x.Address).NotEmpty().MaximumLength(500);
-            RuleFor(x => x.RegistryPhoneNumber).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.Photo)
-                .NotNull()
-                .Must(file => file.ContentType == "image/jpeg" || file.ContentType == "image/jpg")
-                .WithMessage("Only JPEG images are allowed")
-                .Must(file => file.Length > 0 && file.Length <= 5 * 1024 * 1024)
-                .WithMessage("Photo size must be between 1 byte and 5 MB");
-        }
-    }
+    // Validation lives in OfficeValidators.cs. Do not add a second
+    // AbstractValidator<Request> here: AddValidatorsFromAssembly would register both and a
+    // single injected IValidator<Request> resolves only one of them, silently dropping the
+    // other's rules.
 
     internal sealed class Endpoint : IEndpoint
     {

@@ -34,11 +34,9 @@ internal sealed class CreateService(
     {
         await validator.ValidateAndThrowAsync(request);
 
+        // FromCode throws ValidationException for an unknown code, so both values are non-null here.
         var currency = Currency.FromCode(request.Currency);
         var price = new Price(request.Price, currency);
-
-        if (price is null || currency is null)
-            throw new ValidationException("The price is invalid");
 
         var isCategoryExist = await context.ServiceCategories.AnyAsync(c => c.Id == request.CategoryId);
         if (!isCategoryExist)

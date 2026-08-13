@@ -1,4 +1,5 @@
-﻿using ClinicManagement.Api.Data;
+﻿using ClinicManagement.Api.Authorization;
+using ClinicManagement.Api.Data;
 using ClinicManagement.Api.Data.Entities;
 using ClinicManagement.Api.Endpoints;
 using ClinicManagement.Api.Exceptions;
@@ -30,10 +31,11 @@ namespace ClinicManagement.Api.Features.Specializations
             {
                 app.MapDelete("specializations/{id:guid}", async (Guid id, DeleteSpecialization useCase) =>
                 {
-                    var response = await useCase.Handle(id);
-                    return response ? Results.Ok(response)
-                    : Results.Conflict();
-                });
+                    var deleted = await useCase.Handle(id);
+                    return deleted ? Results.NoContent() : Results.NotFound();
+                })
+                .WithTags(SpecializationEndpoints.Tag)
+                .RequirePermission(Permissions.SpecializationsManipulate);
             }
         }
 

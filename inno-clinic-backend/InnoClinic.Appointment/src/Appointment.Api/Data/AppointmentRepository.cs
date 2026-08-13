@@ -37,15 +37,43 @@ public class AppointmentRepository(AppointmentDbContext dbContext)
     public async Task<bool> IsOverlappingAsync(
         Guid doctorId,
         TimeRange duration,
+        Guid? excludeAppointmentId = null,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.AppointmentViews
-            .AnyAsync(a =>
+        return await BuildOverlapQuery(doctorId, duration, excludeAppointmentId)
+            .AnyAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// The overlap predicate, exposed so it can be asserted on without a live database:
+    /// it reads a complex property (<see cref="Appointment.Duration"/>) that only a relational
+    /// provider can translate, which rules out the InMemory provider.
+    /// </summary>
+    public IQueryable<Appointment> BuildOverlapQuery(
+        Guid doctorId,
+        TimeRange duration,
+        Guid? excludeAppointmentId = null)
+    {
+        var start = duration.Start;
+        var end = duration.End;
+
+        // Queries the table rather than appointments_view: the view joins four other schemas,
+        // none of which this check needs. Unapproved appointments are deliberately included -
+        // every appointment starts out unapproved, so filtering them out left the doctor's
+        // pending queue completely unguarded against double booking.
+        var query = _dbContext.Appointments
+            .AsNoTracking()
+            .Where(a =>
                 a.DoctorId == doctorId &&
-                a.DurationStart < duration.End &&
-                a.DurationEnd > duration.Start &&
-                a.IsApproved,
-                cancellationToken);
+                a.Duration.Start < end &&
+                a.Duration.End > start);
+
+        if (excludeAppointmentId is { } excludedId)
+        {
+            query = query.Where(a => a.Id != excludedId);
+        }
+
+        return query;
     }
 
     private IQueryable<AppointmentView> BuildQuery(AppointmentFilter filter)

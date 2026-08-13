@@ -1,35 +1,27 @@
-```sql
-CREATE OR REPLACE VIEW appointment.appointments_view AS
-SELECT
-a.appointment_id,
-CAST(a.duration_start AS DATE) AS local_date,
-a.duration_start AS duration_start,
-a.duration_end AS duration_end,
-a.is_approved,
+# appointment.appointments_view
 
-        a.doctor_id,
-        d.first_name AS doctor_first_name,
-        d.last_name AS doctor_last_name,
-        d.middle_name AS doctor_middle_name,
+**This view is now created by an EF migration — do not apply it by hand.**
 
-        a.patient_id,
-        p.first_name AS patient_first_name,
-        p.last_name AS patient_last_name,
-        p.middle_name AS patient_middle_name,
+See `inno-clinic-backend/InnoClinic.Appointment/src/Appointment.Api/Data/Migrations/*_ResyncAppointmentsView.cs`,
+which is the single source of truth for the definition. It runs automatically on
+`appointment-api` startup along with every other migration.
 
-        acc.phone_number AS patient_phone,
+History: the original `AddAppointmentsView` migration created a view that was missing
+`patient_middle_name`, `office_id` and `office_address`, while `AppointmentDbContext` mapped
+all three — so every query against `AppointmentViews` failed with `42703 column does not
+exist`. The two follow-up migrations intended to fix it shipped with empty `Up()` bodies, and
+this file held the hand-applied correction. `ResyncAppointmentsView` folds that correction
+back into the migration history.
 
-        a.service_id,
-        s."ServiceName" AS service_name,
+The view spans four schemas (`appointment`, `profile`, `identity`, `clinic_management`), so
+`appointment-api` must start after the services that own them — the AppHost already enforces
+this with `WaitFor`.
 
-        a.office_id,
-        o."Address" AS office_address
+## Known limitation
 
-    FROM appointment.appointments a
-    LEFT JOIN profile.doctors d ON a.doctor_id = d.account_profile_id
-    LEFT JOIN profile.patients p ON a.patient_id = p.account_profile_id
-
-    LEFT JOIN identity.accounts acc ON p.account_id = acc."Id"
-    LEFT JOIN clinic_management."Services" s ON a.service_id = s."Id"
-    LEFT JOIN clinic_management."Offices" o ON a.office_id = o."Id";
-```
+`local_date` is `CAST(duration_start AS DATE)`, i.e. the date in **UTC**, while
+`ListReceptionistAppointmentsHandler` filters by the clinic-local date from
+`Appointments_Resourses.Clinics_TimeZone`. Appointments close to midnight can therefore land
+on the adjacent `local_date`. Fixing it means deciding where the clinic timezone lives (a
+literal in the view, a `SET TIME ZONE` on the connection, or dropping `local_date` and
+filtering on `duration_start` ranges instead).

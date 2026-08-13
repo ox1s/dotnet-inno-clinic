@@ -23,7 +23,10 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.OwnsOne(service => service.Price, priceBuilder =>
         {
             priceBuilder.Property(price => price.Currency)
-                .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
+                .HasConversion(currency => currency.Code, code => Currency.FromPersistedCode(code));
+
+            priceBuilder.Property(price => price.Amount)
+                .HasPrecision(18, 2);
         });
 
         builder.HasOne(service => service.Category)
